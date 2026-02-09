@@ -1,0 +1,46 @@
+/* ============================================
+   DevHub for GitHub — Checks Badge Styles
+   ============================================ */
+
+.devhub-checks-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  border: 1px solid;
+}
+
+.devhub-checks-summary--pass {
+  color: #3fb950;
+  border-color: #23863633;
+  background-color: #23863618;
+}
+
+.devhub-checks-summary--fail {
+  color: #f85149;
+  border-color: #da363333;
+  background-color: #da363318;
+}
+
+.devhub-checks-summary--pending {
+  color: #d29922;
+  border-color: #d2992233;
+  background-color: #d2992218;
+}
+
+.devhub-checks-summary--none {
+  color: #8b949e;
+  border-color: #8b949e33;
+  background-color: #8b949e18;
+}
+
+.devhub-checks-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}

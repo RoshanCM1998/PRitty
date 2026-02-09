@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "DevHub for GitHub",
+  "version": "1.1.0",
+  "description": "Brings Azure DevOps-style PR experience to GitHub — quick actions, checks status, and more.",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*/pull/*"],
+      "js": [
+        "src/core/namespace.js",
+        "src/core/icons.js",
+        "src/core/utils.js",
+        "src/modules/github-state.js",
+        "src/modules/checks-badge.js",
+        "src/modules/complete-button.js",
+        "src/modules/review-button.js",
+        "src/features/header-actions.js",
+        "src/content.js"
+      ],
+      "css": [
+        "styles/base.css",
+        "styles/checks-badge.css",
+        "styles/buttons.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

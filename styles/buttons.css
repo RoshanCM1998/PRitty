@@ -1,0 +1,50 @@
+/* ============================================
+   DevHub for GitHub — Action Button Styles
+   ============================================ */
+
+/* Complete PR / Merge button */
+.devhub-btn-complete {
+  background-color: #238636;
+  color: #ffffff;
+  border-color: rgba(240, 246, 252, 0.1);
+}
+
+.devhub-btn-complete:hover:not(:disabled) {
+  background-color: #2ea043;
+}
+
+.devhub-btn-complete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Submit Review button */
+.devhub-btn-review {
+  background-color: #1f6feb;
+  color: #ffffff;
+  border-color: rgba(240, 246, 252, 0.1);
+}
+
+.devhub-btn-review:hover {
+  background-color: #388bfd;
+}
+
+/* Merge status indicator dot */
+.devhub-merge-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.devhub-merge-indicator--ready {
+  background-color: #3fb950;
+}
+
+.devhub-merge-indicator--blocked {
+  background-color: #f85149;
+}
+
+.devhub-merge-indicator--draft {
+  background-color: #8b949e;
+}
