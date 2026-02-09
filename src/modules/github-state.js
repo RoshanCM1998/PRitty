@@ -58,11 +58,12 @@ DevHub.GitHubState = {
    */
   getPRState() {
     const stateLabel = document.querySelector(DevHub.Selectors.STATE_LABEL);
+    const status = stateLabel?.getAttribute("data-status") || "";
     const labelText = stateLabel?.textContent || "";
 
-    const isDraft = labelText.includes("Draft");
-    const isMerged = labelText.includes("Merged");
-    const isClosed = labelText.includes("Closed");
+    const isDraft = status === "pullDraft" || labelText.includes("Draft");
+    const isMerged = status === "pullMerged" || labelText.includes("Merged");
+    const isClosed = status === "pullClosed" || labelText.includes("Closed");
     const hasConflicts = !!document.querySelector(DevHub.Selectors.CONFLICT_INDICATOR);
 
     const mergeBtn =

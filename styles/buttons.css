@@ -2,6 +2,11 @@
    DevHub for GitHub — Action Button Styles
    ============================================ */
 
+/* Complete PR wrapper (positions dropdown) */
+.devhub-complete-wrapper {
+  position: relative;
+}
+
 /* Complete PR / Merge button */
 .devhub-btn-complete {
   background-color: #238636;
@@ -16,6 +21,57 @@
 .devhub-btn-complete:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Dropdown menu */
+.devhub-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 220px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  padding: 4px 0;
+}
+
+.devhub-dropdown-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.devhub-dropdown-item:hover {
+  background: #1f2937;
+}
+
+.devhub-dropdown-item--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.devhub-dropdown-item--disabled:hover {
+  background: none;
+}
+
+.devhub-dropdown-item-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e6edf3;
+  line-height: 20px;
+}
+
+.devhub-dropdown-item-desc {
+  font-size: 11px;
+  color: #8b949e;
+  line-height: 16px;
 }
 
 /* Submit Review button */

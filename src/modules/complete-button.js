@@ -1,51 +1,136 @@
 /**
  * DevHub for GitHub — Complete PR Button
- * Creates the "Complete PR" (merge) button for the PR header.
+ * Dropdown button with context-aware actions:
+ *   Draft PR  → Publish PR
+ *   Open PR   → Convert to draft, Squash and merge
  */
 
 DevHub.CompleteButton = {
 
   /**
-   * Build and return the Complete PR button element.
-   * @returns {HTMLButtonElement}
+   * Build and return the Complete PR button with dropdown.
+   * @returns {HTMLElement}
    */
   create() {
     const prState = DevHub.GitHubState.getPRState();
-    const canMerge = prState.mergeEnabled && !prState.isDraft && !prState.hasConflicts;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "devhub-complete-wrapper";
 
     const btn = document.createElement("button");
     btn.className = "devhub-btn devhub-btn-complete";
 
-    let indicatorClass = "devhub-merge-indicator--ready";
-    let label = "Complete PR";
-
-    if (prState.isDraft) {
-      indicatorClass = "devhub-merge-indicator--draft";
-      label = "Draft";
-    } else if (prState.hasConflicts || !prState.mergeEnabled) {
-      indicatorClass = "devhub-merge-indicator--blocked";
+    if (prState.isMerged || prState.isClosed) {
+      btn.innerHTML = `${DevHub.Icons.merge} ${prState.isMerged ? "Merged" : "Closed"}`;
+      btn.disabled = true;
+      wrapper.appendChild(btn);
+      return wrapper;
     }
 
-    btn.innerHTML = `${DevHub.Icons.merge} <span class="devhub-merge-indicator ${indicatorClass}"></span> ${label}`;
-    btn.disabled = !canMerge;
+    btn.innerHTML = `${DevHub.Icons.merge} PR Actions`;
 
-    btn.title = prState.isDraft
-      ? "This PR is still a draft"
-      : prState.hasConflicts
-      ? "Resolve conflicts before merging"
-      : canMerge
-      ? "Merge this pull request"
-      : "Cannot merge yet";
+    const dropdown = document.createElement("div");
+    dropdown.className = "devhub-dropdown";
+    dropdown.hidden = true;
 
-    btn.addEventListener("click", () => {
-      if (!canMerge) return;
-      const state = DevHub.GitHubState.getPRState();
-      if (state.mergeBtn) {
-        state.mergeBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-        setTimeout(() => state.mergeBtn.click(), 400);
-      }
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const freshState = DevHub.GitHubState.getPRState();
+      this._populateDropdown(dropdown, freshState);
+      dropdown.hidden = !dropdown.hidden;
     });
 
-    return btn;
+    document.addEventListener("click", () => { dropdown.hidden = true; });
+
+    wrapper.appendChild(btn);
+    wrapper.appendChild(dropdown);
+    return wrapper;
+  },
+
+  /**
+   * Fill dropdown with actions based on current PR state.
+   * @param {HTMLElement} dropdown
+   * @param {object} state
+   */
+  _populateDropdown(dropdown, state) {
+    dropdown.innerHTML = "";
+
+    if (state.isDraft) {
+      dropdown.appendChild(this._item(
+        "Publish PR",
+        "Mark as ready for review",
+        () => {
+          const readyBtn =
+            DevHub.Utils.findButtonByText("Ready for review") ||
+            DevHub.Utils.findButtonByPrefix("Ready for review");
+          if (readyBtn) {
+            readyBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+            setTimeout(() => readyBtn.click(), 400);
+          }
+        }
+      ));
+      return;
+    }
+
+    // Open PR actions
+    dropdown.appendChild(this._item(
+      "Convert to draft",
+      "Move this PR back to draft",
+      () => {
+        const isOwn = (el) => DevHub.Utils.isDevHubElement(el);
+        const el =
+          document.querySelector('a[href*="convert_to_draft"]') ||
+          Array.from(document.querySelectorAll("button"))
+            .find((b) => !isOwn(b) && b.textContent.trim().includes("Convert to draft")) ||
+          Array.from(document.querySelectorAll("a"))
+            .find((a) => !isOwn(a) && a.textContent.trim().includes("Convert to draft"));
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => el.click(), 400);
+        }
+      }
+    ));
+
+    const canMerge = state.mergeEnabled && !state.hasConflicts;
+    dropdown.appendChild(this._item(
+      "Squash and merge",
+      canMerge ? "Squash commits and merge into base" : "Merge is not available yet",
+      () => {
+        if (!canMerge) return;
+        const mergeBtn =
+          DevHub.Utils.findButtonByPrefix("Squash and merge") ||
+          DevHub.Utils.findButtonByPrefix("Merge pull request") ||
+          DevHub.Utils.findButtonByPrefix("Rebase and merge");
+        if (mergeBtn) {
+          mergeBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => mergeBtn.click(), 400);
+        }
+      },
+      !canMerge
+    ));
+  },
+
+  /**
+   * Create a single dropdown item.
+   * @param {string} label
+   * @param {string} desc
+   * @param {Function} onClick
+   * @param {boolean} [disabled]
+   * @returns {HTMLButtonElement}
+   */
+  _item(label, desc, onClick, disabled = false) {
+    const item = document.createElement("button");
+    item.className = "devhub-dropdown-item";
+    if (disabled) item.classList.add("devhub-dropdown-item--disabled");
+    item.innerHTML =
+      `<span class="devhub-dropdown-item-label">${label}</span>` +
+      `<span class="devhub-dropdown-item-desc">${desc}</span>`;
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (disabled) return;
+      e.target.closest(".devhub-dropdown").hidden = true;
+      onClick();
+    });
+    return item;
   },
 };

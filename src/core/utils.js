@@ -43,22 +43,31 @@ DevHub.Utils = {
   },
 
   /**
-   * Find a button by its exact trimmed text content.
+   * Check if an element is inside the DevHub-injected UI.
+   * @param {Element} el
+   * @returns {boolean}
+   */
+  isDevHubElement(el) {
+    return !!el.closest(`[${DevHub.INJECTED_ATTR}]`);
+  },
+
+  /**
+   * Find a button by its exact trimmed text content (excludes DevHub UI).
    * @param {string} text - Exact text to match
    * @returns {Element|null}
    */
   findButtonByText(text) {
     return Array.from(document.querySelectorAll("button"))
-      .find((b) => b.textContent.trim() === text) || null;
+      .find((b) => !this.isDevHubElement(b) && b.textContent.trim() === text) || null;
   },
 
   /**
-   * Find a button whose text starts with the given prefix.
+   * Find a button whose text starts with the given prefix (excludes DevHub UI).
    * @param {string} prefix
    * @returns {Element|null}
    */
   findButtonByPrefix(prefix) {
     return Array.from(document.querySelectorAll("button"))
-      .find((b) => b.textContent.trim().startsWith(prefix)) || null;
+      .find((b) => !this.isDevHubElement(b) && b.textContent.trim().startsWith(prefix)) || null;
   },
 };
