@@ -8,7 +8,16 @@
       "mcp__chrome-devtools__evaluate_script",
       "mcp__chrome-devtools__click",
       "Bash(python:*)",
-      "mcp__chrome-devtools__select_page"
+      "mcp__chrome-devtools__select_page",
+      "WebSearch",
+      "mcp__chrome-devtools__navigate_page",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(ls -la \"D:\\\\Project\\\\Git-dev\\\\src\\\\features\"\" && ls -la \"D:ProjectGit-devsrcmodules\"\")",
+      "Bash(gh pr view:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(powershell:*)"
     ]
   }
 }

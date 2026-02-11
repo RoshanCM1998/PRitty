@@ -40,15 +40,29 @@
       .then(() => inject())
       .catch((err) => console.warn("[DevHub]", err.message));
 
+    // Reorder conversation timeline
+    DevHub.Utils
+      .waitForElement(".js-discussion")
+      .then(() => DevHub.TimelineReorder.apply())
+      .catch((err) => console.warn("[DevHub]", err.message));
+
     // Re-inject after GitHub's SPA (Turbo) navigation
     const observer = new MutationObserver(() => {
       if (!window.location.pathname.match(/\/pull\/\d+/)) return;
-      if (document.querySelector(`[${ATTR}]`)) return;
 
-      const target =
-        document.querySelector(SEL.HEADER_ACTIONS) ||
-        document.querySelector(SEL.PAGE_HEADER);
-      if (target) inject();
+      // Re-inject header actions if removed
+      if (!document.querySelector(`[${ATTR}]`)) {
+        const target =
+          document.querySelector(SEL.HEADER_ACTIONS) ||
+          document.querySelector(SEL.PAGE_HEADER);
+        if (target) inject();
+      }
+
+      // Re-apply timeline reorder if undone
+      const discussion = document.querySelector(".js-discussion");
+      if (discussion && !discussion.hasAttribute(DevHub.TimelineReorder.REORDERED_ATTR)) {
+        DevHub.TimelineReorder.apply();
+      }
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
