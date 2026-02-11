@@ -14,7 +14,6 @@ DevHub.HeaderActions = {
     container.className = "devhub-actions";
     container.setAttribute(DevHub.INJECTED_ATTR, "true");
 
-    container.appendChild(DevHub.ChecksBadge.create());
     container.appendChild(DevHub.CompleteButton.create());
     container.appendChild(DevHub.ReviewButton.create());
 

@@ -3,10 +3,18 @@
    ============================================ */
 
 .devhub-actions {
+  position: fixed;
+  top: 36px;
+  right: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: 8px;
+  z-index: 999;
+  padding: 6px 12px;
+  background: rgba(22, 27, 34, 0.75);
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
 }
 
