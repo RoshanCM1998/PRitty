@@ -46,6 +46,9 @@
       .then(() => DevHub.TimelineReorder.apply())
       .catch((err) => console.warn("[DevHub]", err.message));
 
+    // Scroll to top button
+    DevHub.ScrollTop.create();
+
     // Re-inject after GitHub's SPA (Turbo) navigation
     const observer = new MutationObserver(() => {
       if (!window.location.pathname.match(/\/pull\/\d+/)) return;

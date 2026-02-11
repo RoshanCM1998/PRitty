@@ -73,24 +73,6 @@ DevHub.CompleteButton = {
     }
 
     // Open PR actions
-    dropdown.appendChild(this._item(
-      "Convert to draft",
-      "Move this PR back to draft",
-      () => {
-        const isOwn = (el) => DevHub.Utils.isDevHubElement(el);
-        const el =
-          document.querySelector('a[href*="convert_to_draft"]') ||
-          Array.from(document.querySelectorAll("button"))
-            .find((b) => !isOwn(b) && b.textContent.trim().includes("Convert to draft")) ||
-          Array.from(document.querySelectorAll("a"))
-            .find((a) => !isOwn(a) && a.textContent.trim().includes("Convert to draft"));
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "center" });
-          setTimeout(() => el.click(), 400);
-        }
-      }
-    ));
-
     const canMerge = state.mergeEnabled && !state.hasConflicts;
     dropdown.appendChild(this._item(
       "Squash and merge",
@@ -107,6 +89,24 @@ DevHub.CompleteButton = {
         }
       },
       !canMerge
+    ));
+
+    dropdown.appendChild(this._item(
+      "Convert to draft",
+      "Move this PR back to draft",
+      () => {
+        const isOwn = (el) => DevHub.Utils.isDevHubElement(el);
+        const el =
+          document.querySelector('a[href*="convert_to_draft"]') ||
+          Array.from(document.querySelectorAll("button"))
+            .find((b) => !isOwn(b) && b.textContent.trim().includes("Convert to draft")) ||
+          Array.from(document.querySelectorAll("a"))
+            .find((a) => !isOwn(a) && a.textContent.trim().includes("Convert to draft"));
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => el.click(), 400);
+        }
+      }
     ));
   },
 

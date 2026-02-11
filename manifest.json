@@ -16,6 +16,7 @@
         "src/modules/complete-button.js",
         "src/modules/review-button.js",
         "src/modules/timeline-reorder.js",
+        "src/modules/scroll-top.js",
         "src/features/header-actions.js",
         "src/content.js"
       ],
