@@ -12,21 +12,11 @@ DevHub.CompleteButton = {
    * @returns {HTMLElement}
    */
   create() {
-    const prState = DevHub.GitHubState.getPRState();
-
     const wrapper = document.createElement("div");
     wrapper.className = "devhub-complete-wrapper";
 
     const btn = document.createElement("button");
     btn.className = "devhub-btn devhub-btn-complete";
-
-    if (prState.isMerged || prState.isClosed) {
-      btn.innerHTML = `${DevHub.Icons.merge} ${prState.isMerged ? "Merged" : "Closed"}`;
-      btn.disabled = true;
-      wrapper.appendChild(btn);
-      return wrapper;
-    }
-
     btn.innerHTML = `${DevHub.Icons.merge} PR Actions`;
 
     const dropdown = document.createElement("div");
@@ -54,6 +44,16 @@ DevHub.CompleteButton = {
    */
   _populateDropdown(dropdown, state) {
     dropdown.innerHTML = "";
+
+    if (state.isMerged || state.isClosed) {
+      dropdown.appendChild(this._item(
+        state.isMerged ? "Merged" : "Closed",
+        "No actions available",
+        () => {},
+        true
+      ));
+      return;
+    }
 
     if (state.isDraft) {
       dropdown.appendChild(this._item(

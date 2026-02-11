@@ -23,13 +23,6 @@ DevHub.TimelineReorder = {
     if (mergeActions) prBody.after(mergeActions);
     if (commentBox) (mergeActions || prBody).after(commentBox);
 
-    // COmmented as not working because actual block load letter and below code usless
-    // Strip GitHub utility classes that override our CSS
-    // const mergePartial = document.querySelector('[data-testid="mergebox-partial"]');
-    // if (mergePartial) mergePartial.classList.remove("pr-ml-md-6", "pr-pl-md-3");
-    // const iconWrap = document.querySelector('[data-testid="mergeability-icon-wrapper"]');
-    // if (iconWrap) iconWrap.classList.remove("d-lg-block");
-
     // Reverse timeline items (newest first)
     const items = [
       ...discussion.querySelectorAll(":scope > .js-timeline-item"),
