@@ -12,7 +12,6 @@
         "src/core/icons.js",
         "src/core/utils.js",
         "src/modules/github-state.js",
-        "src/modules/checks-badge.js",
         "src/modules/complete-button.js",
         "src/modules/review-button.js",
         "src/modules/timeline-reorder.js",
@@ -22,7 +21,6 @@
       ],
       "css": [
         "styles/base.css",
-        "styles/checks-badge.css",
         "styles/buttons.css"
       ],
       "run_at": "document_idle"
