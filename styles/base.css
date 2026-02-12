@@ -64,6 +64,10 @@
             Conversation Tab
    ============================================ */
 
+.new-discussion-timeline, .js-check-all-container {
+  max-width: 100% !important;
+}
+
 /*
 #discussion_bucket {
   .Layout-main {
@@ -106,6 +110,10 @@
 /* ============================================
             Commites Tab
    ============================================ */
+
+#diff-comparison-viewer-container {
+  max-width: 100% !important;
+}
 
 [data-testid="commits-list"] > div {
   flex-direction: column-reverse;
