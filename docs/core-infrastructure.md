@@ -21,8 +21,8 @@ DevHub.Selectors = {
   PAGE_HEADER:        "#partial-discussion-header",
   HEADER_ACTIONS:     ".gh-header-actions",
   STATE_LABEL:        'span.State[data-view-component="true"]',
-  TAB:                '[role="tab"]',
-  SELECTED_TAB:       '[role="tab"][aria-selected="true"]',
+  TAB:                'nav[aria-label*="Pull request"] [role="tab"], nav[aria-label*="Pull request"] a.tabnav-tab',
+  SELECTED_TAB:       'nav[aria-label*="Pull request"] [role="tab"][aria-selected="true"], nav[aria-label*="Pull request"] a.tabnav-tab.selected',
   CONFLICT_INDICATOR: '[class*="conflict"], [aria-label*="conflict"]',
 };
 ```
@@ -148,7 +148,7 @@ DevHub.GitHubState.getCurrentTab();
 // → "conversation" | "commits" | "checks" | "files"
 ```
 
-Reads the `[role="tab"][aria-selected="true"]` element text. Defaults to `"conversation"`.
+Reads the selected PR tab element text (supports both `role="tab"` and `a.tabnav-tab.selected` variants). Defaults to `"conversation"`.
 
 ---
 

@@ -14,9 +14,9 @@ DevHub.Selectors = {
   HEADER_ACTIONS: ".gh-header-actions",
   STATE_LABEL: 'span.State[data-view-component="true"]',
 
-  // Tabs
-  TAB: '[role="tab"]',
-  SELECTED_TAB: '[role="tab"][aria-selected="true"]',
+  // Tabs (two selectors: Primer React role="tab" on Files Changed, ViewComponent a.tabnav-tab on other tabs)
+  TAB: 'nav[aria-label*="Pull request"] [role="tab"], nav[aria-label*="Pull request"] a.tabnav-tab',
+  SELECTED_TAB: 'nav[aria-label*="Pull request"] [role="tab"][aria-selected="true"], nav[aria-label*="Pull request"] a.tabnav-tab.selected',
 
   // Merge / conflicts
   CONFLICT_INDICATOR: '[class*="conflict"], [aria-label*="conflict"]',
