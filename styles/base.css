@@ -44,6 +44,41 @@
 }
 
 
+.devhub-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+}
+
+/* ============================================
+            Conversation Tab
+   ============================================ */
+
+/*
+#discussion_bucket {
+  .Layout-main {
+    & > div {
+      display: flex;
+      flex-direction: column-reverse;
+
+      .js-discussion {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+    }
+  }
+}*/
+
 .discussion-timeline-actions {
   margin-left: -56px;
   border-top: none !important;
@@ -67,23 +102,6 @@
 [data-channel-event-name="reviewers_updated"] > form > span {
   font-size: 1.25rem !important;
 }
-
-.devhub-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 20px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  transition: background-color 0.15s ease, opacity 0.15s ease;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
-}
-
 
 /* ============================================
             Commites Tab

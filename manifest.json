@@ -12,11 +12,11 @@
         "src/core/icons.js",
         "src/core/utils.js",
         "src/modules/github-state.js",
-        "src/modules/complete-button.js",
-        "src/modules/review-button.js",
+        "src/features/action-buttons-bar/pr-actions-button.js",
+        "src/features/action-buttons-bar/review-button.js",
         "src/modules/timeline-reorder.js",
         "src/modules/scroll-top.js",
-        "src/features/header-actions.js",
+        "src/features/action-buttons-bar/header-actions.js",
         "src/content.js"
       ],
       "css": [

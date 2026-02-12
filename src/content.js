@@ -24,12 +24,6 @@
     // Try immediate injection; MutationObserver retries if targets aren't ready
     inject();
 
-    // Reorder conversation timeline
-    DevHub.Utils
-      .waitForElement(".js-discussion")
-      .then(() => DevHub.TimelineReorder.apply())
-      .catch((err) => console.warn("[DevHub]", err.message));
-
     // Scroll to top button
     DevHub.ScrollTop.create();
 
