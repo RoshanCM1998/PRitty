@@ -18,16 +18,16 @@ DevHub.INJECTED_ATTR = "data-devhub-injected";
 
 // Centralized GitHub DOM selectors
 DevHub.Selectors = {
-  PAGE_HEADER:        ".prc-PageHeader-PageHeader-YLwBQ",
-  HEADER_ACTIONS:     '[data-component="PH_Actions"]',
-  STATE_LABEL:        ".prc-StateLabel-StateLabel-Iawzp",
+  PAGE_HEADER:        "#partial-discussion-header",
+  HEADER_ACTIONS:     ".gh-header-actions",
+  STATE_LABEL:        'span.State[data-view-component="true"]',
   TAB:                '[role="tab"]',
   SELECTED_TAB:       '[role="tab"][aria-selected="true"]',
   CONFLICT_INDICATOR: '[class*="conflict"], [aria-label*="conflict"]',
 };
 ```
 
-**Why centralized selectors?** GitHub uses generated class names (e.g., `prc-PageHeader-PageHeader-YLwBQ`). If GitHub changes these, you only need to update one file.
+**Why centralized selectors?** GitHub frequently changes DOM structure and class names. Centralizing selectors means you only need to update one file when this happens.
 
 ---
 
@@ -133,8 +133,8 @@ const state = DevHub.GitHubState.getPRState();
 ```
 
 **Detection logic:**
-- Reads `.prc-StateLabel-StateLabel-Iawzp` element
-- Checks `data-status` attribute (`pullDraft`, `pullMerged`, `pullClosed`) with text fallback
+- Reads `span.State[data-view-component="true"]` element
+- Checks `reviewable_state` attribute for draft, CSS class modifiers (`State--merged`, `State--closed`), `title` attribute, and `textContent` as fallbacks
 - Scans for conflict indicators via `CONFLICT_INDICATOR` selector
 - Searches for merge button by prefix: "Merge pull request", "Squash and merge", "Rebase and merge"
 - `mergeEnabled` = merge button exists AND is not disabled

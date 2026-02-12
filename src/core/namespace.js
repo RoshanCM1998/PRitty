@@ -10,9 +10,9 @@ DevHub.INJECTED_ATTR = "data-devhub-injected";
 /** GitHub DOM selectors used across modules */
 DevHub.Selectors = {
   // PR header
-  PAGE_HEADER: ".prc-PageHeader-PageHeader-YLwBQ",
-  HEADER_ACTIONS: '[data-component="PH_Actions"]',
-  STATE_LABEL: ".prc-StateLabel-StateLabel-Iawzp",
+  PAGE_HEADER: "#partial-discussion-header",
+  HEADER_ACTIONS: ".gh-header-actions",
+  STATE_LABEL: 'span.State[data-view-component="true"]',
 
   // Tabs
   TAB: '[role="tab"]',
