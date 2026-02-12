@@ -105,6 +105,11 @@
 
 [data-channel-event-name="reviewers_updated"] > form > span {
   font-size: 1.25rem !important;
+
+  svg {
+    width: 1.5rem !important;
+    height: 1.25rem !important;
+  }
 }
 
 /* ============================================
