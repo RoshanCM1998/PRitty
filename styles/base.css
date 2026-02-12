@@ -83,3 +83,37 @@
   transition: background-color 0.15s ease, opacity 0.15s ease;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
 }
+
+
+/* ============================================
+            Commites Tab
+   ============================================ */
+
+[data-testid="commits-list"] > div {
+  flex-direction: column-reverse;
+
+  ul {
+    display: flex;
+    flex-direction: column-reverse;
+
+    li {
+      border-bottom: var(--borderWidth-thin) solid var(--borderColor-muted);
+    }
+  }
+}
+
+/* ============================================
+            Files Changes Tab
+   ============================================ */
+
+/*Select commits to view*/
+ul[aria-label="Select a range of commits"] {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/*Select commits to view Fallback*/
+ul.prc-ActionList-GroupList-V5B3- {
+  display: flex;
+  flex-direction: column-reverse; 
+}
