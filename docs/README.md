@@ -17,6 +17,7 @@ DevHub brings Azure DevOps-style pull request experience to GitHub — quick act
 | 3 | [**Conversation Tab Changes**](#3-conversation-tab-changes) | `src/modules/timeline-reorder.js`, `styles/base.css` | [conversation-tab.md](./conversation-tab.md) |
 | 4 | [**Commits Tab Changes**](#4-commits-tab-changes) | `styles/base.css` | Inline below |
 | 5 | [**Files Changed Tab Changes**](#5-files-changed-tab-changes) | `styles/base.css` | Inline below |
+| 6 | [**File Tree Enhancements**](#6-file-tree-enhancements) | `src/features/file-tree-enhancements/` | [file-tree-enhancements.md](./file-tree-enhancements.md) |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -120,6 +121,21 @@ Two selectors for resilience: `aria-label` is stable and semantic, the class-bas
 
 No JS involved — pure CSS.
 
+See also: [File Tree Enhancements](#6-file-tree-enhancements) for JS-based enhancements to the file tree sidebar.
+
+---
+
+### 6. File Tree Enhancements
+
+Two JS-based enhancements for the file tree sidebar in the Files Changed tab:
+
+- **Viewed checkboxes** — each file and folder in the tree gets a checkbox that syncs bidirectionally with GitHub's native "Viewed" buttons
+- **Enhanced file click** — clicking a file auto-expands collapsed diffs and reveals full file content
+
+**Code:** `src/features/file-tree-enhancements/file-tree-enhancements.js`, `styles/base.css`
+
+**Detailed docs:** [file-tree-enhancements.md](./file-tree-enhancements.md)
+
 ---
 
 ## Core Infrastructure
@@ -150,10 +166,12 @@ manifest.json                          ← Extension config, load order, URL mat
 │   │   ├── timeline-reorder.js        ← JS timeline reversal (Feature 3)
 │   │   └── scroll-top.js             ← Scroll-to-top button (Feature 2)
 │   ├── features/
-│   │   └── action-buttons-bar/        ← Feature 1 (dedicated folder)
-│   │       ├── pr-actions-button.js   ← PR Actions dropdown
-│   │       ├── review-button.js       ← Submit Review button
-│   │       └── header-actions.js      ← Assembles the floating bar
+│   │   ├── action-buttons-bar/        ← Feature 1 (dedicated folder)
+│   │   │   ├── pr-actions-button.js   ← PR Actions dropdown
+│   │   │   ├── review-button.js       ← Submit Review button
+│   │   │   └── header-actions.js      ← Assembles the floating bar
+│   │   └── file-tree-enhancements/    ← Feature 6 (dedicated folder)
+│   │       └── file-tree-enhancements.js ← Viewed checkboxes + enhanced file click
 │   └── content.js                     ← Entry point, lifecycle manager
 ├── styles/
 │   ├── base.css                       ← Layout + Conversation/Commits/Files tab CSS (Features 2-5)
@@ -169,8 +187,9 @@ Injected at `document_idle` in this exact sequence:
 2. `github-state.js` (state reader)
 3. `pr-actions-button.js` → `review-button.js` (action bar modules)
 4. `timeline-reorder.js` → `scroll-top.js` (other modules)
-5. `header-actions.js` (feature assembly)
-6. `content.js` (bootstrap)
+5. `file-tree-enhancements.js` (file tree features)
+6. `header-actions.js` (feature assembly)
+7. `content.js` (bootstrap)
 
 CSS (`base.css`, `buttons.css`) is injected before any JS runs.
 

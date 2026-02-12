@@ -24,6 +24,17 @@ DevHub.Selectors = {
   TAB:                'nav[aria-label*="Pull request"] [role="tab"], nav[aria-label*="Pull request"] a.tabnav-tab',
   SELECTED_TAB:       'nav[aria-label*="Pull request"] [role="tab"][aria-selected="true"], nav[aria-label*="Pull request"] a.tabnav-tab.selected',
   CONFLICT_INDICATOR: '[class*="conflict"], [aria-label*="conflict"]',
+
+  // File tree sidebar (Files Changed tab)
+  FILE_TREE_SIDEBAR:      '#pr-file-tree',
+  FILE_TREE_ROOT:         '#pr-file-tree ul[role="tree"]',
+  FILE_TREE_ITEM:         '#pr-file-tree li[role="treeitem"]',
+  FILE_TREE_ITEM_CONTENT: '.PRIVATE_TreeView-item-content',
+
+  // Diff containers
+  DIFF_FILE_HEADER:       '[class*="DiffFileHeader-module__diff-file-header"]',
+  DIFF_EXPAND_ALL_BTN:    '.js-expand-all-difflines-button',
+  DIFF_VIEWED_BTN:        'button[class*="MarkAsViewedButton-module"]',
 };
 ```
 
@@ -211,6 +222,12 @@ function init() {
     if (discussion && !discussion.hasAttribute(DevHub.TimelineReorder.REORDERED_ATTR)) {
       DevHub.TimelineReorder.apply();
     }
+
+    // File tree enhancements (Files Changed tab)
+    const fileTree = document.querySelector(DevHub.Selectors.FILE_TREE_SIDEBAR);
+    if (fileTree && !fileTree.hasAttribute('data-devhub-tree-enhanced')) {
+      DevHub.FileTreeEnhancements.init();
+    }
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
@@ -243,8 +260,9 @@ pr-actions-button.js ◄────────┤◄───────┤�
 review-button.js     ◄────────┤◄───────┤◄──────┘
 timeline-reorder.js (standalone — reads DOM directly)
 scroll-top.js       (standalone — uses only INJECTED_ATTR)
+file-tree-enhancements.js (standalone — uses Selectors, reads DOM + embedded JSON)
   ↓
 header-actions.js ◄── pr-actions-button, review-button
   ↓
-content.js ◄── header-actions, scroll-top, timeline-reorder
+content.js ◄── header-actions, scroll-top, timeline-reorder, file-tree-enhancements
 ```

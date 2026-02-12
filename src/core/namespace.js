@@ -20,4 +20,15 @@ DevHub.Selectors = {
 
   // Merge / conflicts
   CONFLICT_INDICATOR: '[class*="conflict"], [aria-label*="conflict"]',
+
+  // File tree sidebar (Files Changed tab)
+  FILE_TREE_SIDEBAR:      '#pr-file-tree',
+  FILE_TREE_ROOT:         '#pr-file-tree ul[role="tree"]',
+  FILE_TREE_ITEM:         '#pr-file-tree li[role="treeitem"]',
+  FILE_TREE_ITEM_CONTENT: '.PRIVATE_TreeView-item-content',
+
+  // Diff containers
+  DIFF_FILE_HEADER:       '[class*="DiffFileHeader-module__diff-file-header"]',
+  DIFF_EXPAND_ALL_BTN:    '.js-expand-all-difflines-button',
+  DIFF_VIEWED_BTN:        'button[class*="MarkAsViewedButton-module"]',
 };

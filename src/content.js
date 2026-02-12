@@ -41,6 +41,12 @@
       if (discussion && !discussion.hasAttribute(DevHub.TimelineReorder.REORDERED_ATTR)) {
         DevHub.TimelineReorder.apply();
       }
+
+      // File tree enhancements (Files Changed tab)
+      const fileTree = document.querySelector(DevHub.Selectors.FILE_TREE_SIDEBAR);
+      if (fileTree && !fileTree.hasAttribute('data-devhub-tree-enhanced')) {
+        DevHub.FileTreeEnhancements.init();
+      }
     });
 
     observer.observe(document.body, { childList: true, subtree: true });

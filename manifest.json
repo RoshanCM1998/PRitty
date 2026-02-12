@@ -16,6 +16,7 @@
         "src/features/action-buttons-bar/review-button.js",
         "src/modules/timeline-reorder.js",
         "src/modules/scroll-top.js",
+        "src/features/file-tree-enhancements/file-tree-enhancements.js",
         "src/features/action-buttons-bar/header-actions.js",
         "src/content.js"
       ],

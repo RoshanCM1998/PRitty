@@ -137,6 +137,16 @@
             Files Changes Tab
    ============================================ */
 
+/* === File Tree Enhancements === */
+.devhub-tree-checkbox {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: var(--fgColor-accent, #1f6feb);
+}
+
 /*Select commits to view*/
 ul[aria-label="Select a range of commits"] {
   display: flex;
