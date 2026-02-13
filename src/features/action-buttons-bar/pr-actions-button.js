@@ -64,8 +64,7 @@ PRitty.CompleteButton = {
             PRitty.Utils.findButtonByText("Ready for review") ||
             PRitty.Utils.findButtonByPrefix("Ready for review");
           if (readyBtn) {
-            readyBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-            setTimeout(() => readyBtn.click(), 400);
+            PRitty.Utils.scrollAndClick(readyBtn);
           }
         }
       ));
@@ -84,8 +83,7 @@ PRitty.CompleteButton = {
           PRitty.Utils.findButtonByPrefix("Merge pull request") ||
           PRitty.Utils.findButtonByPrefix("Rebase and merge");
         if (mergeBtn) {
-          mergeBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-          setTimeout(() => mergeBtn.click(), 400);
+          PRitty.Utils.scrollAndClick(mergeBtn);
         }
       },
       !canMerge
@@ -103,8 +101,7 @@ PRitty.CompleteButton = {
           Array.from(document.querySelectorAll("a"))
             .find((a) => !isOwn(a) && a.textContent.trim().includes("Convert to draft"));
         if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "center" });
-          setTimeout(() => el.click(), 400);
+          PRitty.Utils.scrollAndClick(el);
         }
       }
     ));

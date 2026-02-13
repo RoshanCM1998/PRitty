@@ -438,13 +438,21 @@ PRitty.FileTreeEnhancements = (() => {
         }
       }
 
-      // 2b — Expand all lines after a short delay for render
-      setTimeout(() => {
-        const expandAllBtn = diffContainer.querySelector(
-          SEL.DIFF_EXPAND_ALL_BTN
-        );
-        if (expandAllBtn) expandAllBtn.click();
-      }, 300);
+      // 2b — Expand all lines (wait for button to appear if diff was just expanded)
+      const expandAllBtn = diffContainer.querySelector(SEL.DIFF_EXPAND_ALL_BTN);
+      if (expandAllBtn) {
+        expandAllBtn.click();
+      } else {
+        const obs = new MutationObserver(() => {
+          const btn = diffContainer.querySelector(SEL.DIFF_EXPAND_ALL_BTN);
+          if (btn) {
+            obs.disconnect();
+            btn.click();
+          }
+        });
+        obs.observe(diffContainer, { childList: true, subtree: true });
+        setTimeout(() => obs.disconnect(), 3000); // safety timeout
+      }
     });
   }
 
