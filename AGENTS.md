@@ -124,11 +124,8 @@ Then add the file path to `manifest.json` in the correct load order position.
 const btn = PRitty.Utils.findButtonByText("Button text");
 // or: PRitty.Utils.findButtonByPrefix("Button prefix");
 
-// 2. Scroll into view
-btn.scrollIntoView({ behavior: "smooth", block: "center" });
-
-// 3. Click after delay (let scroll complete)
-setTimeout(() => btn.click(), 400);
+// 2. Scroll into view and click (instant scroll, no delays)
+PRitty.Utils.scrollAndClick(btn);
 ```
 
 ### Adding GitHub DOM Selectors

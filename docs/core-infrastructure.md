@@ -109,6 +109,14 @@ PRitty.Utils.findButtonByPrefix("Squash and merge");
 
 Both scan all `<button>` elements on the page and filter out PRitty UI via `isPRittyElement()`.
 
+### `scrollAndClick(el)`
+
+Scroll an element into view (instant) and click it immediately. Used by action buttons to trigger native GitHub buttons:
+
+```js
+PRitty.Utils.scrollAndClick(mergeBtn);
+```
+
 ---
 
 ## GitHub State Reader (`src/modules/github-state.js`)

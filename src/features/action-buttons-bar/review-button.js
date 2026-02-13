@@ -23,7 +23,16 @@ PRitty.ReviewButton = {
         const filesTab = PRitty.Utils.findTab("Files changed");
         if (filesTab) {
           filesTab.click();
-          setTimeout(() => PRitty.ReviewButton._clickNative(), 1500);
+          // Wait for the "Submit review" button to appear after tab switch
+          const obs = new MutationObserver(() => {
+            const native = PRitty.Utils.findButtonByText("Submit review");
+            if (native) {
+              obs.disconnect();
+              PRitty.ReviewButton._clickNative();
+            }
+          });
+          obs.observe(document.body, { childList: true, subtree: true });
+          setTimeout(() => obs.disconnect(), 10000); // safety timeout
         }
       }
     });
@@ -35,8 +44,7 @@ PRitty.ReviewButton = {
   _clickNative() {
     const native = PRitty.Utils.findButtonByText("Submit review");
     if (native) {
-      native.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => native.click(), 300);
+      PRitty.Utils.scrollAndClick(native);
     }
   },
 };

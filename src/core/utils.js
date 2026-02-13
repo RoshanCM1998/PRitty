@@ -70,4 +70,14 @@ PRitty.Utils = {
     return Array.from(document.querySelectorAll("button"))
       .find((b) => !this.isPRittyElement(b) && b.textContent.trim().startsWith(prefix)) || null;
   },
+
+  /**
+   * Scroll an element into view and click it immediately.
+   * Uses instant scroll — no timing delays needed.
+   * @param {Element} el - The element to scroll to and click
+   */
+  scrollAndClick(el) {
+    el.scrollIntoView({ block: "center" });
+    el.click();
+  },
 };

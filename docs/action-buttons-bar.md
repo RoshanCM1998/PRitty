@@ -64,16 +64,16 @@ Each action locates the **native GitHub button** and clicks it:
 
 **Publish PR (Draft):**
 - Finds `"Ready for review"` button via `findButtonByText()` / `findButtonByPrefix()`
-- Scrolls into view, clicks after 400ms delay
+- Uses `scrollAndClick()` — instant scroll + immediate click
 
 **Squash and Merge (Open):**
 - Tries in order: `"Squash and merge"` → `"Merge pull request"` → `"Rebase and merge"`
 - Only enabled when `mergeEnabled && !hasConflicts`
-- Scrolls into view, clicks after 400ms delay
+- Uses `scrollAndClick()` — instant scroll + immediate click
 
 **Convert to Draft (Open):**
 - Searches: `a[href*="convert_to_draft"]` → buttons with "Convert to draft" text → anchors with same text
-- Scrolls into view, clicks after 400ms delay
+- Uses `scrollAndClick()` — instant scroll + immediate click
 
 ### Dropdown Item Factory (`_item()`)
 
@@ -106,13 +106,13 @@ Check current tab via GitHubState.getCurrentTab()
   ├── Already on "files" → _clickNative() immediately
   └── Other tab:
         1. Click "Files changed" tab
-        2. Wait 1500ms for content to load
+        2. MutationObserver waits for "Submit review" button to appear
         3. Call _clickNative()
 ```
 
 ### `_clickNative()`
 
-Finds GitHub's native `"Submit review"` button, scrolls into view, clicks after 300ms.
+Finds GitHub's native `"Submit review"` button and uses `scrollAndClick()` (instant scroll + immediate click).
 
 ---
 
