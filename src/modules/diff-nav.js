@@ -7,7 +7,7 @@ PRitty.DiffNav = {
   ENHANCED_ATTR: "data-pritty-diff-nav",
 
   /** Toolbar offset to account for sticky header when scrolling. */
-  _TOOLBAR_OFFSET: 80,
+  _TOOLBAR_OFFSET: 150,
 
   /**
    * Initialize: inject nav buttons into the PR Files toolbar.

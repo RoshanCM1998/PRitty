@@ -3,6 +3,8 @@
  * Dropdown button with context-aware actions:
  *   Draft PR  → Publish PR
  *   Open PR   → Convert to draft, Squash and merge
+ *   Closed PR → Reopen PR
+ *   Merged PR → Disabled (no actions)
  */
 
 PRitty.CompleteButton = {
@@ -26,15 +28,31 @@ PRitty.CompleteButton = {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       const freshState = PRitty.GitHubState.getPRState();
+      this._updateButtonState(btn, freshState);
+      if (freshState.isMerged) return;
       this._populateDropdown(dropdown, freshState);
       dropdown.hidden = !dropdown.hidden;
     });
 
     document.addEventListener("click", () => { dropdown.hidden = true; });
 
+    // Set initial button state
+    const initialState = PRitty.GitHubState.getPRState();
+    this._updateButtonState(btn, initialState);
+
     wrapper.appendChild(btn);
     wrapper.appendChild(dropdown);
     return wrapper;
+  },
+
+  /**
+   * Update button appearance based on PR state.
+   * @param {HTMLElement} btn
+   * @param {object} state
+   */
+  _updateButtonState(btn, state) {
+    btn.classList.toggle("pritty-btn-complete--merged", state.isMerged);
+    btn.disabled = state.isMerged;
   },
 
   /**
@@ -45,12 +63,18 @@ PRitty.CompleteButton = {
   _populateDropdown(dropdown, state) {
     dropdown.innerHTML = "";
 
-    if (state.isMerged || state.isClosed) {
+    if (state.isClosed) {
       dropdown.appendChild(this._item(
-        state.isMerged ? "Merged" : "Closed",
-        "No actions available",
-        () => {},
-        true
+        "Reopen PR",
+        "Reopen this pull request",
+        () => {
+          const reopenBtn =
+            PRitty.Utils.findButtonByText("Reopen pull request") ||
+            PRitty.Utils.findButtonByPrefix("Reopen");
+          if (reopenBtn) {
+            PRitty.Utils.scrollAndClick(reopenBtn);
+          }
+        }
       ));
       return;
     }
