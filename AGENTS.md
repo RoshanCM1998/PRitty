@@ -18,6 +18,7 @@ Before writing any code, complete these steps in order:
 | Commits tab | `docs/README.md` (#4) | `styles/base.css` (Commits Tab section) |
 | Files Changed tab | `docs/README.md` (#5) | `styles/base.css` (Files Changes Tab section) |
 | File Tree Enhancements | `docs/file-tree-enhancements.md` | `src/features/file-tree-enhancements/file-tree-enhancements.js` |
+| Diff Navigation | `docs/README.md` (#7) | `src/modules/diff-nav.js`, `styles/base.css` |
 | Namespace / selectors | `docs/core-infrastructure.md` | `src/core/namespace.js` |
 | Utils | `docs/core-infrastructure.md` | `src/core/utils.js` |
 | Icons | `docs/core-infrastructure.md` | `src/core/icons.js` |

@@ -47,6 +47,12 @@
       if (fileTree && !fileTree.hasAttribute('data-pritty-tree-enhanced')) {
         PRitty.FileTreeEnhancements.init();
       }
+
+      // Diff navigation buttons (Files Changed tab toolbar)
+      const filesToolbar = document.querySelector(PRitty.Selectors.PR_FILES_TOOLBAR);
+      if (filesToolbar && !filesToolbar.hasAttribute(PRitty.DiffNav.ENHANCED_ATTR)) {
+        PRitty.DiffNav.init();
+      }
     });
 
     observer.observe(document.body, { childList: true, subtree: true });

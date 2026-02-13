@@ -148,6 +148,39 @@
   accent-color: var(--fgColor-accent, #1f6feb);
 }
 
+/* === Diff Navigation Buttons === */
+.pritty-diff-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 4px;
+}
+
+.pritty-diff-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--borderColor-default, #30363d);
+  border-radius: 6px;
+  background: var(--bgColor-default, transparent);
+  color: var(--fgColor-muted, #9198a1);
+  cursor: pointer;
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.pritty-diff-nav-btn:hover {
+  background: var(--bgColor-muted, rgba(177, 186, 196, 0.12));
+  color: var(--fgColor-default, #e6edf3);
+}
+
+.pritty-diff-nav-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
 /*Select commits to view*/
 ul[aria-label="Select a range of commits"] {
   display: flex;

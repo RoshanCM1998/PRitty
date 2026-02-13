@@ -18,6 +18,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 4 | [**Commits Tab Changes**](#4-commits-tab-changes) | `styles/base.css` | Inline below |
 | 5 | [**Files Changed Tab Changes**](#5-files-changed-tab-changes) | `styles/base.css` | Inline below |
 | 6 | [**File Tree Enhancements**](#6-file-tree-enhancements) | `src/features/file-tree-enhancements/` | [file-tree-enhancements.md](./file-tree-enhancements.md) |
+| 7 | [**Diff Navigation**](#7-diff-navigation) | `src/modules/diff-nav.js`, `styles/base.css` | Inline below |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -138,6 +139,23 @@ Two JS-based enhancements for the file tree sidebar in the Files Changed tab:
 
 ---
 
+### 7. Diff Navigation
+
+Two buttons (previous/next) injected into GitHub's native **Pull Request Files Toolbar** (sticky header on the Files Changed tab). They navigate between change hunks — groups of consecutive added/deleted lines in the diff view.
+
+**Injection point:** Start of the toolbar's right-side controls div (2nd child of the toolbar `<section>`).
+
+**Navigation logic:**
+- Collects all `code.diff-text.addition` and `code.diff-text.deletion` elements
+- Groups consecutive changed `tr.diff-line-row` elements into "hunks"
+- Navigates to the first row of each hunk, with offset for the sticky toolbar
+
+**Code:** `src/modules/diff-nav.js`, `styles/base.css` (Diff Navigation Buttons section)
+
+**Selectors used:** `PRitty.Selectors.PR_FILES_TOOLBAR`, `PRitty.Selectors.DIFF_CHANGED_LINE`
+
+---
+
 ## Core Infrastructure
 
 Shared modules that all features depend on. Full details in [core-infrastructure.md](./core-infrastructure.md).
@@ -145,7 +163,7 @@ Shared modules that all features depend on. Full details in [core-infrastructure
 | Module | File | Purpose |
 |--------|------|---------|
 | Namespace | `src/core/namespace.js` | Creates `window.PRitty` global + `PRitty.Selectors` (GitHub DOM selectors) |
-| Icons | `src/core/icons.js` | SVG icon strings (`merge`, `review`, `check`, `x`, `pending`) |
+| Icons | `src/core/icons.js` | SVG icon strings (`merge`, `review`, `check`, `x`, `pending`, `chevronUp`, `chevronDown`) |
 | Utils | `src/core/utils.js` | DOM helpers: `waitForElement`, `findTab`, `findButtonByText`, `findButtonByPrefix`, `isPRittyElement` |
 | GitHub State | `src/modules/github-state.js` | Reads live PR state: `getChecksInfo()`, `getPRState()`, `getCurrentTab()` |
 | Entry Point | `src/content.js` | Bootstraps everything, handles SPA re-injection via MutationObserver |
@@ -164,7 +182,8 @@ manifest.json                          ← Extension config, load order, URL mat
 │   ├── modules/
 │   │   ├── github-state.js            ← Reads PR state from GitHub DOM
 │   │   ├── timeline-reorder.js        ← JS timeline reversal (Feature 3)
-│   │   └── scroll-top.js             ← Scroll-to-top button (Feature 2)
+│   │   ├── scroll-top.js             ← Scroll-to-top button (Feature 2)
+│   │   └── diff-nav.js              ← Diff hunk navigation buttons (Feature 7)
 │   ├── features/
 │   │   ├── action-buttons-bar/        ← Feature 1 (dedicated folder)
 │   │   │   ├── pr-actions-button.js   ← PR Actions dropdown
@@ -186,7 +205,7 @@ Injected at `document_idle` in this exact sequence:
 1. `namespace.js` → `icons.js` → `utils.js` (core)
 2. `github-state.js` (state reader)
 3. `pr-actions-button.js` → `review-button.js` (action bar modules)
-4. `timeline-reorder.js` → `scroll-top.js` (other modules)
+4. `timeline-reorder.js` → `scroll-top.js` → `diff-nav.js` (other modules)
 5. `file-tree-enhancements.js` (file tree features)
 6. `header-actions.js` (feature assembly)
 7. `content.js` (bootstrap)
