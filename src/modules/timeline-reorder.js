@@ -1,7 +1,7 @@
 /**
  * DevHub for GitHub — Timeline Reorder
- * Reorders the PR conversation tab: PR body first, then merge/comment area,
- * then all timeline events in descending (newest-first) order.
+ * Moves the PR description to the top of the conversation tab.
+ * CSS column-reverse handles the visual reversal of all other timeline items.
  */
 
 DevHub.TimelineReorder = {
@@ -16,18 +16,9 @@ DevHub.TimelineReorder = {
     );
     if (!prBody) return;
 
-    // Move merge actions and comment box into the discussion, right after PR body
-    const mergeActions = document.querySelector(".discussion-timeline-actions");
-    const commentBox = document.querySelector("#issue-comment-box");
-
-    if (mergeActions) prBody.after(mergeActions);
-    if (commentBox) (mergeActions || prBody).after(commentBox);
-
-    // Reverse timeline items (newest first)
-    const items = [
-      ...discussion.querySelectorAll(":scope > .js-timeline-item"),
-    ];
-    items.reverse().forEach((item) => discussion.appendChild(item));
+    // Prepend PR body to top of merge/comment container so it appears first
+    const timelineActions = document.querySelector(".discussion-timeline-actions");
+    if (timelineActions) timelineActions.prepend(prBody);
 
     discussion.setAttribute(this.REORDERED_ATTR, "true");
   },

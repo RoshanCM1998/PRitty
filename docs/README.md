@@ -54,7 +54,7 @@ A circular floating button fixed to the **bottom-right corner**. Clicking it smo
 
 Multiple enhancements to the PR conversation tab:
 
-- **Timeline reordering** — newest comments appear first (CSS `column-reverse` + JS DOM reordering)
+- **Timeline reordering** — newest comments appear first (CSS `column-reverse` handles reversal; JS only moves PR description to top)
 - **Hidden noise elements** — labels_updated, projects_updated, milestone_updated timeline badges are hidden
 - **Comment box cleanup** — GitHub's suggestion/guideline boxes below the comment input are hidden
 - **Merge actions repositioning** — merge area and comment box get `margin-left: -56px` adjustment

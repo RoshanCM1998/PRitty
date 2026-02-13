@@ -16,11 +16,11 @@ Multiple enhancements to the PR conversation tab to match Azure DevOps-style exp
 
 ## 1. Timeline Reordering
 
-Achieved through two complementary approaches:
+CSS handles the visual reversal; JS only repositions the PR description.
 
 ### CSS Approach (in `base.css`)
 
-Uses `flex-direction: column-reverse` on the discussion container and its parent:
+Uses `flex-direction: column-reverse` on the discussion container and its parent to reverse all children visually. With `column-reverse`, the last DOM child appears first — so the merge box and comment box (which are last in the DOM) naturally float to the top.
 
 ```css
 #discussion_bucket {
@@ -38,13 +38,11 @@ Uses `flex-direction: column-reverse` on the discussion container and its parent
 }
 ```
 
-This reverses both the outer layout container and the inner `.js-discussion` timeline visually.
-
 ### JS Approach (`src/modules/timeline-reorder.js`)
 
 **Module:** `DevHub.TimelineReorder`
 
-Handles structural DOM moves that CSS alone can't do:
+With outer `column-reverse`, `.discussion-timeline-actions` (which contains the merge box and comment box) appears above `.js-discussion`. The JS module moves the PR body from `.js-discussion` into the top of `.discussion-timeline-actions` so it appears above the merge box.
 
 ```js
 DevHub.TimelineReorder = {
@@ -53,13 +51,13 @@ DevHub.TimelineReorder = {
   apply() {
     // 1. Find .js-discussion container, skip if already reordered
     // 2. Locate PR body (.js-command-palette-pull-body)
-    // 3. Move .discussion-timeline-actions (merge area) after PR body
-    // 4. Move #issue-comment-box after merge actions
-    // 5. Reverse all .js-timeline-item elements (newest first)
-    // 6. Mark with data-devhub-reordered="true" to prevent re-runs
+    // 3. Prepend PR body into .discussion-timeline-actions (appears above merge box)
+    // 4. Mark with data-devhub-reordered="true" to prevent re-runs
   }
 };
 ```
+
+Only **1 DOM mutation** is performed (prepending the PR body). All other reordering is handled by CSS.
 
 **Re-application:** The MutationObserver in `content.js` watches for the discussion container losing its `data-devhub-reordered` attribute (happens during GitHub SPA navigation) and re-applies:
 
@@ -75,10 +73,10 @@ if (discussion && !discussion.hasAttribute(DevHub.TimelineReorder.REORDERED_ATTR
 | Selector | Element |
 |----------|---------|
 | `.js-discussion` | Main conversation timeline container |
-| `.js-command-palette-pull-body` | PR description/body (stays at top) |
-| `.discussion-timeline-actions` | Merge button area |
-| `#issue-comment-box` | New comment input area |
-| `.js-timeline-item` | Individual timeline entries |
+| `.js-command-palette-pull-body` | PR description/body (prepended into `.discussion-timeline-actions` to appear at top) |
+| `.discussion-timeline-actions` | Container for merge box + comment box (appears at top via outer column-reverse) |
+| `#issue-comment-box` | New comment input area (inside `.discussion-timeline-actions`) |
+| `.js-timeline-item` | Individual timeline entries (reversed by CSS) |
 
 ---
 

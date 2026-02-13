@@ -68,7 +68,6 @@
   max-width: 100% !important;
 }
 
-/*
 #discussion_bucket {
   .Layout-main {
     & > div {
@@ -81,16 +80,18 @@
       }
     }
   }
-}*/
+}
+
+/*Description*/
+.js-command-palette-pull-body {
+  margin-left: 72px !important;
+}
 
 .discussion-timeline-actions {
-  margin-left: -56px;
   border-top: none !important;
 }
 
 #issue-comment-box {
-  margin-left: -56px;
-
   /* Hide Github suggestion and guidlines*/
   & > div > div:nth-last-child(1), & > div > div:nth-last-child(2) {
     display: none !important;
