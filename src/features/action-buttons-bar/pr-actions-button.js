@@ -1,11 +1,11 @@
 /**
- * DevHub for GitHub — Complete PR Button
+ * PRitty — Complete PR Button
  * Dropdown button with context-aware actions:
  *   Draft PR  → Publish PR
  *   Open PR   → Convert to draft, Squash and merge
  */
 
-DevHub.CompleteButton = {
+PRitty.CompleteButton = {
 
   /**
    * Build and return the Complete PR button with dropdown.
@@ -13,19 +13,19 @@ DevHub.CompleteButton = {
    */
   create() {
     const wrapper = document.createElement("div");
-    wrapper.className = "devhub-complete-wrapper";
+    wrapper.className = "pritty-complete-wrapper";
 
     const btn = document.createElement("button");
-    btn.className = "devhub-btn devhub-btn-complete";
-    btn.innerHTML = `${DevHub.Icons.merge} PR Actions`;
+    btn.className = "pritty-btn pritty-btn-complete";
+    btn.innerHTML = `${PRitty.Icons.merge} PR Actions`;
 
     const dropdown = document.createElement("div");
-    dropdown.className = "devhub-dropdown";
+    dropdown.className = "pritty-dropdown";
     dropdown.hidden = true;
 
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const freshState = DevHub.GitHubState.getPRState();
+      const freshState = PRitty.GitHubState.getPRState();
       this._populateDropdown(dropdown, freshState);
       dropdown.hidden = !dropdown.hidden;
     });
@@ -61,8 +61,8 @@ DevHub.CompleteButton = {
         "Mark as ready for review",
         () => {
           const readyBtn =
-            DevHub.Utils.findButtonByText("Ready for review") ||
-            DevHub.Utils.findButtonByPrefix("Ready for review");
+            PRitty.Utils.findButtonByText("Ready for review") ||
+            PRitty.Utils.findButtonByPrefix("Ready for review");
           if (readyBtn) {
             readyBtn.scrollIntoView({ behavior: "smooth", block: "center" });
             setTimeout(() => readyBtn.click(), 400);
@@ -80,9 +80,9 @@ DevHub.CompleteButton = {
       () => {
         if (!canMerge) return;
         const mergeBtn =
-          DevHub.Utils.findButtonByPrefix("Squash and merge") ||
-          DevHub.Utils.findButtonByPrefix("Merge pull request") ||
-          DevHub.Utils.findButtonByPrefix("Rebase and merge");
+          PRitty.Utils.findButtonByPrefix("Squash and merge") ||
+          PRitty.Utils.findButtonByPrefix("Merge pull request") ||
+          PRitty.Utils.findButtonByPrefix("Rebase and merge");
         if (mergeBtn) {
           mergeBtn.scrollIntoView({ behavior: "smooth", block: "center" });
           setTimeout(() => mergeBtn.click(), 400);
@@ -95,7 +95,7 @@ DevHub.CompleteButton = {
       "Convert to draft",
       "Move this PR back to draft",
       () => {
-        const isOwn = (el) => DevHub.Utils.isDevHubElement(el);
+        const isOwn = (el) => PRitty.Utils.isPRittyElement(el);
         const el =
           document.querySelector('a[href*="convert_to_draft"]') ||
           Array.from(document.querySelectorAll("button"))
@@ -120,15 +120,15 @@ DevHub.CompleteButton = {
    */
   _item(label, desc, onClick, disabled = false) {
     const item = document.createElement("button");
-    item.className = "devhub-dropdown-item";
-    if (disabled) item.classList.add("devhub-dropdown-item--disabled");
+    item.className = "pritty-dropdown-item";
+    if (disabled) item.classList.add("pritty-dropdown-item--disabled");
     item.innerHTML =
-      `<span class="devhub-dropdown-item-label">${label}</span>` +
-      `<span class="devhub-dropdown-item-desc">${desc}</span>`;
+      `<span class="pritty-dropdown-item-label">${label}</span>` +
+      `<span class="pritty-dropdown-item-desc">${desc}</span>`;
     item.addEventListener("click", (e) => {
       e.stopPropagation();
       if (disabled) return;
-      e.target.closest(".devhub-dropdown").hidden = true;
+      e.target.closest(".pritty-dropdown").hidden = true;
       onClick();
     });
     return item;

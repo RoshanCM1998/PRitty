@@ -1,15 +1,15 @@
 /**
- * DevHub for GitHub — Scroll to Top Button
+ * PRitty — Scroll to Top Button
  * Floating button at the bottom-right corner to scroll back to top.
  */
 
-DevHub.ScrollTop = {
+PRitty.ScrollTop = {
   create() {
-    if (document.querySelector(".devhub-scroll-top")) return;
+    if (document.querySelector(".pritty-scroll-top")) return;
 
     const btn = document.createElement("button");
-    btn.className = "devhub-scroll-top";
-    btn.setAttribute(DevHub.INJECTED_ATTR, "true");
+    btn.className = "pritty-scroll-top";
+    btn.setAttribute(PRitty.INJECTED_ATTR, "true");
     btn.setAttribute("aria-label", "Scroll to top");
     btn.innerHTML =
       '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">' +

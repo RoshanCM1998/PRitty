@@ -11,13 +11,13 @@ These modules provide the foundation that all features build on.
 **Must load first.** Creates the shared global that all modules attach to.
 
 ```js
-window.DevHub = window.DevHub || {};
+window.PRitty = window.PRitty || {};
 
-// Attribute used to tag all DevHub-injected DOM elements for cleanup
-DevHub.INJECTED_ATTR = "data-devhub-injected";
+// Attribute used to tag all PRitty-injected DOM elements for cleanup
+PRitty.INJECTED_ATTR = "data-pritty-injected";
 
 // Centralized GitHub DOM selectors
-DevHub.Selectors = {
+PRitty.Selectors = {
   PAGE_HEADER:        "#partial-discussion-header",
   HEADER_ACTIONS:     ".gh-header-actions",
   STATE_LABEL:        'span.State[data-view-component="true"]',
@@ -47,10 +47,10 @@ DevHub.Selectors = {
 SVG icon strings for UI elements. Each is a complete `<svg>` element string.
 
 ```js
-DevHub.Icons = {
-  check:   /* green checkmark, 16x16, class="devhub-checks-icon" */,
-  x:       /* red X mark, 16x16, class="devhub-checks-icon" */,
-  pending: /* gray filled circle, 16x16, class="devhub-checks-icon" */,
+PRitty.Icons = {
+  check:   /* green checkmark, 16x16, class="pritty-checks-icon" */,
+  x:       /* red X mark, 16x16, class="pritty-checks-icon" */,
+  pending: /* gray filled circle, 16x16, class="pritty-checks-icon" */,
   merge:   /* git merge branches, 14x14 */,
   review:  /* speech bubble/comment, 14x14 */,
 };
@@ -58,14 +58,14 @@ DevHub.Icons = {
 
 Used by inserting into `innerHTML`:
 ```js
-btn.innerHTML = `${DevHub.Icons.merge} PR Actions`;
+btn.innerHTML = `${PRitty.Icons.merge} PR Actions`;
 ```
 
 ---
 
 ## Utils (`src/core/utils.js`)
 
-Shared DOM helpers on `DevHub.Utils`. Used throughout all modules.
+Shared DOM helpers on `PRitty.Utils`. Used throughout all modules.
 
 ### `waitForElement(selector, timeout = 10000)`
 
@@ -74,7 +74,7 @@ Returns a Promise that resolves when a matching element appears in the DOM:
 ```js
 // Uses MutationObserver on document.body (childList + subtree)
 // Rejects with timeout error after 10s (configurable)
-const el = await DevHub.Utils.waitForElement(".some-selector");
+const el = await PRitty.Utils.waitForElement(".some-selector");
 ```
 
 ### `findTab(label)`
@@ -83,44 +83,44 @@ Finds a PR tab element by partial text match:
 
 ```js
 // Searches all [role="tab"] elements for textContent including label
-const checksTab = DevHub.Utils.findTab("Checks");     // → Checks tab element
-const filesTab  = DevHub.Utils.findTab("Files changed"); // → Files tab element
+const checksTab = PRitty.Utils.findTab("Checks");     // → Checks tab element
+const filesTab  = PRitty.Utils.findTab("Files changed"); // → Files tab element
 ```
 
-### `isDevHubElement(el)`
+### `isPRittyElement(el)`
 
-Checks if an element is inside any DevHub-injected container:
+Checks if an element is inside any PRitty-injected container:
 
 ```js
-// Walks up the DOM looking for [data-devhub-injected] ancestor
-DevHub.Utils.isDevHubElement(someButton); // → true/false
+// Walks up the DOM looking for [data-pritty-injected] ancestor
+PRitty.Utils.isPRittyElement(someButton); // → true/false
 ```
 
 ### `findButtonByText(text)` / `findButtonByPrefix(prefix)`
 
-Find native GitHub buttons, **excluding** DevHub's own buttons:
+Find native GitHub buttons, **excluding** PRitty's own buttons:
 
 ```js
 // Exact match (trimmed)
-DevHub.Utils.findButtonByText("Submit review");
+PRitty.Utils.findButtonByText("Submit review");
 // Prefix match (trimmed, startsWith)
-DevHub.Utils.findButtonByPrefix("Squash and merge");
+PRitty.Utils.findButtonByPrefix("Squash and merge");
 ```
 
-Both scan all `<button>` elements on the page and filter out DevHub UI via `isDevHubElement()`.
+Both scan all `<button>` elements on the page and filter out PRitty UI via `isPRittyElement()`.
 
 ---
 
 ## GitHub State Reader (`src/modules/github-state.js`)
 
-Reads live PR information from the DOM. Attached to `DevHub.GitHubState`.
+Reads live PR information from the DOM. Attached to `PRitty.GitHubState`.
 
 ### `getChecksInfo()`
 
 Parses CI/check status:
 
 ```js
-const info = DevHub.GitHubState.getChecksInfo();
+const info = PRitty.GitHubState.getChecksInfo();
 // → { total: 5, passed: 3, failed: 1, pending: 1, unknown: false }
 ```
 
@@ -138,7 +138,7 @@ const info = DevHub.GitHubState.getChecksInfo();
 Detects PR lifecycle state:
 
 ```js
-const state = DevHub.GitHubState.getPRState();
+const state = PRitty.GitHubState.getPRState();
 // → { isDraft: false, isMerged: false, isClosed: false,
 //     hasConflicts: false, mergeEnabled: true, mergeBtn: <Element> }
 ```
@@ -155,7 +155,7 @@ const state = DevHub.GitHubState.getPRState();
 Returns which PR tab is active:
 
 ```js
-DevHub.GitHubState.getCurrentTab();
+PRitty.GitHubState.getCurrentTab();
 // → "conversation" | "commits" | "checks" | "files"
 ```
 
@@ -165,16 +165,16 @@ Reads the selected PR tab element text (supports both `role="tab"` and `a.tabnav
 
 ## Header Actions Assembly (`src/features/action-buttons-bar/header-actions.js`)
 
-`DevHub.HeaderActions.createAll()` builds the floating bar:
+`PRitty.HeaderActions.createAll()` builds the floating bar:
 
 ```js
 createAll() {
   const container = document.createElement("div");
-  container.className = "devhub-actions";
-  container.setAttribute(DevHub.INJECTED_ATTR, "true");
+  container.className = "pritty-actions";
+  container.setAttribute(PRitty.INJECTED_ATTR, "true");
 
-  container.appendChild(DevHub.CompleteButton.create());  // PR Actions dropdown
-  container.appendChild(DevHub.ReviewButton.create());    // Submit Review button
+  container.appendChild(PRitty.CompleteButton.create());  // PR Actions dropdown
+  container.appendChild(PRitty.ReviewButton.create());    // Submit Review button
 
   return container;
 }
@@ -192,10 +192,10 @@ IIFE that bootstraps and manages the extension lifecycle.
 
 ```js
 function inject() {
-  // Remove all previously injected DevHub elements
+  // Remove all previously injected PRitty elements
   document.querySelectorAll(`[${ATTR}]`).forEach((el) => el.remove());
   // Create fresh header actions bar
-  document.body.appendChild(DevHub.HeaderActions.createAll());
+  document.body.appendChild(PRitty.HeaderActions.createAll());
 }
 ```
 
@@ -210,23 +210,23 @@ function init() {
   inject();
 
   // 3. Create scroll-to-top button
-  DevHub.ScrollTop.create();
+  PRitty.ScrollTop.create();
 
   // 4. MutationObserver for SPA navigation resilience
   const observer = new MutationObserver(() => {
     if (!window.location.pathname.match(/\/pull\/\d+/)) return;
-    // Re-inject if DevHub elements were removed (Turbo navigation)
+    // Re-inject if PRitty elements were removed (Turbo navigation)
     if (!document.querySelector(`[${ATTR}]`)) inject();
     // Re-apply timeline reorder if discussion was reset
     const discussion = document.querySelector(".js-discussion");
-    if (discussion && !discussion.hasAttribute(DevHub.TimelineReorder.REORDERED_ATTR)) {
-      DevHub.TimelineReorder.apply();
+    if (discussion && !discussion.hasAttribute(PRitty.TimelineReorder.REORDERED_ATTR)) {
+      PRitty.TimelineReorder.apply();
     }
 
     // File tree enhancements (Files Changed tab)
-    const fileTree = document.querySelector(DevHub.Selectors.FILE_TREE_SIDEBAR);
-    if (fileTree && !fileTree.hasAttribute('data-devhub-tree-enhanced')) {
-      DevHub.FileTreeEnhancements.init();
+    const fileTree = document.querySelector(PRitty.Selectors.FILE_TREE_SIDEBAR);
+    if (fileTree && !fileTree.hasAttribute('data-pritty-tree-enhanced')) {
+      PRitty.FileTreeEnhancements.init();
     }
   });
   observer.observe(document.body, { childList: true, subtree: true });

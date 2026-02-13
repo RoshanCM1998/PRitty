@@ -1,11 +1,11 @@
 /**
- * DevHub for GitHub — Timeline Reorder
+ * PRitty — Timeline Reorder
  * Moves the PR description to the top of the conversation tab.
  * CSS column-reverse handles the visual reversal of all other timeline items.
  */
 
-DevHub.TimelineReorder = {
-  REORDERED_ATTR: "data-devhub-reordered",
+PRitty.TimelineReorder = {
+  REORDERED_ATTR: "data-pritty-reordered",
 
   apply() {
     const discussion = document.querySelector(".js-discussion");

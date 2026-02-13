@@ -1,4 +1,4 @@
-# DevHub for GitHub
+# PRitty
 
 A Chrome/Edge browser extension (Manifest V3) that enhances GitHub PR pages with Azure DevOps-style features.
 

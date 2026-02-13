@@ -25,7 +25,7 @@ Two enhancements for the file tree sidebar in the Files Changed tab:
 
 #### Checkbox Injection
 
-For each `li[role="treeitem"]` in the file tree, a small checkbox (`.devhub-tree-checkbox`) is inserted before the file/folder icon inside `.PRIVATE_TreeView-item-content`.
+For each `li[role="treeitem"]` in the file tree, a small checkbox (`.pritty-tree-checkbox`) is inserted before the file/folder icon inside `.PRIVATE_TreeView-item-content`.
 
 #### File Checkbox Behavior
 
@@ -74,7 +74,7 @@ On file link click (skips folders and checkbox clicks):
 
 ## DOM Selectors Used
 
-All defined in `DevHub.Selectors` (`src/core/namespace.js`):
+All defined in `PRitty.Selectors` (`src/core/namespace.js`):
 
 | Selector Constant | Value | Purpose |
 |---|---|---|
@@ -92,18 +92,18 @@ All defined in `DevHub.Selectors` (`src/core/namespace.js`):
 
 | Class | Element | Purpose |
 |---|---|---|
-| `.devhub-tree-checkbox` | `<input type="checkbox">` | Viewed checkbox in tree items |
+| `.pritty-tree-checkbox` | `<input type="checkbox">` | Viewed checkbox in tree items |
 
 ---
 
 ## Module API
 
 ```js
-DevHub.FileTreeEnhancements.init()    // Inject checkboxes, start observers, set up click handler
-DevHub.FileTreeEnhancements.destroy() // Remove checkboxes, disconnect observers
+PRitty.FileTreeEnhancements.init()    // Inject checkboxes, start observers, set up click handler
+PRitty.FileTreeEnhancements.destroy() // Remove checkboxes, disconnect observers
 ```
 
-Both are idempotent. `init()` uses a `data-devhub-tree-enhanced` attribute on `#pr-file-tree` to prevent double initialization.
+Both are idempotent. `init()` uses a `data-pritty-tree-enhanced` attribute on `#pr-file-tree` to prevent double initialization.
 
 ---
 

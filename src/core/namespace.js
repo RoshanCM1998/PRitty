@@ -1,14 +1,14 @@
 /**
- * DevHub for GitHub — Namespace & Constants
+ * PRitty — Namespace & Constants
  * Loaded first. Creates the shared namespace all modules attach to.
  */
 
-window.DevHub = window.DevHub || {};
+window.PRitty = window.PRitty || {};
 
-DevHub.INJECTED_ATTR = "data-devhub-injected";
+PRitty.INJECTED_ATTR = "data-pritty-injected";
 
 /** GitHub DOM selectors used across modules */
-DevHub.Selectors = {
+PRitty.Selectors = {
   // PR header
   PAGE_HEADER: "#partial-discussion-header",
   HEADER_ACTIONS: ".gh-header-actions",

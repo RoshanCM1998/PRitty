@@ -1,8 +1,8 @@
-# DevHub for GitHub — Documentation
+# PRitty — Documentation
 
 **Version:** 1.1.0 | **Type:** Chrome/Edge Browser Extension (Manifest V3)
 
-DevHub brings Azure DevOps-style pull request experience to GitHub — quick actions, reversed timelines, and streamlined navigation.
+PRitty brings Azure DevOps-style pull request experience to GitHub — quick actions, reversed timelines, and streamlined navigation.
 
 **Activates on:** `https://github.com/*/pull/*` (PR pages only)
 
@@ -34,7 +34,7 @@ A floating bar fixed to the **top-right corner** of the page containing two butt
 - `review-button.js` — Submit Review button + tab switching logic
 - `header-actions.js` — assembles both buttons into the floating bar container
 
-**Styling:** `styles/buttons.css`, `styles/base.css` (`.devhub-actions` container)
+**Styling:** `styles/buttons.css`, `styles/base.css` (`.pritty-actions` container)
 
 **Detailed docs:** [action-buttons-bar.md](./action-buttons-bar.md)
 
@@ -144,9 +144,9 @@ Shared modules that all features depend on. Full details in [core-infrastructure
 
 | Module | File | Purpose |
 |--------|------|---------|
-| Namespace | `src/core/namespace.js` | Creates `window.DevHub` global + `DevHub.Selectors` (GitHub DOM selectors) |
+| Namespace | `src/core/namespace.js` | Creates `window.PRitty` global + `PRitty.Selectors` (GitHub DOM selectors) |
 | Icons | `src/core/icons.js` | SVG icon strings (`merge`, `review`, `check`, `x`, `pending`) |
-| Utils | `src/core/utils.js` | DOM helpers: `waitForElement`, `findTab`, `findButtonByText`, `findButtonByPrefix`, `isDevHubElement` |
+| Utils | `src/core/utils.js` | DOM helpers: `waitForElement`, `findTab`, `findButtonByText`, `findButtonByPrefix`, `isPRittyElement` |
 | GitHub State | `src/modules/github-state.js` | Reads live PR state: `getChecksInfo()`, `getPRState()`, `getCurrentTab()` |
 | Entry Point | `src/content.js` | Bootstraps everything, handles SPA re-injection via MutationObserver |
 
@@ -158,7 +158,7 @@ Shared modules that all features depend on. Full details in [core-infrastructure
 manifest.json                          ← Extension config, load order, URL matching
 ├── src/
 │   ├── core/
-│   │   ├── namespace.js               ← Global DevHub namespace + DOM selectors
+│   │   ├── namespace.js               ← Global PRitty namespace + DOM selectors
 │   │   ├── icons.js                   ← SVG icon library
 │   │   └── utils.js                   ← Shared DOM helpers
 │   ├── modules/
@@ -200,7 +200,7 @@ Page loads on github.com/*/pull/*
   ↓
 content.js init() verifies URL matches /pull/\d+/
   ↓
-inject() → cleans old DevHub elements → appends floating action bar
+inject() → cleans old PRitty elements → appends floating action bar
   ↓
 ScrollTop.create() → appends scroll button
   ↓

@@ -1,23 +1,23 @@
 /**
- * DevHub for GitHub — Entry Point
+ * PRitty — Entry Point
  * Handles injection, re-injection on SPA navigation, and bootstrap.
  */
 
 (function () {
   "use strict";
 
-  const ATTR = DevHub.INJECTED_ATTR;
+  const ATTR = PRitty.INJECTED_ATTR;
 
-  /** Inject (or re-inject) all DevHub UI into the page. */
+  /** Inject (or re-inject) all PRitty UI into the page. */
   function inject() {
     // Remove any previous injection
     document.querySelectorAll(`[${ATTR}]`).forEach((el) => el.remove());
 
     // Append fixed floating bar directly to body
-    document.body.appendChild(DevHub.HeaderActions.createAll());
+    document.body.appendChild(PRitty.HeaderActions.createAll());
   }
 
-  /** Initialize DevHub on a PR page. */
+  /** Initialize PRitty on a PR page. */
   function init() {
     if (!window.location.pathname.match(/\/pull\/\d+/)) return;
 
@@ -25,7 +25,7 @@
     inject();
 
     // Scroll to top button
-    DevHub.ScrollTop.create();
+    PRitty.ScrollTop.create();
 
     // Re-inject after GitHub's SPA (Turbo) navigation
     const observer = new MutationObserver(() => {
@@ -38,14 +38,14 @@
 
       // Re-apply timeline reorder if undone
       const discussion = document.querySelector(".js-discussion");
-      if (discussion && !discussion.hasAttribute(DevHub.TimelineReorder.REORDERED_ATTR)) {
-        DevHub.TimelineReorder.apply();
+      if (discussion && !discussion.hasAttribute(PRitty.TimelineReorder.REORDERED_ATTR)) {
+        PRitty.TimelineReorder.apply();
       }
 
       // File tree enhancements (Files Changed tab)
-      const fileTree = document.querySelector(DevHub.Selectors.FILE_TREE_SIDEBAR);
-      if (fileTree && !fileTree.hasAttribute('data-devhub-tree-enhanced')) {
-        DevHub.FileTreeEnhancements.init();
+      const fileTree = document.querySelector(PRitty.Selectors.FILE_TREE_SIDEBAR);
+      if (fileTree && !fileTree.hasAttribute('data-pritty-tree-enhanced')) {
+        PRitty.FileTreeEnhancements.init();
       }
     });
 

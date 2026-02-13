@@ -17,7 +17,11 @@
       "Bash(gh pr view:*)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(where:*)",
+      "mcp__chrome-devtools__wait_for",
+      "Bash(if not exist \"D:\\\\Project\\\\Git-dev\\\\TEMP\" mkdir \"D:\\\\Project\\\\Git-dev\\\\TEMP\")",
+      "Bash(node -e:*)"
     ]
   }
 }

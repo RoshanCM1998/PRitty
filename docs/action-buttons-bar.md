@@ -15,16 +15,16 @@ The bar has a semi-transparent dark background (`rgba(22, 27, 34, 0.75)`) and st
 
 ## Assembly (`src/features/action-buttons-bar/header-actions.js`)
 
-`DevHub.HeaderActions.createAll()` builds the container:
+`PRitty.HeaderActions.createAll()` builds the container:
 
 ```js
 createAll() {
   const container = document.createElement("div");
-  container.className = "devhub-actions";
-  container.setAttribute(DevHub.INJECTED_ATTR, "true");
+  container.className = "pritty-actions";
+  container.setAttribute(PRitty.INJECTED_ATTR, "true");
 
-  container.appendChild(DevHub.CompleteButton.create());  // PR Actions
-  container.appendChild(DevHub.ReviewButton.create());    // Submit Review
+  container.appendChild(PRitty.CompleteButton.create());  // PR Actions
+  container.appendChild(PRitty.ReviewButton.create());    // Submit Review
 
   return container;
 }
@@ -36,19 +36,19 @@ Called by `content.js` → `inject()` → appended to `document.body`.
 
 ## PR Actions Button (`src/features/action-buttons-bar/pr-actions-button.js`)
 
-**Module:** `DevHub.CompleteButton`
+**Module:** `PRitty.CompleteButton`
 
 ### Creation (`create()`)
 
 Returns a wrapper containing a button + hidden dropdown:
 
 ```
-.devhub-complete-wrapper (relative positioned)
+.pritty-complete-wrapper (relative positioned)
   ├── <button> "PR Actions" with merge icon
-  └── <div class="devhub-dropdown"> (hidden by default)
+  └── <div class="pritty-dropdown"> (hidden by default)
 ```
 
-On click: reads fresh state via `DevHub.GitHubState.getPRState()`, populates dropdown, toggles visibility. Clicking anywhere outside closes the dropdown.
+On click: reads fresh state via `PRitty.GitHubState.getPRState()`, populates dropdown, toggles visibility. Clicking anywhere outside closes the dropdown.
 
 ### Context-Aware Dropdown (`_populateDropdown()`)
 
@@ -77,21 +77,21 @@ Each action locates the **native GitHub button** and clicks it:
 
 ### Dropdown Item Factory (`_item()`)
 
-Each item is a `<button class="devhub-dropdown-item">` with:
-- `.devhub-dropdown-item-label` — bold action name (13px, white)
-- `.devhub-dropdown-item-desc` — description text (11px, gray)
+Each item is a `<button class="pritty-dropdown-item">` with:
+- `.pritty-dropdown-item-label` — bold action name (13px, white)
+- `.pritty-dropdown-item-desc` — description text (11px, gray)
 - Optional `--disabled` modifier (40% opacity, no click, no hover effect)
 
 ---
 
 ## Submit Review Button (`src/features/action-buttons-bar/review-button.js`)
 
-**Module:** `DevHub.ReviewButton`
+**Module:** `PRitty.ReviewButton`
 
 ### Creation (`create()`)
 
 ```js
-// Creates: <button class="devhub-btn devhub-btn-review">
+// Creates: <button class="pritty-btn pritty-btn-review">
 //            {review icon} Submit Review
 //          </button>
 // title: "Open review submission dialog"
@@ -121,7 +121,7 @@ Finds GitHub's native `"Submit review"` button, scrolls into view, clicks after 
 ### Floating Bar (`base.css`)
 
 ```css
-.devhub-actions {
+.pritty-actions {
   position: fixed;
   top: 36px;
   right: 16px;
@@ -139,19 +139,19 @@ Finds GitHub's native `"Submit review"` button, scrolls into view, clicks after 
 
 | Class | Style |
 |-------|-------|
-| `.devhub-btn-complete` | Green `#238636`, hover `#2ea043` |
-| `.devhub-btn-review` | Blue `#1f6feb`, hover `#388bfd` |
-| `.devhub-dropdown` | Dark `#161b22`, absolute below button, `z-index: 100` |
-| `.devhub-dropdown-item:hover` | Background `#1f2937` |
-| `.devhub-dropdown-item--disabled` | 40% opacity, no hover |
+| `.pritty-btn-complete` | Green `#238636`, hover `#2ea043` |
+| `.pritty-btn-review` | Blue `#1f6feb`, hover `#388bfd` |
+| `.pritty-dropdown` | Dark `#161b22`, absolute below button, `z-index: 100` |
+| `.pritty-dropdown-item:hover` | Background `#1f2937` |
+| `.pritty-dropdown-item--disabled` | 40% opacity, no hover |
 
 ---
 
 ## Dependencies
 
-- `DevHub.Icons.merge` / `DevHub.Icons.review` — button icons
-- `DevHub.GitHubState.getPRState()` — reads PR state on every dropdown open
-- `DevHub.GitHubState.getCurrentTab()` — checks active tab for review button
-- `DevHub.Utils.findButtonByText/Prefix()` — locates native GitHub buttons
-- `DevHub.Utils.findTab()` — locates the "Files changed" tab
-- `DevHub.Utils.isDevHubElement()` — excludes own UI from button searches
+- `PRitty.Icons.merge` / `PRitty.Icons.review` — button icons
+- `PRitty.GitHubState.getPRState()` — reads PR state on every dropdown open
+- `PRitty.GitHubState.getCurrentTab()` — checks active tab for review button
+- `PRitty.Utils.findButtonByText/Prefix()` — locates native GitHub buttons
+- `PRitty.Utils.findTab()` — locates the "Files changed" tab
+- `PRitty.Utils.isPRittyElement()` — excludes own UI from button searches

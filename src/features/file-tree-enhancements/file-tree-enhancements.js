@@ -1,5 +1,5 @@
 /**
- * DevHub for GitHub — File Tree Enhancements
+ * PRitty — File Tree Enhancements
  *
  * Two features for the Files Changed tab:
  * 1. Viewed checkboxes in the file tree sidebar (bidirectional sync with native Viewed buttons)
@@ -8,10 +8,10 @@
  * Zero custom state — GitHub's embedded JSON and native buttons are the single source of truth.
  */
 
-DevHub.FileTreeEnhancements = (() => {
-  const SEL = DevHub.Selectors;
-  const ENHANCED_ATTR = "data-devhub-tree-enhanced";
-  const CHECKBOX_CLASS = "devhub-tree-checkbox";
+PRitty.FileTreeEnhancements = (() => {
+  const SEL = PRitty.Selectors;
+  const ENHANCED_ATTR = "data-pritty-tree-enhanced";
+  const CHECKBOX_CLASS = "pritty-tree-checkbox";
 
   /** @type {MutationObserver|null} */
   let _diffObserver = null;

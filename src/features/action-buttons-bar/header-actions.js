@@ -1,9 +1,9 @@
 /**
- * DevHub for GitHub — Header Actions Feature
+ * PRitty — Header Actions Feature
  * Assembles all header-level UI elements into a single container.
  */
 
-DevHub.HeaderActions = {
+PRitty.HeaderActions = {
 
   /**
    * Create the container with all header action elements.
@@ -11,11 +11,11 @@ DevHub.HeaderActions = {
    */
   createAll() {
     const container = document.createElement("div");
-    container.className = "devhub-actions";
-    container.setAttribute(DevHub.INJECTED_ATTR, "true");
+    container.className = "pritty-actions";
+    container.setAttribute(PRitty.INJECTED_ATTR, "true");
 
-    container.appendChild(DevHub.CompleteButton.create());
-    container.appendChild(DevHub.ReviewButton.create());
+    container.appendChild(PRitty.CompleteButton.create());
+    container.appendChild(PRitty.ReviewButton.create());
 
     return container;
   },

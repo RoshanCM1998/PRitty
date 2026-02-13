@@ -1,9 +1,9 @@
 /**
- * DevHub for GitHub — Utility Functions
+ * PRitty — Utility Functions
  * Shared DOM helpers used by multiple modules.
  */
 
-DevHub.Utils = {
+PRitty.Utils = {
 
   /**
    * Wait for an element to appear in the DOM.
@@ -27,7 +27,7 @@ DevHub.Utils = {
 
       setTimeout(() => {
         observer.disconnect();
-        reject(new Error(`[DevHub] Timeout waiting for ${selector}`));
+        reject(new Error(`[PRitty] Timeout waiting for ${selector}`));
       }, timeout);
     });
   },
@@ -38,36 +38,36 @@ DevHub.Utils = {
    * @returns {Element|null}
    */
   findTab(label) {
-    return Array.from(document.querySelectorAll(DevHub.Selectors.TAB))
+    return Array.from(document.querySelectorAll(PRitty.Selectors.TAB))
       .find((t) => t.textContent.includes(label)) || null;
   },
 
   /**
-   * Check if an element is inside the DevHub-injected UI.
+   * Check if an element is inside the PRitty-injected UI.
    * @param {Element} el
    * @returns {boolean}
    */
-  isDevHubElement(el) {
-    return !!el.closest(`[${DevHub.INJECTED_ATTR}]`);
+  isPRittyElement(el) {
+    return !!el.closest(`[${PRitty.INJECTED_ATTR}]`);
   },
 
   /**
-   * Find a button by its exact trimmed text content (excludes DevHub UI).
+   * Find a button by its exact trimmed text content (excludes PRitty UI).
    * @param {string} text - Exact text to match
    * @returns {Element|null}
    */
   findButtonByText(text) {
     return Array.from(document.querySelectorAll("button"))
-      .find((b) => !this.isDevHubElement(b) && b.textContent.trim() === text) || null;
+      .find((b) => !this.isPRittyElement(b) && b.textContent.trim() === text) || null;
   },
 
   /**
-   * Find a button whose text starts with the given prefix (excludes DevHub UI).
+   * Find a button whose text starts with the given prefix (excludes PRitty UI).
    * @param {string} prefix
    * @returns {Element|null}
    */
   findButtonByPrefix(prefix) {
     return Array.from(document.querySelectorAll("button"))
-      .find((b) => !this.isDevHubElement(b) && b.textContent.trim().startsWith(prefix)) || null;
+      .find((b) => !this.isPRittyElement(b) && b.textContent.trim().startsWith(prefix)) || null;
   },
 };

@@ -1,8 +1,8 @@
 /* ============================================
-   DevHub for GitHub — Base / Shared Styles
+   PRitty — Base / Shared Styles
    ============================================ */
 
-.devhub-actions {
+.pritty-actions {
   position: fixed;
   top: 36px;
   right: 16px;
@@ -19,7 +19,7 @@
 }
 
 /* Scroll to top floating button */
-.devhub-scroll-top {
+.pritty-scroll-top {
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -39,12 +39,12 @@
   transition: opacity 0.15s ease;
 }
 
-.devhub-scroll-top:hover {
+.pritty-scroll-top:hover {
   opacity: 1;
 }
 
 
-.devhub-btn {
+.pritty-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -139,7 +139,7 @@
    ============================================ */
 
 /* === File Tree Enhancements === */
-.devhub-tree-checkbox {
+.pritty-tree-checkbox {
   width: 14px;
   height: 14px;
   margin-right: 4px;

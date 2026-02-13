@@ -1,30 +1,30 @@
 /* ============================================
-   DevHub for GitHub — Action Button Styles
+   PRitty — Action Button Styles
    ============================================ */
 
 /* Complete PR wrapper (positions dropdown) */
-.devhub-complete-wrapper {
+.pritty-complete-wrapper {
   position: relative;
 }
 
 /* Complete PR / Merge button */
-.devhub-btn-complete {
+.pritty-btn-complete {
   background-color: #238636;
   color: #ffffff;
   border-color: rgba(240, 246, 252, 0.1);
 }
 
-.devhub-btn-complete:hover:not(:disabled) {
+.pritty-btn-complete:hover:not(:disabled) {
   background-color: #2ea043;
 }
 
-.devhub-btn-complete:disabled {
+.pritty-btn-complete:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 /* Dropdown menu */
-.devhub-dropdown {
+.pritty-dropdown {
   position: absolute;
   top: calc(100% + 4px);
   right: 0;
@@ -37,7 +37,7 @@
   padding: 4px 0;
 }
 
-.devhub-dropdown-item {
+.pritty-dropdown-item {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -48,59 +48,59 @@
   text-align: left;
 }
 
-.devhub-dropdown-item:hover {
+.pritty-dropdown-item:hover {
   background: #1f2937;
 }
 
-.devhub-dropdown-item--disabled {
+.pritty-dropdown-item--disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.devhub-dropdown-item--disabled:hover {
+.pritty-dropdown-item--disabled:hover {
   background: none;
 }
 
-.devhub-dropdown-item-label {
+.pritty-dropdown-item-label {
   font-size: 13px;
   font-weight: 600;
   color: #e6edf3;
   line-height: 20px;
 }
 
-.devhub-dropdown-item-desc {
+.pritty-dropdown-item-desc {
   font-size: 11px;
   color: #8b949e;
   line-height: 16px;
 }
 
 /* Submit Review button */
-.devhub-btn-review {
+.pritty-btn-review {
   background-color: #1f6feb;
   color: #ffffff;
   border-color: rgba(240, 246, 252, 0.1);
 }
 
-.devhub-btn-review:hover {
+.pritty-btn-review:hover {
   background-color: #388bfd;
 }
 
 /* Merge status indicator dot */
-.devhub-merge-indicator {
+.pritty-merge-indicator {
   display: inline-block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
 }
 
-.devhub-merge-indicator--ready {
+.pritty-merge-indicator--ready {
   background-color: #3fb950;
 }
 
-.devhub-merge-indicator--blocked {
+.pritty-merge-indicator--blocked {
   background-color: #f85149;
 }
 
-.devhub-merge-indicator--draft {
+.pritty-merge-indicator--draft {
   background-color: #8b949e;
 }

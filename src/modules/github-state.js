@@ -1,16 +1,16 @@
 /**
- * DevHub for GitHub — GitHub Page State Reader
+ * PRitty — GitHub Page State Reader
  * Reads PR status, checks info, and active tab from the DOM.
  */
 
-DevHub.GitHubState = {
+PRitty.GitHubState = {
 
   /**
    * Parse check/CI status from the Checks tab counter and merge status area.
    * @returns {{ total: number, passed: number, failed: number, pending: number, unknown: boolean }}
    */
   getChecksInfo() {
-    const checksTab = DevHub.Utils.findTab("Checks");
+    const checksTab = PRitty.Utils.findTab("Checks");
 
     let totalChecks = 0;
     if (checksTab) {
@@ -57,7 +57,7 @@ DevHub.GitHubState = {
    * @returns {{ isDraft: boolean, isMerged: boolean, isClosed: boolean, hasConflicts: boolean, mergeEnabled: boolean, mergeBtn: Element|null }}
    */
   getPRState() {
-    const stateLabel = document.querySelector(DevHub.Selectors.STATE_LABEL);
+    const stateLabel = document.querySelector(PRitty.Selectors.STATE_LABEL);
     const title = stateLabel?.getAttribute("title") || "";
     const classes = stateLabel?.className || "";
     const labelText = stateLabel?.textContent?.trim() || "";
@@ -73,12 +73,12 @@ DevHub.GitHubState = {
     const isClosed = classes.includes("State--closed")
                   || title.includes("Closed")
                   || labelText.includes("Closed");
-    const hasConflicts = !!document.querySelector(DevHub.Selectors.CONFLICT_INDICATOR);
+    const hasConflicts = !!document.querySelector(PRitty.Selectors.CONFLICT_INDICATOR);
 
     const mergeBtn =
-      DevHub.Utils.findButtonByPrefix("Merge pull request") ||
-      DevHub.Utils.findButtonByPrefix("Squash and merge") ||
-      DevHub.Utils.findButtonByPrefix("Rebase and merge");
+      PRitty.Utils.findButtonByPrefix("Merge pull request") ||
+      PRitty.Utils.findButtonByPrefix("Squash and merge") ||
+      PRitty.Utils.findButtonByPrefix("Rebase and merge");
     const mergeEnabled = mergeBtn ? !mergeBtn.disabled : false;
 
     return { isDraft, isMerged, isClosed, hasConflicts, mergeEnabled, mergeBtn };
@@ -89,7 +89,7 @@ DevHub.GitHubState = {
    * @returns {"conversation"|"commits"|"checks"|"files"}
    */
   getCurrentTab() {
-    const sel = document.querySelector(DevHub.Selectors.SELECTED_TAB);
+    const sel = document.querySelector(PRitty.Selectors.SELECTED_TAB);
     if (!sel) return "conversation";
     const text = sel.textContent.toLowerCase();
     if (text.includes("files")) return "files";

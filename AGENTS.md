@@ -1,4 +1,4 @@
-# Agent Workflow Guide — DevHub for GitHub
+# Agent Workflow Guide — PRitty
 
 This file defines all conventions, patterns, and mandatory workflows for working on this codebase.
 
@@ -51,11 +51,11 @@ After completing any code change:
 
 ### Module Pattern
 
-All modules attach to `window.DevHub` namespace. No import/export system — scripts are loaded sequentially by `manifest.json`.
+All modules attach to `window.PRitty` namespace. No import/export system — scripts are loaded sequentially by `manifest.json`.
 
 ```js
 // Every module follows this pattern:
-DevHub.ModuleName = {
+PRitty.ModuleName = {
   create() { /* ... */ },
   _privateMethod() { /* ... */ },
 };
@@ -85,9 +85,9 @@ When adding new modules, insert them in the correct position in this chain.
 
 ### Injected Element Tagging
 
-All DevHub-injected DOM elements are tagged with `data-devhub-injected` attribute. This allows:
+All PRitty-injected DOM elements are tagged with `data-pritty-injected` attribute. This allows:
 - Clean removal during re-injection (`inject()` in content.js)
-- Exclusion from button searches (`isDevHubElement()`)
+- Exclusion from button searches (`isPRittyElement()`)
 
 ---
 
@@ -96,11 +96,11 @@ All DevHub-injected DOM elements are tagged with `data-devhub-injected` attribut
 ### Adding a New Module
 
 ```js
-// Attach to DevHub namespace — no import/export
-DevHub.MyModule = {
+// Attach to PRitty namespace — no import/export
+PRitty.MyModule = {
   create() {
     const el = document.createElement("div");
-    el.setAttribute(DevHub.INJECTED_ATTR, "true"); // tag for cleanup
+    el.setAttribute(PRitty.INJECTED_ATTR, "true"); // tag for cleanup
     // ...
     return el;
   },
@@ -111,7 +111,7 @@ Then add the file path to `manifest.json` in the correct load order position.
 
 ### Adding CSS
 
-- Use `devhub-` prefix for all class names
+- Use `pritty-` prefix for all class names
 - Add to `styles/base.css` for layout/positioning, or `styles/buttons.css` for button styles
 - Use section comments: `/* === Section Name === */`
 - Prefer CSS `flex-direction: column-reverse` over JS DOM manipulation for reordering
@@ -120,9 +120,9 @@ Then add the file path to `manifest.json` in the correct load order position.
 ### Interacting with GitHub's Native UI
 
 ```js
-// 1. Find the native button (excludes DevHub's own buttons)
-const btn = DevHub.Utils.findButtonByText("Button text");
-// or: DevHub.Utils.findButtonByPrefix("Button prefix");
+// 1. Find the native button (excludes PRitty's own buttons)
+const btn = PRitty.Utils.findButtonByText("Button text");
+// or: PRitty.Utils.findButtonByPrefix("Button prefix");
 
 // 2. Scroll into view
 btn.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -133,7 +133,7 @@ setTimeout(() => btn.click(), 400);
 
 ### Adding GitHub DOM Selectors
 
-All GitHub-specific selectors are centralized in `src/core/namespace.js` under `DevHub.Selectors`. When GitHub changes their DOM, update selectors there — never hardcode selectors in individual modules.
+All GitHub-specific selectors are centralized in `src/core/namespace.js` under `PRitty.Selectors`. When GitHub changes their DOM, update selectors there — never hardcode selectors in individual modules.
 
 ---
 
@@ -142,9 +142,9 @@ All GitHub-specific selectors are centralized in `src/core/namespace.js` under `
 - **Do not create unnecessary files.** Edit existing files when possible.
 - **Do not add new folders** unless grouping 2+ related modules (like `action-buttons-bar/`).
 - **CSS stays in global stylesheets** (`base.css` / `buttons.css`) with section comments — no per-module CSS files.
-- **All injected DOM elements** must have `data-devhub-injected` attribute for cleanup.
+- **All injected DOM elements** must have `data-pritty-injected` attribute for cleanup.
 - **File names should match their UI label** or purpose, not internal code names.
-- **Load order matters.** If your module uses `DevHub.Utils`, it must load after `utils.js` in `manifest.json`.
+- **Load order matters.** If your module uses `PRitty.Utils`, it must load after `utils.js` in `manifest.json`.
 - Group related modules into a folder under `src/features/` (e.g., `action-buttons-bar/`).
 - Standalone modules stay in `src/modules/`.
 

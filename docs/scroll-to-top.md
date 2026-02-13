@@ -1,7 +1,7 @@
 # Scroll to Top Button
 
 **Files:** `src/modules/scroll-top.js`, `styles/base.css`
-**Module:** `DevHub.ScrollTop`
+**Module:** `PRitty.ScrollTop`
 
 ## What It Does
 
@@ -12,15 +12,15 @@ A small circular floating button fixed to the bottom-right corner of the page. C
 ### Creation (`create()`)
 
 ```js
-DevHub.ScrollTop = {
+PRitty.ScrollTop = {
   create() {
-    // 1. Guard: skip if .devhub-scroll-top already exists
-    if (document.querySelector(".devhub-scroll-top")) return;
+    // 1. Guard: skip if .pritty-scroll-top already exists
+    if (document.querySelector(".pritty-scroll-top")) return;
 
     // 2. Create button element
     const btn = document.createElement("button");
-    btn.className = "devhub-scroll-top";
-    btn.setAttribute(DevHub.INJECTED_ATTR, "true");  // marks as DevHub element
+    btn.className = "pritty-scroll-top";
+    btn.setAttribute(PRitty.INJECTED_ATTR, "true");  // marks as PRitty element
     btn.setAttribute("aria-label", "Scroll to top");
     btn.innerHTML = /* upward chevron SVG (16x16) */;
 
@@ -41,12 +41,12 @@ The SVG icon is an upward-pointing chevron arrow, defined inline.
 
 - Created once by `content.js` during `init()`
 - The duplicate guard (`querySelector` check) prevents multiple buttons if `create()` is called again
-- Marked with `data-devhub-injected` so it gets cleaned up during re-injection via `inject()` in `content.js`
+- Marked with `data-pritty-injected` so it gets cleaned up during re-injection via `inject()` in `content.js`
 
 ## CSS (in `base.css`)
 
 ```css
-.devhub-scroll-top {
+.pritty-scroll-top {
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -66,12 +66,12 @@ The SVG icon is an upward-pointing chevron arrow, defined inline.
   transition: opacity 0.15s ease;
 }
 
-.devhub-scroll-top:hover {
+.pritty-scroll-top:hover {
   opacity: 1;                   /* fully visible on hover */
 }
 ```
 
 ## Dependencies
 
-- `DevHub.INJECTED_ATTR` — for cleanup tagging
+- `PRitty.INJECTED_ATTR` — for cleanup tagging
 - No other module dependencies (fully standalone)
