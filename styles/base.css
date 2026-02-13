@@ -148,6 +148,12 @@
   accent-color: var(--fgColor-accent, #1f6feb);
 }
 
+/* === File Tree Scroll Spy === */
+.pritty-tree-active .PRIVATE_TreeView-item-content {
+  background: var(--bgColor-accent-muted, rgba(31, 111, 235, 0.1));
+  border-radius: 6px;
+}
+
 /* === Diff Navigation Buttons === */
 .pritty-diff-nav {
   display: flex;

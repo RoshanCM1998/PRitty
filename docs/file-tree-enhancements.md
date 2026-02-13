@@ -4,10 +4,11 @@
 **CSS:** `styles/base.css` (File Tree Enhancements section)
 **Tab:** Files Changed
 
-Two enhancements for the file tree sidebar in the Files Changed tab:
+Three enhancements for the file tree sidebar in the Files Changed tab:
 
 1. **Viewed Checkboxes** — checkboxes in the tree that sync bidirectionally with GitHub's native "Viewed" buttons
 2. **Enhanced File Click** — clicking a file auto-expands collapsed diffs and reveals full content
+3. **Scroll Spy** — highlights the currently visible file in the tree as you scroll through diffs
 
 ---
 
@@ -72,6 +73,24 @@ On file link click (skips folders and checkbox clicks):
 
 ---
 
+## Feature 3: Scroll Spy
+
+### How It Works
+
+An `IntersectionObserver` watches all diff containers (`copilot-diff-entry, div[id^='diff-']`). When a diff enters or exits the top ~30% of the viewport (below the sticky toolbar), the matching tree item gets a highlight class.
+
+**Detection zone:** `rootMargin: "-80px 0px -70% 0px"` — 80px top offset for the sticky toolbar, bottom 70% excluded so only the file you're actively reading is highlighted.
+
+**On intersection change:**
+1. Track which file paths are currently visible (via `data-file-path` on expand buttons)
+2. Remove `pritty-tree-active` from all tree items
+3. Add `pritty-tree-active` to matching tree items
+4. Auto-scroll the sidebar to keep the first active item visible (`scrollIntoView({ block: "nearest" })`)
+
+**Performance:** IntersectionObserver is passive — zero main-thread cost during scroll. A `Map<filePath, treeItem>` is built once at init for O(1) lookups.
+
+---
+
 ## DOM Selectors Used
 
 All defined in `PRitty.Selectors` (`src/core/namespace.js`):
@@ -93,6 +112,7 @@ All defined in `PRitty.Selectors` (`src/core/namespace.js`):
 | Class | Element | Purpose |
 |---|---|---|
 | `.pritty-tree-checkbox` | `<input type="checkbox">` | Viewed checkbox in tree items |
+| `.pritty-tree-active` | `li[role="treeitem"]` | Highlights the currently visible file in the tree |
 
 ---
 
