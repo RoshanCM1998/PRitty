@@ -234,9 +234,8 @@ DevHub.FileTreeEnhancements = (() => {
    * Update a folder checkbox to reflect its children's state.
    */
   function _updateFolderCheckbox(folderItem) {
-    const checkbox = folderItem.querySelector(
-      `:scope > ${SEL.FILE_TREE_ITEM_CONTENT} .${CHECKBOX_CLASS}`
-    );
+    const ownContent = folderItem.querySelector(`:scope > * > ${SEL.FILE_TREE_ITEM_CONTENT}`);
+    const checkbox = ownContent?.querySelector(`.${CHECKBOX_CLASS}`);
     if (!checkbox) return;
 
     const childCheckboxes = folderItem.querySelectorAll(
