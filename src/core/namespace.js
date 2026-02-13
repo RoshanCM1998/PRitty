@@ -31,4 +31,8 @@ PRitty.Selectors = {
   DIFF_FILE_HEADER:       '[class*="DiffFileHeader-module__diff-file-header"]',
   DIFF_EXPAND_ALL_BTN:    '.js-expand-all-difflines-button',
   DIFF_VIEWED_BTN:        'button[class*="MarkAsViewedButton-module"]',
+
+  // PR Files Toolbar (sticky header on Files Changed tab)
+  PR_FILES_TOOLBAR:       'section[class*="PullRequestFilesToolbar-module__toolbar"]',
+  DIFF_CHANGED_LINE:      'code.diff-text.addition, code.diff-text.deletion',
 };
