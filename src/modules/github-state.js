@@ -57,22 +57,23 @@ PRitty.GitHubState = {
    * @returns {{ isDraft: boolean, isMerged: boolean, isClosed: boolean, hasConflicts: boolean, mergeEnabled: boolean, mergeBtn: Element|null }}
    */
   getPRState() {
+    // STATE_INDICATOR works on all tabs for text-based state detection
+    const stateIndicator = document.querySelector(PRitty.Selectors.STATE_INDICATOR);
+    // STATE_LABEL is Conversation tab only — has reviewable_state attribute for draft detection
     const stateLabel = document.querySelector(PRitty.Selectors.STATE_LABEL);
-    const title = stateLabel?.getAttribute("title") || "";
-    const classes = stateLabel?.className || "";
-    const labelText = stateLabel?.textContent?.trim() || "";
+
+    const title = stateIndicator?.getAttribute("title") || "";
+    const labelText = stateIndicator?.textContent?.trim() || "";
 
     const isDraft = stateLabel?.getAttribute("reviewable_state") === "draft"
                  || title.includes("Draft")
                  || labelText.includes("Draft");
 
-    const isMerged = classes.includes("State--merged")
-                  || title.includes("Merged")
-                  || labelText.includes("Merged");
+    const isMerged = labelText.includes("Merged")
+                  || title.includes("Merged");
 
-    const isClosed = classes.includes("State--closed")
-                  || title.includes("Closed")
-                  || labelText.includes("Closed");
+    const isClosed = labelText.includes("Closed")
+                  || title.includes("Closed");
     const hasConflicts = !!document.querySelector(PRitty.Selectors.CONFLICT_INDICATOR);
 
     const mergeBtn =

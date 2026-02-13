@@ -13,6 +13,8 @@ PRitty.Selectors = {
   PAGE_HEADER: "#partial-discussion-header",
   HEADER_ACTIONS: ".gh-header-actions",
   STATE_LABEL: 'span.State[data-view-component="true"]',
+  // Works on all tabs — Conversation tab uses span.State, other tabs use Primer React prc-StateLabel-*
+  STATE_INDICATOR: 'span.State[data-view-component="true"], [class*="StateLabel"]',
 
   // Tabs (two selectors: Primer React role="tab" on Files Changed, ViewComponent a.tabnav-tab on other tabs)
   TAB: 'nav[aria-label*="Pull request"] [role="tab"], nav[aria-label*="Pull request"] a.tabnav-tab',

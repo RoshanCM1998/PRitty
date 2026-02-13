@@ -56,6 +56,32 @@ PRitty.CompleteButton = {
   },
 
   /**
+   * Navigate to Conversation tab (if needed) and click a native GitHub button.
+   * On Conversation tab, finds and clicks immediately.
+   * On other tabs, switches to Conversation and waits for the button to appear.
+   * @param {Function} findButtonFn - Returns the native button element or null
+   */
+  _navigateAndClick(findButtonFn) {
+    if (PRitty.GitHubState.getCurrentTab() === "conversation") {
+      const btn = findButtonFn();
+      if (btn) PRitty.Utils.scrollAndClick(btn);
+      return;
+    }
+    const convTab = PRitty.Utils.findTab("Conversation");
+    if (!convTab) return;
+    convTab.click();
+    const obs = new MutationObserver(() => {
+      const btn = findButtonFn();
+      if (btn) {
+        obs.disconnect();
+        PRitty.Utils.scrollAndClick(btn);
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => obs.disconnect(), 10000);
+  },
+
+  /**
    * Fill dropdown with actions based on current PR state.
    * @param {HTMLElement} dropdown
    * @param {object} state
@@ -67,14 +93,10 @@ PRitty.CompleteButton = {
       dropdown.appendChild(this._item(
         "Reopen PR",
         "Reopen this pull request",
-        () => {
-          const reopenBtn =
-            PRitty.Utils.findButtonByText("Reopen pull request") ||
-            PRitty.Utils.findButtonByPrefix("Reopen");
-          if (reopenBtn) {
-            PRitty.Utils.scrollAndClick(reopenBtn);
-          }
-        }
+        () => this._navigateAndClick(() =>
+          PRitty.Utils.findButtonByText("Reopen pull request") ||
+          PRitty.Utils.findButtonByPrefix("Reopen")
+        )
       ));
       return;
     }
@@ -83,14 +105,10 @@ PRitty.CompleteButton = {
       dropdown.appendChild(this._item(
         "Publish PR",
         "Mark as ready for review",
-        () => {
-          const readyBtn =
-            PRitty.Utils.findButtonByText("Ready for review") ||
-            PRitty.Utils.findButtonByPrefix("Ready for review");
-          if (readyBtn) {
-            PRitty.Utils.scrollAndClick(readyBtn);
-          }
-        }
+        () => this._navigateAndClick(() =>
+          PRitty.Utils.findButtonByText("Ready for review") ||
+          PRitty.Utils.findButtonByPrefix("Ready for review")
+        )
       ));
       return;
     }
@@ -102,13 +120,11 @@ PRitty.CompleteButton = {
       canMerge ? "Squash commits and merge into base" : "Merge is not available yet",
       () => {
         if (!canMerge) return;
-        const mergeBtn =
+        this._navigateAndClick(() =>
           PRitty.Utils.findButtonByPrefix("Squash and merge") ||
           PRitty.Utils.findButtonByPrefix("Merge pull request") ||
-          PRitty.Utils.findButtonByPrefix("Rebase and merge");
-        if (mergeBtn) {
-          PRitty.Utils.scrollAndClick(mergeBtn);
-        }
+          PRitty.Utils.findButtonByPrefix("Rebase and merge")
+        );
       },
       !canMerge
     ));
@@ -116,18 +132,14 @@ PRitty.CompleteButton = {
     dropdown.appendChild(this._item(
       "Convert to draft",
       "Move this PR back to draft",
-      () => {
+      () => this._navigateAndClick(() => {
         const isOwn = (el) => PRitty.Utils.isPRittyElement(el);
-        const el =
-          document.querySelector('a[href*="convert_to_draft"]') ||
+        return document.querySelector('a[href*="convert_to_draft"]') ||
           Array.from(document.querySelectorAll("button"))
             .find((b) => !isOwn(b) && b.textContent.trim().includes("Convert to draft")) ||
           Array.from(document.querySelectorAll("a"))
             .find((a) => !isOwn(a) && a.textContent.trim().includes("Convert to draft"));
-        if (el) {
-          PRitty.Utils.scrollAndClick(el);
-        }
-      }
+      })
     ));
   },
 

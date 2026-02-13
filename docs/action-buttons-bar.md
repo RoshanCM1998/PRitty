@@ -63,7 +63,9 @@ On click: reads fresh state via `PRitty.GitHubState.getPRState()`, populates dro
 
 On every dropdown click, the button re-reads PR state and updates its disabled/merged appearance. This handles cases where a PR is merged or reopened while the page is open.
 
-### Action Delegation
+### Action Delegation (`_navigateAndClick()`)
+
+All actions use `_navigateAndClick(findButtonFn)` which auto-navigates to the **Conversation tab** if needed (native action buttons only exist there). On the Conversation tab it clicks immediately; on other tabs it switches first and uses a `MutationObserver` to wait for the button to appear (10s timeout).
 
 Each action locates the **native GitHub button** and clicks it:
 
