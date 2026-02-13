@@ -12,11 +12,16 @@ PRitty.FileTreeEnhancements = (() => {
   const SEL = PRitty.Selectors;
   const ENHANCED_ATTR = "data-pritty-tree-enhanced";
   const CHECKBOX_CLASS = "pritty-tree-checkbox";
+  const ACTIVE_CLASS = "pritty-tree-active";
 
   /** @type {MutationObserver|null} */
   let _diffObserver = null;
   /** @type {MutationObserver|null} */
   let _treeObserver = null;
+  /** @type {IntersectionObserver|null} */
+  let _scrollSpyObserver = null;
+  /** @type {MutationObserver|null} */
+  let _diffAreaObserver = null;
 
   // ─── Helpers ────────────────────────────────────────────────
 
@@ -373,6 +378,7 @@ PRitty.FileTreeEnhancements = (() => {
     const viewedMap = _parseViewedMap();
 
     _treeObserver = new MutationObserver((mutations) => {
+      let treeChanged = false;
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
           if (node.nodeType !== Node.ELEMENT_NODE) continue;
@@ -383,6 +389,7 @@ PRitty.FileTreeEnhancements = (() => {
             node.matches('li[role="treeitem"]')
           ) {
             _injectCheckbox(node, viewedMap);
+            treeChanged = true;
           }
 
           const nested = node.querySelectorAll
@@ -390,9 +397,12 @@ PRitty.FileTreeEnhancements = (() => {
             : [];
           for (const item of nested) {
             _injectCheckbox(item, viewedMap);
+            treeChanged = true;
           }
         }
       }
+      // Rebuild scroll spy map when new tree items appear
+      if (treeChanged) _buildTreeItemMap();
     });
 
     _treeObserver.observe(treeRoot, { childList: true, subtree: true });
@@ -456,6 +466,128 @@ PRitty.FileTreeEnhancements = (() => {
     });
   }
 
+  // ─── Feature 3: Scroll Spy ─────────────────────────────────
+
+  /** Map<filePath, treeItem> built once for fast lookup. */
+  let _treeItemMap = new Map();
+
+  function _buildTreeItemMap() {
+    _treeItemMap.clear();
+    const treeItems = document.querySelectorAll(SEL.FILE_TREE_ITEM);
+    for (const item of treeItems) {
+      if (_isFolder(item)) continue;
+      const path = _getFilePathFromTreeItem(item);
+      if (path) _treeItemMap.set(path, item);
+    }
+  }
+
+  /** Track which diff containers are already observed. */
+  const _observedContainers = new WeakSet();
+
+  /**
+   * Observe any diff containers that exist but haven't been observed yet.
+   * Safe to call repeatedly — skips already-observed containers.
+   */
+  function _observeExistingDiffs() {
+    if (!_scrollSpyObserver) return;
+    const headers = document.querySelectorAll(SEL.DIFF_FILE_HEADER);
+    for (const h of headers) {
+      const container = h.closest("div[id^='diff-']");
+      if (container && !_observedContainers.has(container)) {
+        _observedContainers.add(container);
+        _scrollSpyObserver.observe(container);
+      }
+    }
+  }
+
+  function _startScrollSpy() {
+    _stopScrollSpy();
+    _buildTreeItemMap();
+
+    // Track which file paths are currently intersecting
+    const visiblePaths = new Set();
+
+    _scrollSpyObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const pathEl = entry.target.querySelector("[data-file-path]");
+          const filePath = pathEl
+            ? pathEl.getAttribute("data-file-path")
+            : null;
+          if (!filePath) continue;
+
+          if (entry.isIntersecting) {
+            visiblePaths.add(filePath);
+          } else {
+            visiblePaths.delete(filePath);
+          }
+        }
+
+        // Update tree highlights
+        for (const [, item] of _treeItemMap) {
+          item.classList.remove(ACTIVE_CLASS);
+        }
+
+        let firstActive = null;
+        for (const path of visiblePaths) {
+          const item = _treeItemMap.get(path);
+          if (item) {
+            item.classList.add(ACTIVE_CLASS);
+            if (!firstActive) firstActive = item;
+          }
+        }
+
+        // Auto-scroll the tree sidebar to keep the active item visible
+        if (firstActive) {
+          firstActive.scrollIntoView({ block: "nearest" });
+        }
+      },
+      { rootMargin: "-80px 0px -70% 0px", threshold: 0 }
+    );
+
+    // Observe any diff containers already present
+    _observeExistingDiffs();
+
+    // Watch for new diff containers being added (handles late-loading diffs)
+    const diffArea =
+      document.querySelector("[data-target='diff-layout.mainContainer']") ||
+      document.querySelector("#diff-holder") ||
+      document.body;
+
+    _diffAreaObserver = new MutationObserver((mutations) => {
+      let found = false;
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          if (
+            node.matches?.(SEL.DIFF_FILE_HEADER) ||
+            node.querySelector?.(SEL.DIFF_FILE_HEADER)
+          ) {
+            found = true;
+          }
+        }
+      }
+      if (found) _observeExistingDiffs();
+    });
+
+    _diffAreaObserver.observe(diffArea, { childList: true, subtree: true });
+  }
+
+  function _stopScrollSpy() {
+    if (_scrollSpyObserver) {
+      _scrollSpyObserver.disconnect();
+      _scrollSpyObserver = null;
+    }
+    if (_diffAreaObserver) {
+      _diffAreaObserver.disconnect();
+      _diffAreaObserver = null;
+    }
+    _treeItemMap.clear();
+    document
+      .querySelectorAll(`.${ACTIVE_CLASS}`)
+      .forEach((el) => el.classList.remove(ACTIVE_CLASS));
+  }
+
   // ─── Public API ────────────────────────────────────────────
 
   function init() {
@@ -473,6 +605,9 @@ PRitty.FileTreeEnhancements = (() => {
 
     // Feature 2: Enhanced file click
     _setupFileClickHandler();
+
+    // Feature 3: Scroll spy (highlight active file in tree)
+    _startScrollSpy();
   }
 
   function destroy() {
@@ -484,6 +619,9 @@ PRitty.FileTreeEnhancements = (() => {
       _treeObserver.disconnect();
       _treeObserver = null;
     }
+
+    // Stop scroll spy
+    _stopScrollSpy();
 
     // Remove all injected checkboxes
     document
