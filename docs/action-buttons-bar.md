@@ -50,15 +50,22 @@ Returns a wrapper containing a button + hidden dropdown:
 
 On click: reads fresh state via `PRitty.GitHubState.getPRState()`, populates dropdown, toggles visibility. Clicking anywhere outside closes the dropdown.
 
-### Context-Aware Dropdown (`_populateDropdown()`)
+### Context-Aware Behavior
 
-| PR State | Actions Shown |
-|----------|--------------|
-| **Merged or Closed** | "No actions available" (disabled) |
+| PR State | Behavior |
+|----------|----------|
+| **Merged** | Button disabled (purple, 50% opacity) — no dropdown |
+| **Closed** | "Reopen PR" — clicks GitHub's native "Reopen pull request" button |
 | **Draft** | "Publish PR" — clicks GitHub's "Ready for review" button |
 | **Open** | "Squash and merge" + "Convert to draft" |
 
-### Action Delegation
+### Dynamic State Updates (`_updateButtonState()`)
+
+On every dropdown click, the button re-reads PR state and updates its disabled/merged appearance. This handles cases where a PR is merged or reopened while the page is open.
+
+### Action Delegation (`_navigateAndClick()`)
+
+All actions use `_navigateAndClick(findButtonFn)` which auto-navigates to the **Conversation tab** if needed (native action buttons only exist there). On the Conversation tab it clicks immediately; on other tabs it switches first and uses a `MutationObserver` to wait for the button to appear (10s timeout).
 
 Each action locates the **native GitHub button** and clicks it:
 
@@ -73,6 +80,10 @@ Each action locates the **native GitHub button** and clicks it:
 
 **Convert to Draft (Open):**
 - Searches: `a[href*="convert_to_draft"]` → buttons with "Convert to draft" text → anchors with same text
+- Uses `scrollAndClick()` — instant scroll + immediate click
+
+**Reopen PR (Closed):**
+- Finds `"Reopen pull request"` button via `findButtonByText()` / `findButtonByPrefix("Reopen")`
 - Uses `scrollAndClick()` — instant scroll + immediate click
 
 ### Dropdown Item Factory (`_item()`)

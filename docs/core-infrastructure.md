@@ -21,6 +21,7 @@ PRitty.Selectors = {
   PAGE_HEADER:        "#partial-discussion-header",
   HEADER_ACTIONS:     ".gh-header-actions",
   STATE_LABEL:        'span.State[data-view-component="true"]',
+  STATE_INDICATOR:    'span.State[data-view-component="true"], [class*="StateLabel"]',  // All tabs
   TAB:                'nav[aria-label*="Pull request"] [role="tab"], nav[aria-label*="Pull request"] a.tabnav-tab',
   SELECTED_TAB:       'nav[aria-label*="Pull request"] [role="tab"][aria-selected="true"], nav[aria-label*="Pull request"] a.tabnav-tab.selected',
   CONFLICT_INDICATOR: '[class*="conflict"], [aria-label*="conflict"]',

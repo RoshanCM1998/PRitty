@@ -23,6 +23,15 @@
   cursor: not-allowed;
 }
 
+/* Merged PR state — purple tint, disabled */
+.pritty-btn-complete--merged {
+  background-color: #8957e5;
+}
+
+.pritty-btn-complete--merged:hover {
+  background-color: #8957e5;
+}
+
 /* Dropdown menu */
 .pritty-dropdown {
   position: absolute;
