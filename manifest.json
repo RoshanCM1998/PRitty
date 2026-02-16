@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "PRitty",
-  "version": "1.1.0",
-  "description": "Brings Azure DevOps-style PR experience to GitHub — quick actions, checks status, and more.",
+  "name": "PRitty: Enhanced GitHub PR UI & Quick Actions",
+  "version": "1.1.1",
+  "description": "Enhance your GitHub Pull Request workflow with quick actions, streamlined status checks, and a more productive code review UI.",
   "permissions": ["activeTab"],
   "content_scripts": [
     {
