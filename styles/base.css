@@ -64,27 +64,42 @@
             Conversation Tab
    ============================================ */
 
-.new-discussion-timeline, .js-check-all-container {
+/* Full-width layout — attribute-contains selector survives hash changes */
+[class*="prc-PageLayout-ContentWrapper"],
+[class*="prc-PageLayout-Content-"],
+.new-discussion-timeline, .js-check-all-container /*old*/
+{
   max-width: 100% !important;
 }
 
-#discussion_bucket {
-  .Layout-main {
-    & > div {
-      display: flex;
-      flex-direction: column-reverse;
+/* --- New DOM: flex + order layout (JS adds these classes) --- */
 
-      .js-discussion {
-        display: flex;
-        flex-direction: column-reverse;
-      }
-    }
-  }
+.pritty-conv-outer {
+  display: flex;
+  flex-direction: column;
 }
 
-/*Description*/
-.js-command-palette-pull-body {
+.pritty-pr-body {
+  order: -10;
   margin-left: 72px !important;
+}
+
+.pritty-conv-timeline {
+  order: 10;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* --- Old DOM fallback (JS adds this class) --- */
+
+.pritty-conv-outer-legacy {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* Hide empty legacy container in new DOM */
+.discussion-timeline-actions:empty {
+  display: none;
 }
 
 .discussion-timeline-actions {
@@ -117,7 +132,7 @@
             Commites Tab
    ============================================ */
 
-#diff-comparison-viewer-container {
+#diff-comparison-viewer-container { /*Same for Conversatioin tab!*/
   max-width: 100% !important;
 }
 
@@ -149,7 +164,7 @@
 }
 
 /* === File Tree Scroll Spy === */
-.pritty-tree-active .PRIVATE_TreeView-item-content {
+.pritty-tree-active [class*="TreeView-item-content"] {
   background: var(--bgColor-accent-muted, rgba(31, 111, 235, 0.1));
   border-radius: 6px;
 }
@@ -194,7 +209,7 @@ ul[aria-label="Select a range of commits"] {
 }
 
 /*Select commits to view Fallback*/
-ul.prc-ActionList-GroupList-V5B3- {
+ul[class*="prc-ActionList-GroupList"] {
   display: flex;
   flex-direction: column-reverse; 
 }

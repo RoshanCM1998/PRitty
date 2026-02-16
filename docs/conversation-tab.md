@@ -7,34 +7,68 @@
 Multiple enhancements to the PR conversation tab to match Azure DevOps-style experience:
 
 1. **Timeline reordering** — newest comments/events appear first
-2. **Hidden noise elements** — labels, milestones, and project update badges removed
-3. **Comment box cleanup** — GitHub suggestion/guideline boxes hidden
-4. **Layout adjustments** — merge actions and comment box repositioned
+2. **Section ordering** — PR body at top, merge box second, comment box third, timeline last
+3. **Hidden noise elements** — labels, milestones, and project update badges removed
+4. **Comment box cleanup** — GitHub suggestion/guideline boxes hidden
 5. **Reviewer name magnification** — reviewer names at larger font size
 
 ---
 
-## 1. Timeline Reordering
+## 1. Timeline & Section Reordering
 
-CSS handles the visual reversal; JS only repositions the PR description.
+### Architecture: Hybrid (JS detection + CSS layout)
+
+JS detects the DOM version (old vs new), finds containers using stable selectors, and injects `pritty-*` CSS classes. CSS then handles all layout via `flex`, `order`, and `column-reverse`. This decouples styling from GitHub's volatile DOM structure.
+
+### DOM Versions
+
+**New DOM (2025+):**
+```
+.pull-discussion-timeline                    ← outer, gets .pritty-conv-outer
+  .js-discussion                             ← timeline, gets .pritty-conv-timeline (order: 10)
+    rails-partial (display: contents)
+      .js-command-palette-pull-body           ← PR body (moved out by JS, gets .pritty-pr-body, order: -10)
+      .js-timeline-item (many)               ← reversed by column-reverse
+      .discussion-timeline-actions            ← EMPTY in new DOM
+  div.tmp-ml-md-6... (merge box)             ← order: 0 (default)
+  rails-partial (display: contents)
+    #issue-comment-box                       ← order: 0 (default)
+```
+
+**Old DOM (legacy fallback):**
+```
+#discussion_bucket
+  .Layout-main
+    > div                                    ← gets .pritty-conv-outer-legacy (column-reverse)
+      .js-discussion                         ← gets .pritty-conv-timeline (column-reverse)
+        .js-command-palette-pull-body         ← moved to .discussion-timeline-actions by JS
+        .js-timeline-item (many)
+      .discussion-timeline-actions            ← has children (merge box + comment box)
+```
 
 ### CSS Approach (in `base.css`)
 
-Uses `flex-direction: column-reverse` on the discussion container and its parent to reverse all children visually. With `column-reverse`, the last DOM child appears first — so the merge box and comment box (which are last in the DOM) naturally float to the top.
+**New DOM:** Uses `flex-direction: column` + `order` properties on the outer container to position sections. Timeline gets `order: 10` (bottom), PR body gets `order: -10` (top), merge/comment box keep default `order: 0`.
 
 ```css
-#discussion_bucket {
-  .Layout-main {
-    & > div {
-      display: flex;
-      flex-direction: column-reverse;
+.pritty-conv-outer {
+  display: flex;
+  flex-direction: column;
+}
+.pritty-pr-body { order: -10; }
+.pritty-conv-timeline {
+  order: 10;
+  display: flex;
+  flex-direction: column-reverse;
+}
+```
 
-      .js-discussion {
-        display: flex;
-        flex-direction: column-reverse;
-      }
-    }
-  }
+**Old DOM:** Uses `column-reverse` on both outer and inner containers (legacy behavior).
+
+```css
+.pritty-conv-outer-legacy {
+  display: flex;
+  flex-direction: column-reverse;
 }
 ```
 
@@ -42,41 +76,36 @@ Uses `flex-direction: column-reverse` on the discussion container and its parent
 
 **Module:** `PRitty.TimelineReorder`
 
-With outer `column-reverse`, `.discussion-timeline-actions` (which contains the merge box and comment box) appears above `.js-discussion`. The JS module moves the PR body from `.js-discussion` into the top of `.discussion-timeline-actions` so it appears above the merge box.
-
 ```js
 PRitty.TimelineReorder = {
   REORDERED_ATTR: "data-pritty-reordered",
 
   apply() {
-    // 1. Find .js-discussion container, skip if already reordered
-    // 2. Locate PR body (.js-command-palette-pull-body)
-    // 3. Prepend PR body into .discussion-timeline-actions (appears above merge box)
-    // 4. Mark with data-pritty-reordered="true" to prevent re-runs
+    // 1. Find .js-discussion, skip if already reordered
+    // 2. Detect DOM version (new: .pull-discussion-timeline exists, .discussion-timeline-actions empty)
+    // 3. Apply CSS classes to outer container and timeline
+    // 4. Move PR body:
+    //    - New DOM: insert before .js-discussion in outer (order: -10 floats to top)
+    //    - Old DOM: prepend to .discussion-timeline-actions
+    // 5. Mark with data-pritty-reordered="true"
   }
 };
 ```
 
-Only **1 DOM mutation** is performed (prepending the PR body). All other reordering is handled by CSS.
+Only **1 DOM mutation** (moving PR body). All other ordering handled by CSS.
 
-**Re-application:** The MutationObserver in `content.js` watches for the discussion container losing its `data-pritty-reordered` attribute (happens during GitHub SPA navigation) and re-applies:
-
-```js
-const discussion = document.querySelector(".js-discussion");
-if (discussion && !discussion.hasAttribute(PRitty.TimelineReorder.REORDERED_ATTR)) {
-  PRitty.TimelineReorder.apply();
-}
-```
+**Re-application:** The MutationObserver in `content.js` watches for `.js-discussion` losing its `data-pritty-reordered` attribute and re-applies.
 
 ### Key DOM Targets
 
-| Selector | Element |
-|----------|---------|
-| `.js-discussion` | Main conversation timeline container |
-| `.js-command-palette-pull-body` | PR description/body (prepended into `.discussion-timeline-actions` to appear at top) |
-| `.discussion-timeline-actions` | Container for merge box + comment box (appears at top via outer column-reverse) |
-| `#issue-comment-box` | New comment input area (inside `.discussion-timeline-actions`) |
-| `.js-timeline-item` | Individual timeline entries (reversed by CSS) |
+| Selector | Element | Stability |
+|----------|---------|-----------|
+| `.pull-discussion-timeline` | Outer container (new DOM) | Stable (behavior class) |
+| `.js-discussion` | Timeline container | Stable (behavior class) |
+| `.js-command-palette-pull-body` | PR description body | Stable (behavior class) |
+| `#issue-comment-box` | Comment input area | Stable (ID) |
+| `.discussion-timeline-actions` | Legacy merge/comment container (empty in new DOM) | Stable but role changed |
+| `[class*="prc-PageLayout-ContentWrapper"]` | Page layout wrapper | Uses attribute-contains to survive hash changes |
 
 ---
 
@@ -91,8 +120,6 @@ Timeline badges for labels, milestones, and project updates are hidden:
   display: none !important;
 }
 ```
-
-These are the small "added label X" / "changed milestone" entries that clutter the conversation.
 
 ---
 
@@ -109,26 +136,7 @@ GitHub shows suggestion and guideline boxes below the comment input. These are h
 
 ---
 
-## 4. Layout Adjustments (in `base.css`)
-
-The merge actions area and comment box are repositioned with a negative left margin to align properly after the reorder:
-
-```css
-.discussion-timeline-actions {
-  margin-left: -56px;
-  border-top: none !important;
-}
-
-#issue-comment-box {
-  margin-left: -56px;
-}
-```
-
----
-
-## 5. Reviewer Name Magnification (in `base.css`)
-
-Reviewer names in the "reviewers updated" timeline entries are displayed at a larger size:
+## 4. Reviewer Name Magnification (in `base.css`)
 
 ```css
 [data-channel-event-name="reviewers_updated"] > form > span {
@@ -140,5 +148,6 @@ Reviewer names in the "reviewers updated" timeline entries are displayed at a la
 
 ## Dependencies
 
-- `PRitty.TimelineReorder.REORDERED_ATTR` — used by `content.js` MutationObserver to detect when re-application is needed
-- No dependency on other PRitty modules (reads DOM directly)
+- `PRitty.Selectors.CONV_*` — centralized selectors in `src/core/namespace.js`
+- `PRitty.TimelineReorder.REORDERED_ATTR` — used by `content.js` MutationObserver
+- No dependency on other PRitty modules
