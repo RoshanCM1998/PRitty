@@ -27,12 +27,19 @@ PRitty.Selectors = {
   FILE_TREE_SIDEBAR:      '#pr-file-tree',
   FILE_TREE_ROOT:         '#pr-file-tree ul[role="tree"]',
   FILE_TREE_ITEM:         '#pr-file-tree li[role="treeitem"]',
-  FILE_TREE_ITEM_CONTENT: '.PRIVATE_TreeView-item-content',
+  FILE_TREE_ITEM_CONTENT: '[class*="TreeView-item-content"]',
 
   // Diff containers
   DIFF_FILE_HEADER:       '[class*="DiffFileHeader-module__diff-file-header"]',
   DIFF_EXPAND_ALL_BTN:    '.js-expand-all-difflines-button',
   DIFF_VIEWED_BTN:        'button[class*="MarkAsViewedButton-module"]',
+
+  // Conversation tab containers
+  CONV_OUTER:       ".pull-discussion-timeline",
+  CONV_OUTER_OLD:   "#discussion_bucket .Layout-main > div",
+  CONV_TIMELINE:    ".js-discussion",
+  CONV_PR_BODY:     ".js-command-palette-pull-body",
+  CONV_COMMENT_BOX: "#issue-comment-box",
 
   // PR Files Toolbar (sticky header on Files Changed tab)
   PR_FILES_TOOLBAR:       'section[class*="PullRequestFilesToolbar-module__toolbar"]',
