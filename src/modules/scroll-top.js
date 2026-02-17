@@ -23,3 +23,4 @@ PRitty.ScrollTop = {
     document.body.appendChild(btn);
   },
 };
+// GoGo Top!

@@ -6,7 +6,7 @@
 PRitty.ReviewButton = {
 
   /**
-   * Build and return the Submit Review button element.
+   * Build and return the Submit Review button element. Hee Hee Hee
    * @returns {HTMLButtonElement}
    */
   create() {
