@@ -46,7 +46,7 @@ PRitty.CompleteButton = {
   },
 
   /**
-   * Update button appearance based on PR state.
+   * Update button appearance based on PR state. Ok Then ?
    * @param {HTMLElement} btn
    * @param {object} state
    */

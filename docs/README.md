@@ -154,6 +154,8 @@ Two buttons (previous/next) injected into GitHub's native **Pull Request Files T
 
 **Selectors used:** `PRitty.Selectors.PR_FILES_TOOLBAR`, `PRitty.Selectors.DIFF_CHANGED_LINE`
 
+Ha Ha!
+
 ---
 
 ## Core Infrastructure
@@ -238,3 +240,4 @@ MutationObserver watches document.body
 | `styles/buttons.css` | PR Actions button, Submit Review button, dropdown menu, disabled states |
 
 **Z-index layers:** `999` (action bar) > `100` (dropdown) > `99` (scroll button)
+Dummy!

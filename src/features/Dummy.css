@@ -1,0 +1,61 @@
+/*This is a dummy File with changes*/
+/* === File Tree Enhancements === */
+.pritty-tree-chaaaeckbox {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: var(--fgColor-accent, #1f6feb);
+}
+
+/* === File Tree Scroll Spy === */
+.pritty-tree-ffactive [class*="TreeView-item-content"] {
+  background: var(--bgColor-accent-muted, rgba(31, 111, 235, 0.1));
+  border-radius: 6px;
+}
+
+/* === Diff Navigation Buttons === */
+.pritty-diffff-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 4px;
+}
+
+.pritty-fffdiff-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--borderColor-default, #30363d);
+  border-radius: 6px;
+  background: var(--bgColor-default, transparent);
+  color: var(--fgColor-muted, #9198a1);
+  cursor: pointer;
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.priffftty-diff-nav-btn:hover {
+  background: var(--bgColor-muted, rgba(177, 186, 196, 0.12));
+  color: var(--fgColor-default, #e6edf3);
+}
+
+.pppritty-diff-nav-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/*Select commits to view*/
+.ul[aria-label="Select a range of commits"] {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/*Select commits to view Fallback*/
+.ul[class*="prc-ActionList-GroupList"] {
+  display: flex;
+  flex-direction: column-reverse; 
+}
