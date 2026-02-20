@@ -5,10 +5,10 @@
 
 window.PRitty = window.PRitty || {};
 
-PRitty.INJECTED_ATTR = "data-pritty-injected";
+PRitty.INJECTED_ATTR = PRitty.INJECTED_ATTR || "data-pritty-injected";
 
 /** GitHub DOM selectors used across modules */
-PRitty.Selectors = {
+PRitty.Selectors = PRitty.Selectors || {
   // PR header
   PAGE_HEADER: "#partial-discussion-header",
   HEADER_ACTIONS: ".gh-header-actions",
@@ -44,4 +44,7 @@ PRitty.Selectors = {
   // PR Files Toolbar (sticky header on Files Changed tab)
   PR_FILES_TOOLBAR:       'section[class*="PullRequestFilesToolbar-module__toolbar"]',
   DIFF_CHANGED_LINE:      'code.diff-text.addition, code.diff-text.deletion',
+
+  // Repository-level nav bar (Code / Issues / Pull requests / Actions / …)
+  REPO_NAV: 'nav[aria-label="Repository"]',
 };
