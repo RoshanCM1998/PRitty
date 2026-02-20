@@ -2,6 +2,12 @@
    PRitty — Action Button Styles
    ============================================ */
 
+.pritty-actions {
+  button {
+    height: 25px;
+  }
+}
+
 /* Complete PR wrapper (positions dropdown) */
 .pritty-complete-wrapper {
   position: relative;
