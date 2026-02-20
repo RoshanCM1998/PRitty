@@ -12,15 +12,15 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 
 | # | Feature | Code Location | Docs |
 |---|---------|--------------|------|
-| 1 | [**Action Buttons Bar**](#1-action-buttons-bar) | `src/features/action-buttons-bar/` | [action-buttons-bar.md](./action-buttons-bar.md) |
-| 2 | [**Scroll to Top**](#2-scroll-to-top-button) | `src/modules/scroll-top.js`, `styles/base.css` | [scroll-to-top.md](./scroll-to-top.md) |
-| 3 | [**Conversation Tab Changes**](#3-conversation-tab-changes) | `src/modules/timeline-reorder.js`, `styles/base.css` | [conversation-tab.md](./conversation-tab.md) |
+| 1 | [**Action Buttons Bar**](#1-action-buttons-bar) | `src/modules/PR/action-buttons-bar/` | [action-buttons-bar.md](./action-buttons-bar.md) |
+| 2 | [**Scroll to Top**](#2-scroll-to-top-button) | `src/modules/PR/scroll-top.js`, `styles/base.css` | [scroll-to-top.md](./scroll-to-top.md) |
+| 3 | [**Conversation Tab Changes**](#3-conversation-tab-changes) | `src/modules/PR/Conversation/timeline-reorder.js`, `styles/base.css` | [conversation-tab.md](./conversation-tab.md) |
 | 4 | [**Commits Tab Changes**](#4-commits-tab-changes) | `styles/base.css` | Inline below |
 | 5 | [**Files Changed Tab Changes**](#5-files-changed-tab-changes) | `styles/base.css` | Inline below |
-| 6 | [**File Tree Enhancements**](#6-file-tree-enhancements) | `src/features/file-tree-enhancements/` | [file-tree-enhancements.md](./file-tree-enhancements.md) |
-| 7 | [**Diff Navigation**](#7-diff-navigation) | `src/modules/diff-nav.js`, `styles/base.css` | Inline below |
-| 8 | [**Split Diff Resizer**](#8-split-diff-resizer) | `src/modules/split-diff-resizer.js`, `styles/base.css` | [split-diff-resizer.md](./split-diff-resizer.md) |
-| — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
+| 6 | [**File Tree Enhancements**](#6-file-tree-enhancements) | `src/modules/PR/File Changes/` | [file-tree-enhancements.md](./file-tree-enhancements.md) |
+| 7 | [**Diff Navigation**](#7-diff-navigation) | `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` | Inline below |
+| 8 | [**Split Diff Resizer**](#8-split-diff-resizer) | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` | [split-diff-resizer.md](./split-diff-resizer.md) |
+| — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/PR/action-buttons-bar/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
 
@@ -31,7 +31,7 @@ A floating bar fixed to the **top-right corner** of the page containing two butt
 - **PR Actions** (green) — context-aware dropdown with merge, publish, or convert-to-draft actions depending on PR state
 - **Submit Review** (blue) — navigates to Files Changed tab and opens the native review dialog
 
-**Code:** `src/features/action-buttons-bar/` (dedicated folder)
+**Code:** `src/modules/PR/action-buttons-bar/` (dedicated folder)
 - `pr-actions-button.js` — PR Actions dropdown button + context-aware actions
 - `review-button.js` — Submit Review button + tab switching logic
 - `header-actions.js` — assembles both buttons into the floating bar container
@@ -46,7 +46,7 @@ A floating bar fixed to the **top-right corner** of the page containing two butt
 
 A circular floating button fixed to the **bottom-right corner**. Clicking it smooth-scrolls the page to the top. Starts at 60% opacity, fully visible on hover.
 
-**Code:** `src/modules/scroll-top.js`, `styles/base.css`
+**Code:** `src/modules/PR/scroll-top.js`, `styles/base.css`
 
 **Detailed docs:** [scroll-to-top.md](./scroll-to-top.md)
 
@@ -62,7 +62,7 @@ Multiple enhancements to the PR conversation tab:
 - **Merge actions repositioning** — merge area and comment box get `margin-left: -56px` adjustment
 - **Reviewer name magnification** — reviewer names displayed at `1.25rem` font size
 
-**Code:** `src/modules/timeline-reorder.js`, `styles/base.css` (Conversation Tab section)
+**Code:** `src/modules/PR/Conversation/timeline-reorder.js`, `styles/base.css` (Conversation Tab section)
 
 **Detailed docs:** [conversation-tab.md](./conversation-tab.md)
 
@@ -134,7 +134,7 @@ Two JS-based enhancements for the file tree sidebar in the Files Changed tab:
 - **Viewed checkboxes** — each file and folder in the tree gets a checkbox that syncs bidirectionally with GitHub's native "Viewed" buttons
 - **Enhanced file click** — clicking a file auto-expands collapsed diffs and reveals full file content
 
-**Code:** `src/features/file-tree-enhancements/file-tree-enhancements.js`, `styles/base.css`
+**Code:** `src/modules/PR/File Changes/file-tree-enhancements.js`, `styles/base.css`
 
 **Detailed docs:** [file-tree-enhancements.md](./file-tree-enhancements.md)
 
@@ -151,7 +151,7 @@ Two buttons (previous/next) injected into GitHub's native **Pull Request Files T
 - Groups consecutive changed `tr.diff-line-row` elements into "hunks"
 - Navigates to the first row of each hunk, with offset for the sticky toolbar
 
-**Code:** `src/modules/diff-nav.js`, `styles/base.css` (Diff Navigation Buttons section)
+**Code:** `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` (Diff Navigation Buttons section)
 
 **Selectors used:** `PRitty.Selectors.PR_FILES_TOOLBAR`, `PRitty.Selectors.DIFF_CHANGED_LINE`
 
@@ -166,7 +166,7 @@ A draggable vertical separator between the left (old code) and right (new code) 
 - Ratio is preserved as you scroll; lazily-loaded tables are pre-resized at the current ratio
 - Switching to unified view destroys handles and resets col widths; switching back re-injects them
 
-**Code:** `src/modules/split-diff-resizer.js`, `styles/base.css` (Split Diff Resizer section)
+**Code:** `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` (Split Diff Resizer section)
 
 **Detailed docs:** [split-diff-resizer.md](./split-diff-resizer.md)
 
@@ -181,7 +181,7 @@ Shared modules that all features depend on. Full details in [core-infrastructure
 | Namespace | `src/core/namespace.js` | Creates `window.PRitty` global + `PRitty.Selectors` (GitHub DOM selectors) |
 | Icons | `src/core/icons.js` | SVG icon strings (`merge`, `review`, `check`, `x`, `pending`, `chevronUp`, `chevronDown`) |
 | Utils | `src/core/utils.js` | DOM helpers: `waitForElement`, `findTab`, `findButtonByText`, `findButtonByPrefix`, `isPRittyElement` |
-| GitHub State | `src/modules/github-state.js` | Reads live PR state: `getChecksInfo()`, `getPRState()`, `getCurrentTab()` |
+| GitHub State | `src/modules/PR/action-buttons-bar/github-state.js` | Reads live PR state: `getChecksInfo()`, `getPRState()`, `getCurrentTab()` |
 | Entry Point | `src/content.js` | Bootstraps everything, handles SPA re-injection via MutationObserver |
 
 ---
@@ -189,30 +189,31 @@ Shared modules that all features depend on. Full details in [core-infrastructure
 ## Project Structure
 
 ```
-manifest.json                          ← Extension config, load order, URL matching
+manifest.json                              ← Extension config, load order, URL matching
 ├── src/
 │   ├── core/
-│   │   ├── namespace.js               ← Global PRitty namespace + DOM selectors
-│   │   ├── icons.js                   ← SVG icon library
-│   │   └── utils.js                   ← Shared DOM helpers
+│   │   ├── namespace.js                   ← Global PRitty namespace + DOM selectors
+│   │   ├── icons.js                       ← SVG icon library
+│   │   └── utils.js                       ← Shared DOM helpers
 │   ├── modules/
-│   │   ├── github-state.js            ← Reads PR state from GitHub DOM
-│   │   ├── timeline-reorder.js        ← JS timeline reversal (Feature 3)
-│   │   ├── scroll-top.js             ← Scroll-to-top button (Feature 2)
-│   │   ├── diff-nav.js              ← Diff hunk navigation buttons (Feature 7)
-│   │   └── split-diff-resizer.js    ← Draggable split view separator (Feature 8)
-│   ├── features/
-│   │   ├── action-buttons-bar/        ← Feature 1 (dedicated folder)
-│   │   │   ├── pr-actions-button.js   ← PR Actions dropdown
-│   │   │   ├── review-button.js       ← Submit Review button
-│   │   │   └── header-actions.js      ← Assembles the floating bar
-│   │   └── file-tree-enhancements/    ← Feature 6 (dedicated folder)
-│   │       └── file-tree-enhancements.js ← Viewed checkboxes + enhanced file click
-│   └── content.js                     ← Entry point, lifecycle manager
+│   │   └── PR/                            ← All PR-page modules
+│   │       ├── Conversation/              ← Conversation-tab features
+│   │       │   └── timeline-reorder.js   ← JS timeline reversal (Feature 3)
+│   │       ├── File Changes/              ← Files-Changed-tab features
+│   │       │   ├── diff-nav-buttons.js   ← Diff hunk navigation buttons (Feature 7)
+│   │       │   ├── file-tree-enhancements.js ← Viewed checkboxes + enhanced file click (Feature 6)
+│   │       │   └── split-diff-resizer.js ← Draggable split view separator (Feature 8)
+│   │       ├── action-buttons-bar/        ← Floating action bar (Feature 1)
+│   │       │   ├── github-state.js        ← Reads live PR state (PR Actions + Submit Review)
+│   │       │   ├── pr-actions-button.js   ← PR Actions dropdown
+│   │       │   ├── review-button.js       ← Submit Review button
+│   │       │   └── header-actions.js      ← Assembles the floating bar
+│   │       └── scroll-top.js             ← Scroll-to-top button (Feature 2)
+│   └── content.js                         ← Entry point, lifecycle manager
 ├── styles/
-│   ├── base.css                       ← Layout + Conversation/Commits/Files tab CSS (Features 2-5)
-│   └── buttons.css                    ← Button & dropdown styling (Feature 1)
-└── icons/                             ← Extension icons (16/48/128px)
+│   ├── base.css                           ← Layout + Conversation/Commits/Files tab CSS (Features 2-5)
+│   └── buttons.css                        ← Button & dropdown styling (Feature 1)
+└── icons/                                 ← Extension icons (16/48/128px)
 ```
 
 ### Script Load Order (defined in `manifest.json`)
@@ -220,12 +221,11 @@ manifest.json                          ← Extension config, load order, URL mat
 Injected at `document_idle` in this exact sequence:
 
 1. `namespace.js` → `icons.js` → `utils.js` (core)
-2. `github-state.js` (state reader)
-3. `pr-actions-button.js` → `review-button.js` (action bar modules)
-4. `timeline-reorder.js` → `scroll-top.js` → `diff-nav.js` → `split-diff-resizer.js` (other modules)
-5. `file-tree-enhancements.js` (file tree features)
-6. `header-actions.js` (feature assembly)
-7. `content.js` (bootstrap)
+2. `PR/action-buttons-bar/github-state.js` (state reader)
+3. `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` (action bar modules)
+4. `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js` (PR modules)
+5. `PR/action-buttons-bar/header-actions.js` (feature assembly)
+6. `content.js` (bootstrap)
 
 CSS (`base.css`, `buttons.css`) is injected before any JS runs.
 
