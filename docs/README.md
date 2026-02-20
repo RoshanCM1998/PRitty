@@ -19,6 +19,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 5 | [**Files Changed Tab Changes**](#5-files-changed-tab-changes) | `styles/base.css` | Inline below |
 | 6 | [**File Tree Enhancements**](#6-file-tree-enhancements) | `src/features/file-tree-enhancements/` | [file-tree-enhancements.md](./file-tree-enhancements.md) |
 | 7 | [**Diff Navigation**](#7-diff-navigation) | `src/modules/diff-nav.js`, `styles/base.css` | Inline below |
+| 8 | [**Split Diff Resizer**](#8-split-diff-resizer) | `src/modules/split-diff-resizer.js`, `styles/base.css` | [split-diff-resizer.md](./split-diff-resizer.md) |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -156,6 +157,21 @@ Two buttons (previous/next) injected into GitHub's native **Pull Request Files T
 
 ---
 
+### 8. Split Diff Resizer
+
+A draggable vertical separator between the left (old code) and right (new code) panes in GitHub PR **split view** — matching the Azure DevOps experience.
+
+- **Drag** the handle to resize both panes simultaneously across all diff tables
+- **Double-click** resets to 50/50
+- Ratio is preserved as you scroll; lazily-loaded tables are pre-resized at the current ratio
+- Switching to unified view destroys handles and resets col widths; switching back re-injects them
+
+**Code:** `src/modules/split-diff-resizer.js`, `styles/base.css` (Split Diff Resizer section)
+
+**Detailed docs:** [split-diff-resizer.md](./split-diff-resizer.md)
+
+---
+
 ## Core Infrastructure
 
 Shared modules that all features depend on. Full details in [core-infrastructure.md](./core-infrastructure.md).
@@ -183,7 +199,8 @@ manifest.json                          ← Extension config, load order, URL mat
 │   │   ├── github-state.js            ← Reads PR state from GitHub DOM
 │   │   ├── timeline-reorder.js        ← JS timeline reversal (Feature 3)
 │   │   ├── scroll-top.js             ← Scroll-to-top button (Feature 2)
-│   │   └── diff-nav.js              ← Diff hunk navigation buttons (Feature 7)
+│   │   ├── diff-nav.js              ← Diff hunk navigation buttons (Feature 7)
+│   │   └── split-diff-resizer.js    ← Draggable split view separator (Feature 8)
 │   ├── features/
 │   │   ├── action-buttons-bar/        ← Feature 1 (dedicated folder)
 │   │   │   ├── pr-actions-button.js   ← PR Actions dropdown
@@ -205,7 +222,7 @@ Injected at `document_idle` in this exact sequence:
 1. `namespace.js` → `icons.js` → `utils.js` (core)
 2. `github-state.js` (state reader)
 3. `pr-actions-button.js` → `review-button.js` (action bar modules)
-4. `timeline-reorder.js` → `scroll-top.js` → `diff-nav.js` (other modules)
+4. `timeline-reorder.js` → `scroll-top.js` → `diff-nav.js` → `split-diff-resizer.js` (other modules)
 5. `file-tree-enhancements.js` (file tree features)
 6. `header-actions.js` (feature assembly)
 7. `content.js` (bootstrap)
