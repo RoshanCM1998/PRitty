@@ -211,5 +211,31 @@ ul[aria-label="Select a range of commits"] {
 /*Select commits to view Fallback*/
 ul[class*="prc-ActionList-GroupList"] {
   display: flex;
-  flex-direction: column-reverse; 
+  flex-direction: column-reverse;
+}
+
+/* === Split Diff Resizer === */
+.pritty-split-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  transform: translateX(-6px);
+  cursor: col-resize;
+  z-index: 10;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.pritty-split-handle-line {
+  width: 2px;
+  background: transparent;
+  transition: background 0.1s ease;
+  pointer-events: none;
+}
+
+.pritty-split-handle:hover .pritty-split-handle-line,
+.pritty-split-handle.pritty-dragging .pritty-split-handle-line {
+  background: var(--fgColor-accent, #1f6feb);
 }

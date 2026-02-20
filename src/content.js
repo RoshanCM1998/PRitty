@@ -53,6 +53,18 @@
       if (filesToolbar && !filesToolbar.hasAttribute(PRitty.DiffNav.ENHANCED_ATTR)) {
         PRitty.DiffNav.init();
       }
+
+      // Split diff resizer (Files Changed tab, split view)
+      const diffsList = document.querySelector('[data-testid="progressive-diffs-list"]');
+      if (diffsList) {
+        const isSplit = !!document.querySelector("td.right-side-diff-cell");
+        const isEnhanced = diffsList.hasAttribute(PRitty.SplitDiffResizer.ENHANCED_ATTR);
+        if (isSplit && !isEnhanced) {
+          PRitty.SplitDiffResizer.init();
+        } else if (!isSplit && isEnhanced) {
+          PRitty.SplitDiffResizer.destroy();
+        }
+      }
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
