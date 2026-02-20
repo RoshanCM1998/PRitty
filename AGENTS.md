@@ -10,20 +10,20 @@ Before writing any code, complete these steps in order:
 
 | Feature | Read This Doc First | Code Files |
 |---------|-------------------|------------|
-| PR Actions button | `docs/action-buttons-bar.md` | `src/features/action-buttons-bar/pr-actions-button.js` |
-| Submit Review button | `docs/action-buttons-bar.md` | `src/features/action-buttons-bar/review-button.js` |
-| Floating bar assembly | `docs/action-buttons-bar.md` | `src/features/action-buttons-bar/header-actions.js` |
-| Scroll to Top | `docs/scroll-to-top.md` | `src/modules/scroll-top.js` |
-| Conversation tab | `docs/conversation-tab.md` | `src/modules/timeline-reorder.js`, `styles/base.css` |
+| PR Actions button | `docs/action-buttons-bar.md` | `src/modules/PR/action-buttons-bar/pr-actions-button.js` |
+| Submit Review button | `docs/action-buttons-bar.md` | `src/modules/PR/action-buttons-bar/review-button.js` |
+| Floating bar assembly | `docs/action-buttons-bar.md` | `src/modules/PR/action-buttons-bar/header-actions.js` |
+| Scroll to Top | `docs/scroll-to-top.md` | `src/modules/PR/scroll-top.js` |
+| Conversation tab | `docs/conversation-tab.md` | `src/modules/PR/Conversation/timeline-reorder.js`, `styles/base.css` |
 | Commits tab | `docs/README.md` (#4) | `styles/base.css` (Commits Tab section) |
 | Files Changed tab | `docs/README.md` (#5) | `styles/base.css` (Files Changes Tab section) |
-| File Tree Enhancements | `docs/file-tree-enhancements.md` | `src/features/file-tree-enhancements/file-tree-enhancements.js` |
-| Diff Navigation | `docs/README.md` (#7) | `src/modules/diff-nav.js`, `styles/base.css` |
-| Split Diff Resizer | `docs/split-diff-resizer.md` | `src/modules/split-diff-resizer.js`, `styles/base.css` |
+| File Tree Enhancements | `docs/file-tree-enhancements.md` | `src/modules/PR/File Changes/file-tree-enhancements.js` |
+| Diff Navigation | `docs/README.md` (#7) | `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` |
+| Split Diff Resizer | `docs/split-diff-resizer.md` | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` |
 | Namespace / selectors | `docs/core-infrastructure.md` | `src/core/namespace.js` |
 | Utils | `docs/core-infrastructure.md` | `src/core/utils.js` |
 | Icons | `docs/core-infrastructure.md` | `src/core/icons.js` |
-| GitHub state reader | `docs/core-infrastructure.md` | `src/modules/github-state.js` |
+| GitHub state reader | `docs/core-infrastructure.md` | `src/modules/PR/action-buttons-bar/github-state.js` |
 | Entry point / lifecycle | `docs/core-infrastructure.md` | `src/content.js` |
 | Button styling | `docs/action-buttons-bar.md` | `styles/buttons.css` |
 | Layout / tab styling | Relevant feature doc | `styles/base.css` |
@@ -67,8 +67,11 @@ PRitty.ModuleName = {
 
 ```
 src/core/          → Shared infrastructure (namespace, icons, utils)
-src/modules/       → Standalone feature modules (scroll-top, timeline-reorder, github-state)
-src/features/      → Feature folders grouping related modules
+src/modules/PR/    → All PR-page modules, organised by sub-screen
+  Conversation/    → Conversation-tab features (timeline-reorder)
+  File Changes/    → Files-Changed-tab features (diff-nav-buttons, file-tree-enhancements, split-diff-resizer)
+  action-buttons-bar/ → Floating action bar (github-state, pr-actions-button, review-button, header-actions)
+  scroll-top.js    → Scroll-to-top button
 src/content.js     → Entry point (IIFE, bootstraps everything)
 styles/            → Global CSS (base.css for layout, buttons.css for buttons)
 ```
@@ -78,9 +81,9 @@ styles/            → Global CSS (base.css for layout, buttons.css for buttons)
 Defined in `manifest.json`. Order matters — each module depends on prior ones:
 
 1. Core: `namespace.js` → `icons.js` → `utils.js`
-2. State: `github-state.js`
-3. Modules: `pr-actions-button.js` → `review-button.js` → `timeline-reorder.js` → `scroll-top.js`
-4. Assembly: `header-actions.js`
+2. State: `PR/action-buttons-bar/github-state.js`
+3. Modules: `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` → `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js`
+4. Assembly: `PR/action-buttons-bar/header-actions.js`
 5. Bootstrap: `content.js`
 
 When adding new modules, insert them in the correct position in this chain.
@@ -139,13 +142,12 @@ All GitHub-specific selectors are centralized in `src/core/namespace.js` under `
 ## Rules
 
 - **Do not create unnecessary files.** Edit existing files when possible.
-- **Do not add new folders** unless grouping 2+ related modules (like `action-buttons-bar/`).
+- **Do not add new folders** unless you are adding a new screen context (peer of `PR/`) or a sub-screen with 2+ modules (peer of `Conversation/`).
 - **CSS stays in global stylesheets** (`base.css` / `buttons.css`) with section comments — no per-module CSS files.
 - **All injected DOM elements** must have `data-pritty-injected` attribute for cleanup.
 - **File names should match their UI label** or purpose, not internal code names.
 - **Load order matters.** If your module uses `PRitty.Utils`, it must load after `utils.js` in `manifest.json`.
-- Group related modules into a folder under `src/features/` (e.g., `action-buttons-bar/`).
-- Standalone modules stay in `src/modules/`.
+- New PR-wide modules go in `src/modules/PR/`. Screen-specific modules go in the matching sub-folder (`Conversation/`, `File Changes/`, etc.).
 
 ---
 
