@@ -349,17 +349,13 @@ PRitty.FileTreeEnhancements = (() => {
 
     if (!filePath) return;
 
-    // Find matching tree item
-    const treeItems = document.querySelectorAll(SEL.FILE_TREE_ITEM);
-    for (const item of treeItems) {
-      if (_isFolder(item)) continue;
-      if (_getFilePathFromTreeItem(item) === filePath) {
-        const checkbox = item.querySelector(`.${CHECKBOX_CLASS}`);
-        if (checkbox) {
-          checkbox.checked = isPressed;
-          _updateAncestorFolders(item);
-        }
-        break;
+    // O(1) lookup via pre-built map instead of O(n) querySelectorAll scan
+    const item = _treeItemMap.get(filePath);
+    if (item) {
+      const checkbox = item.querySelector(`.${CHECKBOX_CLASS}`);
+      if (checkbox) {
+        checkbox.checked = isPressed;
+        _updateAncestorFolders(item);
       }
     }
   }
@@ -470,9 +466,12 @@ PRitty.FileTreeEnhancements = (() => {
 
   /** Map<filePath, treeItem> built once for fast lookup. */
   let _treeItemMap = new Map();
+  /** Set of treeItem elements currently highlighted as active. */
+  let _activeItems = new Set();
 
   function _buildTreeItemMap() {
     _treeItemMap.clear();
+    _activeItems.clear();
     const treeItems = document.querySelectorAll(SEL.FILE_TREE_ITEM);
     for (const item of treeItems) {
       if (_isFolder(item)) continue;
@@ -509,37 +508,34 @@ PRitty.FileTreeEnhancements = (() => {
 
     _scrollSpyObserver = new IntersectionObserver(
       (entries) => {
+        let firstAdded = null;
+
         for (const entry of entries) {
           const pathEl = entry.target.querySelector("[data-file-path]");
-          const filePath = pathEl
-            ? pathEl.getAttribute("data-file-path")
-            : null;
+          const filePath = pathEl ? pathEl.getAttribute("data-file-path") : null;
           if (!filePath) continue;
+
+          const item = _treeItemMap.get(filePath);
 
           if (entry.isIntersecting) {
             visiblePaths.add(filePath);
+            if (item && !_activeItems.has(item)) {
+              item.classList.add(ACTIVE_CLASS);
+              _activeItems.add(item);
+              if (!firstAdded) firstAdded = item;
+            }
           } else {
             visiblePaths.delete(filePath);
+            if (item && _activeItems.has(item)) {
+              item.classList.remove(ACTIVE_CLASS);
+              _activeItems.delete(item);
+            }
           }
         }
 
-        // Update tree highlights
-        for (const [, item] of _treeItemMap) {
-          item.classList.remove(ACTIVE_CLASS);
-        }
-
-        let firstActive = null;
-        for (const path of visiblePaths) {
-          const item = _treeItemMap.get(path);
-          if (item) {
-            item.classList.add(ACTIVE_CLASS);
-            if (!firstActive) firstActive = item;
-          }
-        }
-
-        // Auto-scroll the tree sidebar to keep the active item visible
-        if (firstActive) {
-          firstActive.scrollIntoView({ block: "nearest" });
+        // Auto-scroll the tree sidebar to keep the first newly-active item visible
+        if (firstAdded) {
+          firstAdded.scrollIntoView({ block: "nearest" });
         }
       },
       { rootMargin: "-80px 0px -70% 0px", threshold: 0 }
@@ -583,9 +579,10 @@ PRitty.FileTreeEnhancements = (() => {
       _diffAreaObserver = null;
     }
     _treeItemMap.clear();
-    document
-      .querySelectorAll(`.${ACTIVE_CLASS}`)
-      .forEach((el) => el.classList.remove(ACTIVE_CLASS));
+    for (const item of _activeItems) {
+      item.classList.remove(ACTIVE_CLASS);
+    }
+    _activeItems.clear();
   }
 
   // ─── Public API ────────────────────────────────────────────

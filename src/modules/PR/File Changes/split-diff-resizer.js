@@ -14,7 +14,7 @@ PRitty.SplitDiffResizer = {
   _diffsList: null,
 
   _getAllTables() {
-    return document.querySelectorAll('table[role="grid"]');
+    return (this._diffsList || document).querySelectorAll('table[role="grid"]');
   },
 
   _gutterPx(col) {
