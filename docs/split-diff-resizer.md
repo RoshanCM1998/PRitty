@@ -30,7 +30,8 @@ div[role="region"][id^="diff-"]         ← file diff container
 **Split view detection:** `td.right-side-diff-cell` exists only in split view.
 
 **Resizing math:**
-- `codeWidth = table.offsetWidth - 88` (total minus both 44px line-number cols)
+- `gutterPx(col)` reads the gutter width from `col.getAttribute("width")` or `col.style.width`, falling back to `44`
+- `codeWidth = table.offsetWidth - gutterPx(cols[0]) - gutterPx(cols[2])`
 - `leftPx = clamp(MIN_CODE_PX, codeWidth - MIN_CODE_PX, round(codeWidth × ratio))`
 - `cols[1].style.width = leftPx + 'px'`
 - `cols[3].style.width = (codeWidth - leftPx) + 'px'`
@@ -43,7 +44,7 @@ One `div.pritty-split-handle` is injected per diff table, as a child of `table.p
 
 The handle contains a single `div.pritty-split-handle-line` (a 2px wide bar) that becomes visible on hover or during drag.
 
-Handle `left` position = `44 + leftColWidth` px (left line-number col width + left code col width).
+Handle `left` position = `gutterPx(cols[0]) + leftColWidth` px (left gutter width + left code col width).
 
 ---
 
