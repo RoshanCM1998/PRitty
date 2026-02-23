@@ -20,6 +20,7 @@ Before writing any code, complete these steps in order:
 | File Tree Enhancements | `docs/file-tree-enhancements.md` | `src/modules/PR/File Changes/file-tree-enhancements.js` |
 | Diff Navigation | `docs/README.md` (#7) | `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` |
 | Split Diff Resizer | `docs/split-diff-resizer.md` | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` |
+| Branches nav button | `docs/README.md` | `src/modules/Repo/branches-nav-button.js` |
 | Namespace / selectors | `docs/core-infrastructure.md` | `src/core/namespace.js` |
 | Utils | `docs/core-infrastructure.md` | `src/core/utils.js` |
 | Icons | `docs/core-infrastructure.md` | `src/core/icons.js` |

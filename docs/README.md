@@ -4,7 +4,7 @@
 
 PRitty brings Azure DevOps-style pull request experience to GitHub — quick actions, reversed timelines, and streamlined navigation.
 
-**Activates on:** `https://github.com/*/pull/*` (PR pages only)
+**Activates on:** `https://github.com/*/pull/*` (PR features) and `https://github.com/*/*` (repo features)
 
 ---
 
@@ -12,6 +12,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 
 | # | Feature | Code Location | Docs |
 |---|---------|--------------|------|
+| 0 | [**Branches Nav Button**](#0-branches-nav-button) | `src/modules/Repo/branches-nav-button.js` | Inline below |
 | 1 | [**Action Buttons Bar**](#1-action-buttons-bar) | `src/modules/PR/action-buttons-bar/` | [action-buttons-bar.md](./action-buttons-bar.md) |
 | 2 | [**Scroll to Top**](#2-scroll-to-top-button) | `src/modules/PR/scroll-top.js`, `styles/base.css` | [scroll-to-top.md](./scroll-to-top.md) |
 | 3 | [**Conversation Tab Changes**](#3-conversation-tab-changes) | `src/modules/PR/Conversation/timeline-reorder.js`, `styles/base.css` | [conversation-tab.md](./conversation-tab.md) |
@@ -21,6 +22,24 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 7 | [**Diff Navigation**](#7-diff-navigation) | `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` | Inline below |
 | 8 | [**Split Diff Resizer**](#8-split-diff-resizer) | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` | [split-diff-resizer.md](./split-diff-resizer.md) |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/PR/action-buttons-bar/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
+
+---
+
+### 0. Branches Nav Button
+
+Injects a **"Branches"** tab into GitHub's repository-level nav bar (Code / Issues / Pull requests / Actions / …), positioned immediately after the "Code" tab. Activates on all repo pages (`github.com/*/*`).
+
+- Navigates to `/{owner}/{repo}/branches`
+- Highlights with `aria-current="page"` when on the branches page or any sub-path
+- Persists through GitHub's SPA (Turbo) navigation via MutationObserver
+
+**Implementation:** Clones the "Code" `<li>` element rather than building from scratch — inherits all of GitHub's CSS classes automatically, so the tab always looks correct even after class renames.
+
+**Code:** `src/modules/Repo/branches-nav-button.js`
+
+**Selector used:** `PRitty.Selectors.REPO_NAV` (`nav[aria-label="Repository"]`)
+
+**Self-bootstraps** — has its own `content_scripts` entry in `manifest.json`; not orchestrated by `content.js`.
 
 ---
 
@@ -196,6 +215,8 @@ manifest.json                              ← Extension config, load order, URL
 │   │   ├── icons.js                       ← SVG icon library
 │   │   └── utils.js                       ← Shared DOM helpers
 │   ├── modules/
+│   │   ├── Repo/                          ← Repository-level modules
+│   │   │   └── branches-nav-button.js    ← Branches tab in repo nav (Feature 0)
 │   │   └── PR/                            ← All PR-page modules
 │   │       ├── Conversation/              ← Conversation-tab features
 │   │       │   └── timeline-reorder.js   ← JS timeline reversal (Feature 3)
@@ -218,7 +239,10 @@ manifest.json                              ← Extension config, load order, URL
 
 ### Script Load Order (defined in `manifest.json`)
 
-Injected at `document_idle` in this exact sequence:
+**Repo pages** (`github.com/*/*`) — first content_scripts entry:
+1. `namespace.js` → `Repo/branches-nav-button.js`
+
+**PR pages** (`github.com/*/pull/*`) — second content_scripts entry (both entries run; `namespace.js` is idempotent):
 
 1. `namespace.js` → `icons.js` → `utils.js` (core)
 2. `PR/action-buttons-bar/github-state.js` (state reader)
