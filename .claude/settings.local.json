@@ -22,7 +22,8 @@
       "mcp__chrome-devtools__wait_for",
       "Bash(if not exist \"D:\\\\Project\\\\Git-dev\\\\TEMP\" mkdir \"D:\\\\Project\\\\Git-dev\\\\TEMP\")",
       "Bash(node -e:*)",
-      "Bash(cmd /c \"mkdir D:\\\\Project-personal\\\\PRitty\\\\src\\\\modules\\\\Repo\")"
+      "Bash(cmd /c \"mkdir D:\\\\Project-personal\\\\PRitty\\\\src\\\\modules\\\\Repo\")",
+      "mcp__chrome-devtools__list_console_messages"
     ]
   }
 }
