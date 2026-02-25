@@ -49,42 +49,59 @@ PRitty.ChecksRerun = {
   },
 
   _postComment(text) {
-    const doPost = () => {
-      // #issue-comment-box wraps the textarea; try both common selectors
-      const textarea =
-        document.querySelector('#issue-comment-box textarea') ||
-        document.querySelector('#new_comment_field');
-      if (!textarea) return;
+    const textarea = document.querySelector(
+      '#issue-comment-box textarea, #new_comment_field'
+    );
 
-      textarea.scrollIntoView({ block: 'center' });
-      textarea.focus();
+    if (textarea) {
+      this._fillAndSubmit(textarea, text);
+      return;
+    }
 
-      // React-compatible value setter
+    // Fallback: textarea not yet in DOM — switch to Conversation tab and wait
+    const convTab = PRitty.Utils.findTab('Conversation');
+    if (!convTab) return;
+    convTab.click();
+    const obs = new MutationObserver(() => {
+      const ta = document.querySelector(
+        '#issue-comment-box textarea, #new_comment_field'
+      );
+      if (ta) {
+        obs.disconnect();
+        this._fillAndSubmit(ta, text);
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => obs.disconnect(), 10000);
+  },
+
+  _fillAndSubmit(textarea, text) {
+    // Focus without scrolling — required for execCommand to target this element
+    textarea.focus({ preventScroll: true });
+    textarea.select(); // clear any existing content before inserting
+
+    // execCommand goes through the browser's native input pipeline,
+    // which React hooks into — this enables the "Comment" submit button.
+    // Falls back to native setter + input event if execCommand is unavailable.
+    if (!document.execCommand('insertText', false, text)) {
       const setter = Object.getOwnPropertyDescriptor(
         window.HTMLTextAreaElement.prototype, 'value'
       ).set;
       setter.call(textarea, text);
       textarea.dispatchEvent(new Event('input', { bubbles: true }));
-
-      // Submit
-      const submitBtn =
-        textarea.closest('form')?.querySelector('button[type="submit"]') ||
-        document.querySelector('#issue-comment-box button[type="submit"]');
-      if (submitBtn) PRitty.Utils.scrollAndClick(submitBtn);
-    };
-
-    if (PRitty.GitHubState.getCurrentTab() === 'conversation') {
-      doPost();
-      return;
     }
 
-    // Switch to Conversation tab first, then post
-    const convTab = PRitty.Utils.findTab('Conversation');
-    if (!convTab) return;
-    convTab.click();
-
-    PRitty.Utils.waitForElement(
-      '#issue-comment-box textarea, #new_comment_field'
-    ).then(doPost).catch(() => {});
+    // One animation frame lets React re-render (enables the submit button)
+    // before we click. No visible scroll — preventScroll above keeps page still.
+    requestAnimationFrame(() => {
+      const form = textarea.closest('form');
+      // data-variant="primary" is GitHub's Primer attribute for the primary action button.
+      // Text match on "Comment" excludes "Close and comment" (exact trim).
+      const submitBtn =
+        form?.querySelector('button[type="submit"][data-variant="primary"]') ||
+        Array.from(form?.querySelectorAll('button[type="submit"]') ?? [])
+          .find(b => b.textContent.trim() === 'Comment');
+      if (submitBtn && !submitBtn.disabled) submitBtn.click();
+    });
   },
 };
