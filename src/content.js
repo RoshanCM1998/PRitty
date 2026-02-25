@@ -68,6 +68,9 @@
             PRitty.SplitDiffResizer.destroy();
           }
         }
+
+        // Azure build re-run buttons (checks expanded list)
+        PRitty.ChecksRerun.init();
       });
     });
 

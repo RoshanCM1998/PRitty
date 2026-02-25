@@ -21,6 +21,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 6 | [**File Tree Enhancements**](#6-file-tree-enhancements) | `src/modules/PR/File Changes/` | [file-tree-enhancements.md](./file-tree-enhancements.md) |
 | 7 | [**Diff Navigation**](#7-diff-navigation) | `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` | Inline below |
 | 8 | [**Split Diff Resizer**](#8-split-diff-resizer) | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` | [split-diff-resizer.md](./split-diff-resizer.md) |
+| 9 | [**Azure Checks Re-Run**](#9-azure-checks-re-run) | `src/modules/PR/checks-rerun.js`, `styles/buttons.css` | Inline below |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/PR/action-buttons-bar/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -191,6 +192,20 @@ A draggable vertical separator between the left (old code) and right (new code) 
 
 ---
 
+### 9. Azure Checks Re-Run
+
+A **re-run button** (sync icon) injected into each Azure Pipelines check row in the expanded checks list. Hovering a row reveals the button; clicking it auto-posts `/azp run <pipeline_name>` as a PR comment.
+
+- **Detection:** A check row is treated as Azure if its `<h4>` contains an `<a>` whose `href` includes `visualstudio.com` or `dev.azure.com`
+- **Pipeline name:** Taken from the `<span>` text inside that anchor (e.g., `"Crew (App Stores) - CI"`)
+- **Button placement:** Injected as `afterbegin` of `[class*="ActionBar-module__container"]` — before the existing kebab menu button
+- **Comment posting:** Fills and submits GitHub's native comment textarea. If on a non-Conversation tab, switches there first, then posts
+- **Re-injection safety:** Button presence (`.pritty-rerun-btn`) is the de-duplication guard — these buttons do NOT carry `data-pritty-injected` to avoid conflicting with `inject()`'s cleanup cycle
+
+**Code:** `src/modules/PR/checks-rerun.js`, `styles/buttons.css`
+
+---
+
 ## Core Infrastructure
 
 Shared modules that all features depend on. Full details in [core-infrastructure.md](./core-infrastructure.md).
@@ -229,6 +244,7 @@ manifest.json                              ← Extension config, load order, URL
 │   │       │   ├── pr-actions-button.js   ← PR Actions dropdown
 │   │       │   ├── review-button.js       ← Submit Review button
 │   │       │   └── header-actions.js      ← Assembles the floating bar
+│   │       ├── checks-rerun.js           ← Azure pipeline re-run button (Feature 9)
 │   │       └── scroll-top.js             ← Scroll-to-top button (Feature 2)
 │   └── content.js                         ← Entry point, lifecycle manager
 ├── styles/
@@ -246,7 +262,7 @@ manifest.json                              ← Extension config, load order, URL
 
 1. `namespace.js` → `icons.js` → `utils.js` (core)
 2. `PR/action-buttons-bar/github-state.js` (state reader)
-3. `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` (action bar modules)
+3. `PR/checks-rerun.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` (action bar modules)
 4. `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js` (PR modules)
 5. `PR/action-buttons-bar/header-actions.js` (feature assembly)
 6. `content.js` (bootstrap)

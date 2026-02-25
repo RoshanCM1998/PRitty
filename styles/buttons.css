@@ -96,6 +96,26 @@
   background-color: #388bfd;
 }
 
+/* === Azure Checks Re-Run Button === */
+.pritty-rerun-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--fgColor-muted, #848d97);
+  cursor: pointer;
+  line-height: 1;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+
+.pritty-rerun-btn:hover {
+  color: var(--fgColor-accent, #2f81f7);
+  background: var(--bgColor-neutral-muted, rgba(110,118,129,0.1));
+}
+
 /* Merge status indicator dot */
 .pritty-merge-indicator {
   display: inline-block;
