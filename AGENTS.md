@@ -20,6 +20,7 @@ Before writing any code, complete these steps in order:
 | File Tree Enhancements | `docs/file-tree-enhancements.md` | `src/modules/PR/File Changes/file-tree-enhancements.js` |
 | Diff Navigation | `docs/README.md` (#7) | `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` |
 | Split Diff Resizer | `docs/split-diff-resizer.md` | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` |
+| Azure Checks Re-Run | `docs/README.md` (#9) | `src/modules/PR/checks-rerun.js`, `styles/buttons.css` |
 | Branches nav button | `docs/README.md` | `src/modules/Repo/branches-nav-button.js` |
 | Namespace / selectors | `docs/core-infrastructure.md` | `src/core/namespace.js` |
 | Utils | `docs/core-infrastructure.md` | `src/core/utils.js` |
@@ -83,7 +84,7 @@ Defined in `manifest.json`. Order matters — each module depends on prior ones:
 
 1. Core: `namespace.js` → `icons.js` → `utils.js`
 2. State: `PR/action-buttons-bar/github-state.js`
-3. Modules: `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` → `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js`
+3. Modules: `PR/checks-rerun.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` → `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js`
 4. Assembly: `PR/action-buttons-bar/header-actions.js`
 5. Bootstrap: `content.js`
 
