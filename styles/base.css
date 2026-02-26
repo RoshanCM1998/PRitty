@@ -106,16 +106,16 @@
   border-top: none !important;
 }
 
-#issue-comment-box {
-  /* Hide Github suggestion and guidlines*/
+body:not(.pritty-show-conv-activity) #issue-comment-box {
+  /* Hide Github suggestion and guidelines*/
   & > div > div:nth-last-child(1), & > div > div:nth-last-child(2) {
     display: none !important;
   }
 }
 
-[data-channel-event-name="labels_updated"],
-[data-channel-event-name="projects_updated"],
-[data-channel-event-name="milestone_updated"] {
+body:not(.pritty-show-conv-activity) [data-channel-event-name="labels_updated"],
+body:not(.pritty-show-conv-activity) [data-channel-event-name="projects_updated"],
+body:not(.pritty-show-conv-activity) [data-channel-event-name="milestone_updated"] {
   display: none !important;
 }
 

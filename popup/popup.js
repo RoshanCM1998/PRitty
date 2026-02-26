@@ -6,6 +6,9 @@
 
 const DEFAULTS = {
   commentShortcut: true,
+  showActionBar: true,
+  showConvActivity: false,
+  convSorting: true,
 };
 
 const KEYS = Object.keys(DEFAULTS);

@@ -13,8 +13,9 @@
     // Remove any previous injection
     document.querySelectorAll(`[${ATTR}]`).forEach((el) => el.remove());
 
-    // Append fixed floating bar directly to body
-    document.body.appendChild(PRitty.HeaderActions.createAll());
+    if (PRitty.Settings.get('showActionBar')) {
+      document.body.appendChild(PRitty.HeaderActions.createAll());
+    }
   }
 
   /** Initialize PRitty on a PR page. */
@@ -23,6 +24,11 @@
 
     // Load user settings before any feature checks
     await PRitty.Settings.load();
+
+    // Apply body class for conditional CSS (metadata events visibility)
+    if (PRitty.Settings.get('showConvActivity')) {
+      document.body.classList.add('pritty-show-conv-activity');
+    }
 
     // Try immediate injection; MutationObserver retries if targets aren't ready
     inject();
@@ -44,14 +50,18 @@
         if (!window.location.pathname.match(/\/pull\/\d+/)) return;
 
         // Re-inject header actions if removed
-        if (!document.querySelector(`[${ATTR}]`)) {
+        if (!document.querySelector(`[${ATTR}]`) && PRitty.Settings.get('showActionBar')) {
           inject();
         }
 
         // Re-apply timeline reorder if undone
         const discussion = document.querySelector(".js-discussion");
         if (discussion && !discussion.hasAttribute(PRitty.TimelineReorder.REORDERED_ATTR)) {
-          PRitty.TimelineReorder.apply();
+          if (PRitty.Settings.get('convSorting')) {
+            PRitty.TimelineReorder.apply();
+          } else {
+            discussion.setAttribute(PRitty.TimelineReorder.REORDERED_ATTR, 'skipped');
+          }
         }
 
         // File tree enhancements (Files Changed tab)

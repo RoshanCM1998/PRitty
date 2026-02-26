@@ -12,7 +12,44 @@
   </header>
 
   <main class="pritty-popup-main">
-    <p class="pritty-popup-section-label">Features</p>
+    <p class="pritty-popup-section-label">Conversation Tab</p>
+
+    <label class="pritty-toggle-row" for="convSorting">
+      <span class="pritty-toggle-info">
+        <strong>Sort timeline newest first</strong>
+        <small>Reverses the conversation tab to show the latest comments at the top.</small>
+      </span>
+      <span class="pritty-toggle-switch">
+        <input type="checkbox" id="convSorting" />
+        <span class="pritty-toggle-track"></span>
+      </span>
+    </label>
+
+    <label class="pritty-toggle-row" for="showConvActivity">
+      <span class="pritty-toggle-info">
+        <strong>Show metadata events</strong>
+        <small>Show label, project, and milestone change events in the timeline.</small>
+      </span>
+      <span class="pritty-toggle-switch">
+        <input type="checkbox" id="showConvActivity" />
+        <span class="pritty-toggle-track"></span>
+      </span>
+    </label>
+
+    <p class="pritty-popup-section-label">Action Bar</p>
+
+    <label class="pritty-toggle-row" for="showActionBar">
+      <span class="pritty-toggle-info">
+        <strong>Action buttons bar</strong>
+        <small>Show the floating bar with PR Actions and Submit Review buttons.</small>
+      </span>
+      <span class="pritty-toggle-switch">
+        <input type="checkbox" id="showActionBar" />
+        <span class="pritty-toggle-track"></span>
+      </span>
+    </label>
+
+    <p class="pritty-popup-section-label">Comments</p>
 
     <label class="pritty-toggle-row" for="commentShortcut">
       <span class="pritty-toggle-info">

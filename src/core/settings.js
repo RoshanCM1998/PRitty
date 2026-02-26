@@ -9,7 +9,10 @@ PRitty.Settings = {
   _cache: null,
 
   defaults: {
-    commentShortcut: true, // Remove "Start a review" + Ctrl+Enter direct comment
+    commentShortcut: true,   // Remove "Start a review" + Ctrl+Enter direct comment
+    showActionBar: true,     // Show floating action buttons bar
+    showConvActivity: false, // Show hidden label/project/milestone events
+    convSorting: true,       // Sort conversation timeline newest-first
   },
 
   async load() {
