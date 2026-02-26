@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PRitty Settings</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="pritty-popup-header">
+    <img src="../icons/icon48.png" alt="PRitty" class="pritty-popup-logo" />
+    <span class="pritty-popup-title">PRitty</span>
+  </header>
+
+  <main class="pritty-popup-main">
+    <p class="pritty-popup-section-label">Features</p>
+
+    <label class="pritty-toggle-row" for="commentShortcut">
+      <span class="pritty-toggle-info">
+        <strong>Direct comment shortcut</strong>
+        <small>Removes "Start a review" button. Ctrl+Enter posts a comment directly.</small>
+      </span>
+      <span class="pritty-toggle-switch">
+        <input type="checkbox" id="commentShortcut" />
+        <span class="pritty-toggle-track"></span>
+      </span>
+    </label>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

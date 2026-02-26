@@ -22,6 +22,8 @@ Before writing any code, complete these steps in order:
 | Split Diff Resizer | `docs/split-diff-resizer.md` | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` |
 | Azure Checks Re-Run | `docs/README.md` (#9) | `src/modules/PR/checks-rerun.js`, `styles/buttons.css` |
 | Branches nav button | `docs/README.md` | `src/modules/Repo/branches-nav-button.js` |
+| Comment shortcut (Ctrl+Enter / "Start a review") | `docs/comment-shortcut.md` | `src/modules/PR/comment-shortcut.js` |
+| Settings popup (feature toggles) | `docs/comment-shortcut.md` | `popup/popup.html`, `popup/popup.js`, `popup/popup.css`, `src/core/settings.js` |
 | Namespace / selectors | `docs/core-infrastructure.md` | `src/core/namespace.js` |
 | Utils | `docs/core-infrastructure.md` | `src/core/utils.js` |
 | Icons | `docs/core-infrastructure.md` | `src/core/icons.js` |

@@ -18,14 +18,23 @@
   }
 
   /** Initialize PRitty on a PR page. */
-  function init() {
+  async function init() {
     if (!window.location.pathname.match(/\/pull\/\d+/)) return;
+
+    // Load user settings before any feature checks
+    await PRitty.Settings.load();
 
     // Try immediate injection; MutationObserver retries if targets aren't ready
     inject();
 
     // Scroll to top button
     PRitty.ScrollTop.create();
+
+    // Comment shortcut: remove "Start a review" + Ctrl+Enter direct post
+    if (PRitty.Settings.get('commentShortcut')) {
+      PRitty.CommentShortcut.init();
+      PRitty.CommentShortcut.removeStartReviewButtons();
+    }
 
     // Re-inject after GitHub's SPA (Turbo) navigation
     let _rafId = 0;
@@ -71,6 +80,11 @@
 
         // Azure build re-run buttons (checks expanded list)
         PRitty.ChecksRerun.init();
+
+        // Remove "Start a review" buttons whenever GitHub re-renders inline forms
+        if (PRitty.Settings.get('commentShortcut')) {
+          PRitty.CommentShortcut.removeStartReviewButtons();
+        }
       });
     });
 
