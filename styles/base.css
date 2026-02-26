@@ -184,17 +184,32 @@ body:not(.pritty-show-conv-activity) [data-channel-event-name="milestone_updated
   width: 28px;
   height: 28px;
   padding: 0;
-  border: 1px solid var(--borderColor-default, #30363d);
+  border: 1px solid #54aeff;
   border-radius: 6px;
-  background: var(--bgColor-default, transparent);
-  color: var(--fgColor-muted, #9198a1);
+  background: #ddf4ff;
+  color: #0969da;
   cursor: pointer;
-  transition: background-color 0.1s ease, color 0.1s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .pritty-diff-nav-btn:hover {
-  background: var(--bgColor-muted, rgba(177, 186, 196, 0.12));
-  color: var(--fgColor-default, #e6edf3);
+  background: #b6e3ff;
+  border-color: #388bfd;
+  color: #0969da;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pritty-diff-nav-btn {
+    background: #1c3354;
+    border-color: #54aeff;
+    color: #58a6ff;
+  }
+
+  .pritty-diff-nav-btn:hover {
+    background: #1f4470;
+    border-color: #79c0ff;
+    color: #79c0ff;
+  }
 }
 
 .pritty-diff-nav-btn svg {
