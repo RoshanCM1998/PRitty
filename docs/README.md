@@ -22,6 +22,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 7 | [**Diff Navigation**](#7-diff-navigation) | `src/modules/PR/File Changes/diff-nav-buttons.js`, `styles/base.css` | Inline below |
 | 8 | [**Split Diff Resizer**](#8-split-diff-resizer) | `src/modules/PR/File Changes/split-diff-resizer.js`, `styles/base.css` | [split-diff-resizer.md](./split-diff-resizer.md) |
 | 9 | [**Azure Checks Re-Run**](#9-azure-checks-re-run) | `src/modules/PR/checks-rerun.js`, `styles/buttons.css` | Inline below |
+| 10 | [**Comment Shortcut**](#10-comment-shortcut) | `src/modules/PR/comment-shortcut.js` | [comment-shortcut.md](./comment-shortcut.md) |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/PR/action-buttons-bar/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -192,6 +193,22 @@ A draggable vertical separator between the left (old code) and right (new code) 
 
 ---
 
+### 10. Comment Shortcut
+
+Removes the **"Start a review"** button from inline diff comment forms and makes **Ctrl+Enter** post a direct comment immediately instead of queuing a review.
+
+- **"Start a review"** is removed from the DOM on every MutationObserver tick (as GitHub re-renders inline forms dynamically).
+- **Ctrl+Enter** is intercepted in capture phase; the extension clicks "Reply", "Add single comment", or "Comment" depending on the form context.
+- Controlled by the `commentShortcut` toggle in the PRitty popup (toolbar icon).
+
+**Code:** `src/modules/PR/comment-shortcut.js`
+
+**Settings:** `src/core/settings.js` + `popup/popup.html` / `popup/popup.js` / `popup/popup.css`
+
+**Detailed docs:** [comment-shortcut.md](./comment-shortcut.md)
+
+---
+
 ### 9. Azure Checks Re-Run
 
 A **re-run button** (sync icon) injected into each Azure Pipelines check row in the expanded checks list. Hovering a row reveals the button; clicking it auto-posts `/azp run <pipeline_name>` as a PR comment.
@@ -213,6 +230,7 @@ Shared modules that all features depend on. Full details in [core-infrastructure
 | Module | File | Purpose |
 |--------|------|---------|
 | Namespace | `src/core/namespace.js` | Creates `window.PRitty` global + `PRitty.Selectors` (GitHub DOM selectors) |
+| Settings | `src/core/settings.js` | Loads feature toggles from `chrome.storage.sync`; provides synchronous `get()` after `load()` |
 | Icons | `src/core/icons.js` | SVG icon strings (`merge`, `review`, `check`, `x`, `pending`, `chevronUp`, `chevronDown`) |
 | Utils | `src/core/utils.js` | DOM helpers: `waitForElement`, `findTab`, `findButtonByText`, `findButtonByPrefix`, `isPRittyElement` |
 | GitHub State | `src/modules/PR/action-buttons-bar/github-state.js` | Reads live PR state: `getChecksInfo()`, `getPRState()`, `getCurrentTab()` |
@@ -227,6 +245,7 @@ manifest.json                              ← Extension config, load order, URL
 ├── src/
 │   ├── core/
 │   │   ├── namespace.js                   ← Global PRitty namespace + DOM selectors
+│   │   ├── settings.js                    ← Feature toggles (chrome.storage.sync)
 │   │   ├── icons.js                       ← SVG icon library
 │   │   └── utils.js                       ← Shared DOM helpers
 │   ├── modules/
@@ -245,8 +264,13 @@ manifest.json                              ← Extension config, load order, URL
 │   │       │   ├── review-button.js       ← Submit Review button
 │   │       │   └── header-actions.js      ← Assembles the floating bar
 │   │       ├── checks-rerun.js           ← Azure pipeline re-run button (Feature 9)
+│   │       ├── comment-shortcut.js       ← Remove "Start a review" + Ctrl+Enter (Feature 10)
 │   │       └── scroll-top.js             ← Scroll-to-top button (Feature 2)
 │   └── content.js                         ← Entry point, lifecycle manager
+├── popup/
+│   ├── popup.html                         ← Extension settings popup
+│   ├── popup.js                           ← Toggle read/write via chrome.storage.sync
+│   └── popup.css                          ← Popup styling
 ├── styles/
 │   ├── base.css                           ← Layout + Conversation/Commits/Files tab CSS (Features 2-5)
 │   └── buttons.css                        ← Button & dropdown styling (Feature 1)
@@ -260,9 +284,9 @@ manifest.json                              ← Extension config, load order, URL
 
 **PR pages** (`github.com/*/pull/*`) — second content_scripts entry (both entries run; `namespace.js` is idempotent):
 
-1. `namespace.js` → `icons.js` → `utils.js` (core)
+1. `namespace.js` → `settings.js` → `icons.js` → `utils.js` (core)
 2. `PR/action-buttons-bar/github-state.js` (state reader)
-3. `PR/checks-rerun.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` (action bar modules)
+3. `PR/checks-rerun.js` → `PR/comment-shortcut.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` (action bar modules)
 4. `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js` (PR modules)
 5. `PR/action-buttons-bar/header-actions.js` (feature assembly)
 6. `content.js` (bootstrap)
@@ -276,13 +300,18 @@ Page loads on github.com/*/pull/*
   ↓
 content.js init() verifies URL matches /pull/\d+/
   ↓
+PRitty.Settings.load() → awaits chrome.storage.sync
+  ↓
 inject() → cleans old PRitty elements → appends floating action bar
   ↓
 ScrollTop.create() → appends scroll button
   ↓
+CommentShortcut.init() + removeStartReviewButtons() [if enabled]
+  ↓
 MutationObserver watches document.body
   ├── SPA navigation detected → re-runs inject()
-  └── Discussion container reset → re-applies TimelineReorder
+  ├── Discussion container reset → re-applies TimelineReorder
+  └── removeStartReviewButtons() on each tick [if enabled]
 ```
 
 ---
