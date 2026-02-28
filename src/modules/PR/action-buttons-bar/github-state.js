@@ -81,7 +81,9 @@ PRitty.GitHubState = {
       PRitty.Utils.findButtonByPrefix("Squash and merge") ||
       PRitty.Utils.findButtonByPrefix("Rebase and merge");
     const onConversationTab = this.getCurrentTab() === "conversation";
-    const mergeEnabled = mergeBtn ? !mergeBtn.disabled : (!onConversationTab && !isMerged && !isClosed);
+    const mergeEnabled = mergeBtn
+      ? !(mergeBtn.disabled || mergeBtn.getAttribute("aria-disabled") === "true")
+      : (!onConversationTab && !isMerged && !isClosed);
 
     return { isDraft, isMerged, isClosed, hasConflicts, mergeEnabled, mergeBtn };
   },
