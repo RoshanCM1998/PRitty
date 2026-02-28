@@ -31,6 +31,10 @@ PRitty.CompleteButton = {
       this._updateButtonState(btn, freshState);
       if (freshState.isMerged) return;
       this._populateDropdown(dropdown, freshState);
+      // Close other open dropdowns
+      document.querySelectorAll(".pritty-dropdown").forEach((dd) => {
+        if (dd !== dropdown) dd.hidden = true;
+      });
       dropdown.hidden = !dropdown.hidden;
     });
 

@@ -7,6 +7,11 @@
   position: relative;
 }
 
+/* Review button wrapper (positions dropdown) */
+.pritty-review-wrapper {
+  position: relative;
+}
+
 /* Complete PR / Merge button */
 .pritty-btn-complete {
   background-color: #238636;
