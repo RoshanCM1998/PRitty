@@ -24,7 +24,10 @@
       "Bash(node -e:*)",
       "Bash(cmd /c \"mkdir D:\\\\Project-personal\\\\PRitty\\\\src\\\\modules\\\\Repo\")",
       "mcp__chrome-devtools__list_console_messages",
-      "mcp__chrome-devtools__hover"
+      "mcp__chrome-devtools__hover",
+      "Bash(xargs grep:*)",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__get_network_request"
     ]
   }
 }

@@ -13,6 +13,7 @@ PRitty.Settings = {
     showActionBar: true,     // Show floating action buttons bar
     showConvActivity: false, // Show hidden label/project/milestone events
     convSorting: true,       // Sort conversation timeline newest-first
+    sideBySidePreview: true, // Show textarea + preview simultaneously
   },
 
   async load() {

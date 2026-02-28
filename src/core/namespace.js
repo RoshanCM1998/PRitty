@@ -47,4 +47,8 @@ PRitty.Selectors = PRitty.Selectors || {
 
   // Repository-level nav bar (Code / Issues / Pull requests / Actions / …)
   REPO_NAV: 'nav[aria-label="Repository"]',
+
+  // Markdown editor (comment forms)
+  MD_EDITOR_REACT:  '[class*="MarkdownEditor-module__container"]',
+  MD_TEXTAREA_SPAN: '[class*="MarkdownInput-module__textArea"]',
 };

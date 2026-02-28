@@ -229,6 +229,17 @@ ul[class*="prc-ActionList-GroupList"] {
   flex-direction: column-reverse;
 }
 
+/* === Side-by-Side Markdown Preview === */
+/* React form (Files Changed tab): ensure textarea visible */
+.pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] {
+  display: block !important;
+}
+
+.pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] textarea {
+  min-height: 120px;
+  border-bottom: 1px solid var(--borderColor-muted, #d0d7de);
+}
+
 /* === Split Diff Resizer === */
 .pritty-split-handle {
   position: absolute;

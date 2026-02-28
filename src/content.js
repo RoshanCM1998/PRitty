@@ -42,6 +42,11 @@
       PRitty.CommentShortcut.removeStartReviewButtons();
     }
 
+    // Side-by-side markdown preview
+    if (PRitty.Settings.get('sideBySidePreview')) {
+      PRitty.MarkdownPreview.enhance();
+    }
+
     // Re-inject after GitHub's SPA (Turbo) navigation
     let _rafId = 0;
     const observer = new MutationObserver(() => {
@@ -94,6 +99,11 @@
         // Remove "Start a review" buttons whenever GitHub re-renders inline forms
         if (PRitty.Settings.get('commentShortcut')) {
           PRitty.CommentShortcut.removeStartReviewButtons();
+        }
+
+        // Side-by-side markdown preview for newly rendered comment forms
+        if (PRitty.Settings.get('sideBySidePreview')) {
+          PRitty.MarkdownPreview.enhance();
         }
       });
     });
