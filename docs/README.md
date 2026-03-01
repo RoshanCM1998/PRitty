@@ -24,6 +24,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 9 | [**Azure Checks Re-Run**](#9-azure-checks-re-run) | `src/modules/PR/checks-rerun.js`, `styles/buttons.css` | Inline below |
 | 10 | [**Comment Shortcut**](#10-comment-shortcut) | `src/modules/PR/comment-shortcut.js` | [comment-shortcut.md](./comment-shortcut.md) |
 | 11 | [**Markdown Preview**](#11-markdown-preview) | `src/modules/PR/File Changes/markdown-preview.js`, `styles/base.css` | [markdown-preview.md](./markdown-preview.md) |
+| 12 | [**Merge Conflict Highlight**](#12-merge-conflict-highlight) | `src/modules/PR/Conversation/conflict-highlight.js`, `styles/base.css` | Inline below |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/PR/action-buttons-bar/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -224,6 +225,21 @@ Shows the markdown **textarea and rendered preview simultaneously** in PR commen
 
 ---
 
+### 12. Merge Conflict Highlight
+
+Highlights GitHub's merge conflict container with a **subtle warning background** (light tomato red) so it stands out instead of blending in with the page.
+
+- **Detection:** Reuses `PRitty.Selectors.CONFLICT_INDICATOR` (`[class*="conflict"], [aria-label*="conflict"]`)
+- **Container lookup:** Tries known merge-section selectors (`.merge-message`, `#partial-pull-merging`, `[class*="MergeBox"]`, `[class*="merge-status"]`) via `closest()`, falls back to ancestor traversal
+- **Idempotent:** Uses `data-pritty-conflict-highlighted` attribute to skip if already applied
+- **Re-runs** on each MutationObserver tick (handles SPA navigation and lazy-loaded merge section)
+
+**Code:** `src/modules/PR/Conversation/conflict-highlight.js`, `styles/base.css` (Merge Conflict Highlight section)
+
+**CSS class:** `.pritty-conflict-highlight` — light red background (`rgba(248, 81, 73, 0.07)`) with red-tinted border
+
+---
+
 ### 9. Azure Checks Re-Run
 
 A **re-run button** (sync icon) injected into each Azure Pipelines check row in the expanded checks list. Hovering a row reveals the button; clicking it auto-posts `/azp run <pipeline_name>` as a PR comment.
@@ -268,6 +284,7 @@ manifest.json                              ← Extension config, load order, URL
 │   │   │   └── branches-nav-button.js    ← Branches tab in repo nav (Feature 0)
 │   │   └── PR/                            ← All PR-page modules
 │   │       ├── Conversation/              ← Conversation-tab features
+│   │       │   ├── conflict-highlight.js ← Merge conflict warning highlight (Feature 12)
 │   │       │   └── timeline-reorder.js   ← JS timeline reversal (Feature 3)
 │   │       ├── File Changes/              ← Files-Changed-tab features
 │   │       │   ├── diff-nav-buttons.js   ← Diff hunk navigation buttons (Feature 7)
@@ -302,7 +319,7 @@ manifest.json                              ← Extension config, load order, URL
 
 1. `namespace.js` → `settings.js` → `icons.js` → `utils.js` (core)
 2. `PR/action-buttons-bar/github-state.js` (state reader)
-3. `PR/checks-rerun.js` → `PR/comment-shortcut.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` (action bar modules)
+3. `PR/Conversation/conflict-highlight.js` → `PR/checks-rerun.js` → `PR/comment-shortcut.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` (action bar modules)
 4. `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js` → `PR/File Changes/markdown-preview.js` (PR modules)
 5. `PR/action-buttons-bar/header-actions.js` (feature assembly)
 6. `content.js` (bootstrap)
@@ -320,6 +337,8 @@ PRitty.Settings.load() → awaits chrome.storage.sync
   ↓
 inject() → cleans old PRitty elements → appends floating action bar
   ↓
+ConflictHighlight.init() → highlights merge conflict container (if conflicts exist)
+  ↓
 ScrollTop.create() → appends scroll button
   ↓
 CommentShortcut.init() + removeStartReviewButtons() [if enabled]
@@ -328,6 +347,7 @@ MarkdownPreview.enhance() [if enabled]
   ↓
 MutationObserver watches document.body
   ├── SPA navigation detected → re-runs inject()
+  ├── ConflictHighlight.init() on each tick
   ├── Discussion container reset → re-applies TimelineReorder
   ├── removeStartReviewButtons() on each tick [if enabled]
   └── MarkdownPreview.enhance() on each tick [if enabled]

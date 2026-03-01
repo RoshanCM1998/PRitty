@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "PRitty: Enhanced GitHub PR UI & Quick Actions",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Enhance your GitHub Pull Request workflow with quick actions, streamlined status checks, and a more productive code review UI.",
   "permissions": ["storage"],
   "action": {
@@ -26,6 +26,7 @@
         "src/core/icons.js",
         "src/core/utils.js",
         "src/modules/PR/action-buttons-bar/github-state.js",
+        "src/modules/PR/Conversation/conflict-highlight.js",
         "src/modules/PR/checks-rerun.js",
         "src/modules/PR/comment-shortcut.js",
         "src/modules/PR/action-buttons-bar/pr-actions-button.js",

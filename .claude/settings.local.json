@@ -27,7 +27,8 @@
       "mcp__chrome-devtools__hover",
       "Bash(xargs grep:*)",
       "mcp__chrome-devtools__list_network_requests",
-      "mcp__chrome-devtools__get_network_request"
+      "mcp__chrome-devtools__get_network_request",
+      "mcp__chrome-devtools__new_page"
     ]
   }
 }
