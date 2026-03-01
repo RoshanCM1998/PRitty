@@ -24,7 +24,7 @@ Before writing any code, complete these steps in order:
 | Branches nav button | `docs/README.md` | `src/modules/Repo/branches-nav-button.js` |
 | Comment shortcut (Ctrl+Enter / "Start a review") | `docs/comment-shortcut.md` | `src/modules/PR/comment-shortcut.js` |
 | Markdown preview (side-by-side) | `docs/markdown-preview.md` | `src/modules/PR/File Changes/markdown-preview.js` |
-| Merge conflict highlight | `docs/README.md` (#12) | `src/modules/PR/Conversation/conflict-highlight.js`, `styles/base.css` |
+| Merge conflict highlight | `docs/README.md` (#12) | `styles/base.css` (CSS-only, no JS) |
 | Settings popup (feature toggles) | `docs/comment-shortcut.md` | `popup/popup.html`, `popup/popup.js`, `popup/popup.css`, `src/core/settings.js` |
 | Namespace / selectors | `docs/core-infrastructure.md` | `src/core/namespace.js` |
 | Utils | `docs/core-infrastructure.md` | `src/core/utils.js` |
@@ -88,7 +88,7 @@ Defined in `manifest.json`. Order matters — each module depends on prior ones:
 
 1. Core: `namespace.js` → `icons.js` → `utils.js`
 2. State: `PR/action-buttons-bar/github-state.js`
-3. Modules: `PR/Conversation/conflict-highlight.js` → `PR/checks-rerun.js` → `PR/comment-shortcut.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` → `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js` → `PR/File Changes/markdown-preview.js`
+3. Modules: `PR/checks-rerun.js` → `PR/comment-shortcut.js` → `PR/action-buttons-bar/pr-actions-button.js` → `PR/action-buttons-bar/review-button.js` → `PR/Conversation/timeline-reorder.js` → `PR/scroll-top.js` → `PR/File Changes/diff-nav-buttons.js` → `PR/File Changes/split-diff-resizer.js` → `PR/File Changes/file-tree-enhancements.js` → `PR/File Changes/markdown-preview.js`
 4. Assembly: `PR/action-buttons-bar/header-actions.js`
 5. Bootstrap: `content.js`
 

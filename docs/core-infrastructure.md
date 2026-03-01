@@ -24,7 +24,7 @@ PRitty.Selectors = {
   STATE_INDICATOR:    'span.State[data-view-component="true"], [class*="StateLabel"]',  // All tabs
   TAB:                'nav[aria-label*="Pull request"] [role="tab"], nav[aria-label*="Pull request"] a.tabnav-tab',
   SELECTED_TAB:       'nav[aria-label*="Pull request"] [role="tab"][aria-selected="true"], nav[aria-label*="Pull request"] a.tabnav-tab.selected',
-  CONFLICT_INDICATOR: '[class*="conflict"], [aria-label*="conflict"]',
+  CONFLICT_INDICATOR: '[class*="conflict" i], [aria-label*="conflict" i]',
 
   // File tree sidebar (Files Changed tab)
   FILE_TREE_SIDEBAR:      '#pr-file-tree',
