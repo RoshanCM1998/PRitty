@@ -33,9 +33,6 @@
     // Try immediate injection; MutationObserver retries if targets aren't ready
     inject();
 
-    // Highlight merge conflict container if conflicts exist
-    PRitty.ConflictHighlight.init();
-
     // Scroll to top button
     PRitty.ScrollTop.create();
 
@@ -95,9 +92,6 @@
             PRitty.SplitDiffResizer.destroy();
           }
         }
-
-        // Highlight merge conflict container
-        PRitty.ConflictHighlight.init();
 
         // Azure build re-run buttons (checks expanded list)
         PRitty.ChecksRerun.init();

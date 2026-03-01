@@ -241,7 +241,7 @@ ul[class*="prc-ActionList-GroupList"] {
 }
 
 /* === Merge Conflict Highlight === */
-.pritty-conflict-highlight {
+section[aria-label*="onflict" i] {
   background-color: rgba(248, 81, 73, 0.2) !important;
   border: 1px solid rgba(248, 81, 73, 0.3) !important;
   border-radius: 6px;

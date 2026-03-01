@@ -26,7 +26,6 @@
         "src/core/icons.js",
         "src/core/utils.js",
         "src/modules/PR/action-buttons-bar/github-state.js",
-        "src/modules/PR/Conversation/conflict-highlight.js",
         "src/modules/PR/checks-rerun.js",
         "src/modules/PR/comment-shortcut.js",
         "src/modules/PR/action-buttons-bar/pr-actions-button.js",
