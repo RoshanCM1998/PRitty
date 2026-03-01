@@ -24,6 +24,7 @@ Before writing any code, complete these steps in order:
 | Branches nav button | `docs/README.md` | `src/modules/Repo/branches-nav-button.js` |
 | Comment shortcut (Ctrl+Enter / "Start a review") | `docs/comment-shortcut.md` | `src/modules/PR/comment-shortcut.js` |
 | Markdown preview (side-by-side) | `docs/markdown-preview.md` | `src/modules/PR/File Changes/markdown-preview.js` |
+| Merge conflict highlight | `docs/README.md` (#12) | `styles/base.css` (CSS-only, no JS) |
 | Settings popup (feature toggles) | `docs/comment-shortcut.md` | `popup/popup.html`, `popup/popup.js`, `popup/popup.css`, `src/core/settings.js` |
 | Namespace / selectors | `docs/core-infrastructure.md` | `src/core/namespace.js` |
 | Utils | `docs/core-infrastructure.md` | `src/core/utils.js` |

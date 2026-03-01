@@ -24,6 +24,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 9 | [**Azure Checks Re-Run**](#9-azure-checks-re-run) | `src/modules/PR/checks-rerun.js`, `styles/buttons.css` | Inline below |
 | 10 | [**Comment Shortcut**](#10-comment-shortcut) | `src/modules/PR/comment-shortcut.js` | [comment-shortcut.md](./comment-shortcut.md) |
 | 11 | [**Markdown Preview**](#11-markdown-preview) | `src/modules/PR/File Changes/markdown-preview.js`, `styles/base.css` | [markdown-preview.md](./markdown-preview.md) |
+| 12 | [**Merge Conflict Highlight**](#12-merge-conflict-highlight) | `styles/base.css` | Inline below |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/PR/action-buttons-bar/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -221,6 +222,17 @@ Shows the markdown **textarea and rendered preview simultaneously** in PR commen
 **Code:** `src/modules/PR/File Changes/markdown-preview.js`, `styles/base.css`
 
 **Detailed docs:** [markdown-preview.md](./markdown-preview.md)
+
+---
+
+### 12. Merge Conflict Highlight
+
+Highlights GitHub's merge conflict section with a **subtle warning background** (light tomato red) so it stands out instead of blending in with the page.
+
+- **Pure CSS** — no JavaScript needed; uses a case-insensitive attribute selector on the conflict `<section>`
+- **Selector:** `section[aria-label*="onflict" i]` — matches GitHub's `aria-label="Conflicts"` regardless of casing
+
+**Code:** `styles/base.css` (Merge Conflict Highlight section)
 
 ---
 
