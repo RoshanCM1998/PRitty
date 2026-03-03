@@ -130,31 +130,32 @@ Check current tab via GitHubState.getCurrentTab()
 
 ### Approve PR Action (`_approvePR()`)
 
-Directly approves the PR via GitHub's internal review endpoint:
+Directly approves the PR via GitHub's internal JSON-based review endpoint:
 
 1. Extracts `owner/repo/prNumber` from `window.location.pathname`
-2. Builds the reviews endpoint path: `/{owner}/{repo}/pull/{number}/reviews`
-3. Obtains a CSRF token via `_getCSRFToken()` (see below)
-4. Sends a `POST` to the reviews endpoint with form data and extra headers:
-   - `authenticity_token` — the CSRF token
-   - `pull_request_review[event]` — `"approve"`
-   - `pull_request_review[body]` — empty string
-   - `Accept: application/json` — encourages JSON error responses
+2. Obtains the head commit SHA via `_getHeadSHA()` (see below)
+3. Sends a `PUT` to `/{owner}/{repo}/pull/{number}/page_data/submit_review` with a JSON body:
+   - `body` — empty string (no review comment)
+   - `event` — `"approve"`
+   - `headSha` — the PR's head commit SHA
+4. Request headers:
+   - `Content-Type: application/json`
+   - `Accept: application/json`
+   - `GitHub-Verified-Fetch: true` — required by GitHub's new API
    - `X-Requested-With: XMLHttpRequest` — signals an AJAX request
 5. On success (HTTP 2xx) → `window.location.reload()`
 6. On failure → `alert()` with a parsed error message via `_parseErrorResponse()`
 
-**Security:** Uses same-origin `fetch` authenticated by the page's own CSRF token and session cookies. No new permissions, no credentials stored by the extension.
+**Security:** Uses same-origin `fetch` authenticated by session cookies. No new permissions, no credentials stored by the extension.
 
-### CSRF Token Extraction (`_getCSRFToken(reviewsAction)`)
+### Head SHA Extraction (`_getHeadSHA()`)
 
-Called at **click time** (not page load) because GitHub's Turbo SPA navigation can invalidate previously cached tokens. Uses a three-tier fallback:
+Called at **click time** (not page load) because Turbo navigation can change the displayed commit. Async method with a two-tier fallback:
 
-1. **Meta tag** — `<meta name="csrf-token">` provides a global token when present
-2. **Reviews form input** — `<input name="authenticity_token">` inside a `<form>` targeting the reviews endpoint (or any form whose action ends with `/reviews`)
-3. **Any form input** — falls back to the first `<input name="authenticity_token">` found anywhere on the page
+1. **Hidden input** (fast, DOM) — `<input name="expected_head_oid">` used by GitHub's own review forms. Present on the Files Changed tab but not on the Conversation tab.
+2. **Commits endpoint fetch** (reliable, any tab) — fetches `/{owner}/{repo}/pull/{number}/commits` with JSON headers (`Accept: application/json`, `GitHub-Verified-Fetch: true`, `X-Requested-With: XMLHttpRequest`). Extracts the last commit's `oid` from `payload.pullRequestsCommitsRoute.commitGroups[last].commits[last].oid`.
 
-Returns `null` if no token is found (user is likely not logged in).
+Returns `null` if no SHA is found (alerts the user to refresh the page).
 
 ### Error Response Parsing (`_parseErrorResponse(response)`)
 

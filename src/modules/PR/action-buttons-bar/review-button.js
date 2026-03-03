@@ -101,30 +101,40 @@ PRitty.ReviewButton = {
   },
 
   /**
-   * Extract a CSRF token from the page using a three-tier fallback.
+   * Extract the PR's head commit SHA.
    * Called at click time (not page load) because Turbo navigation can
-   * invalidate previously cached tokens.
-   * @param {string} reviewsAction — the reviews endpoint path
-   * @returns {string|null}
+   * change the displayed commit.
+   * Tier 1: DOM selector (fast, works on Files Changed tab).
+   * Tier 2: Fetch from commits endpoint (works on any tab).
+   * @returns {Promise<string|null>}
    * @private
    */
-  _getCSRFToken(reviewsAction) {
-    // 1. Meta tag — global token when present
-    const meta = document.querySelector('meta[name="csrf-token"]');
-    if (meta?.content) return meta.content;
+  async _getHeadSHA() {
+    // Tier 1: Hidden input used by GitHub's own review forms
+    const oidInput = document.querySelector('input[name="expected_head_oid"]');
+    if (oidInput?.value) return oidInput.value;
 
-    // 2. Hidden input from a form targeting the reviews endpoint
-    const reviewForm = document.querySelector(
-      `form[action="${reviewsAction}"] input[name="authenticity_token"],` +
-      `form[action$="/reviews"] input[name="authenticity_token"]`
-    );
-    if (reviewForm?.value) return reviewForm.value;
-
-    // 3. Any authenticity_token hidden input on the page
-    const anyInput = document.querySelector('input[name="authenticity_token"]');
-    if (anyInput?.value) return anyInput.value;
-
-    return null;
+    // Tier 2: Fetch from commits endpoint
+    const pathParts = window.location.pathname.split("/");
+    const commitsUrl = `/${pathParts[1]}/${pathParts[2]}/pull/${pathParts[4]}/commits`;
+    try {
+      const resp = await fetch(commitsUrl, {
+        headers: {
+          "Accept": "application/json",
+          "GitHub-Verified-Fetch": "true",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+      if (!resp.ok) return null;
+      const data = await resp.json();
+      const groups = data?.payload?.pullRequestsCommitsRoute?.commitGroups;
+      if (!groups?.length) return null;
+      const lastGroup = groups[groups.length - 1];
+      const lastCommit = lastGroup.commits[lastGroup.commits.length - 1];
+      return lastCommit?.oid || null;
+    } catch {
+      return null;
+    }
   },
 
   /**
@@ -157,7 +167,7 @@ PRitty.ReviewButton = {
 
   /**
    * Approve the PR directly via GitHub's internal review endpoint.
-   * Uses the page's CSRF token and session cookies (same-origin fetch).
+   * Uses session cookies (same-origin fetch) and the new JSON-based API.
    * @private
    */
   async _approvePR() {
@@ -171,25 +181,27 @@ PRitty.ReviewButton = {
       return;
     }
 
-    const reviewsAction = `/${owner}/${repo}/pull/${prNumber}/reviews`;
-    const token = this._getCSRFToken(reviewsAction);
-    if (!token) {
-      alert("Could not find CSRF token. Are you logged in?");
+    const headSha = await this._getHeadSHA();
+    if (!headSha) {
+      alert("Could not find the head commit SHA. Try refreshing the page.");
       return;
     }
 
+    const endpoint = `/${owner}/${repo}/pull/${prNumber}/page_data/submit_review`;
+
     try {
-      const response = await fetch(reviewsAction, {
-        method: "POST",
+      const response = await fetch(endpoint, {
+        method: "PUT",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
           "Accept": "application/json",
+          "GitHub-Verified-Fetch": "true",
           "X-Requested-With": "XMLHttpRequest",
         },
-        body: new URLSearchParams({
-          authenticity_token: token,
-          "pull_request_review[event]": "approve",
-          "pull_request_review[body]": "",
+        body: JSON.stringify({
+          body: "",
+          event: "approve",
+          headSha: headSha,
         }),
       });
 
