@@ -28,7 +28,9 @@
       "Bash(xargs grep:*)",
       "mcp__chrome-devtools__list_network_requests",
       "mcp__chrome-devtools__get_network_request",
-      "mcp__chrome-devtools__new_page"
+      "mcp__chrome-devtools__new_page",
+      "Bash(git -C /d/Project-personal/PRitty diff HEAD -- *)",
+      "Bash(ls -d D:/Project-personal/PRitty/*/)"
     ]
   }
 }

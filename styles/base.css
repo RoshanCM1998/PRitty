@@ -230,7 +230,36 @@ ul[class*="prc-ActionList-GroupList"] {
 }
 
 /* === Side-by-Side Markdown Preview === */
-/* React form (Files Changed tab): ensure textarea visible */
+/* Keep both textarea and preview visible regardless of active tab */
+.pritty-side-by-side-preview [class*="displayNone"] {
+  display: block !important;
+}
+
+.pritty-side-by-side-preview [class*="MarkdownEditor-module__previewViewerWrapper"] {
+  background-color: #E6E6E6;
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid var(--borderColor-muted, #d0d7de);
+}
+
+.pritty-side-by-side-preview .pritty-cached-preview {
+  font-size: 14px;
+  background-color: #E6E6E6;
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid var(--borderColor-muted, #d0d7de);
+  margin-top: 2px;
+}
+
+/* Dark theme overrides for preview panels */
+[data-color-mode="dark"] .pritty-side-by-side-preview [class*="MarkdownEditor-module__previewViewerWrapper"],
+[data-dark-theme] .pritty-side-by-side-preview [class*="MarkdownEditor-module__previewViewerWrapper"],
+[data-color-mode="dark"] .pritty-side-by-side-preview .pritty-cached-preview,
+[data-dark-theme] .pritty-side-by-side-preview .pritty-cached-preview {
+  background-color: #2d333b;
+  border-color: #444c56;
+}
+
 .pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] {
   display: block !important;
 }
