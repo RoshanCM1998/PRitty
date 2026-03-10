@@ -251,6 +251,15 @@ ul[class*="prc-ActionList-GroupList"] {
   margin-top: 2px;
 }
 
+/* Dark theme overrides for preview panels */
+[data-color-mode="dark"] .pritty-side-by-side-preview [class*="MarkdownEditor-module__previewViewerWrapper"],
+[data-dark-theme] .pritty-side-by-side-preview [class*="MarkdownEditor-module__previewViewerWrapper"],
+[data-color-mode="dark"] .pritty-side-by-side-preview .pritty-cached-preview,
+[data-dark-theme] .pritty-side-by-side-preview .pritty-cached-preview {
+  background-color: #2d333b;
+  border-color: #444c56;
+}
+
 .pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] {
   display: block !important;
 }
