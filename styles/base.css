@@ -235,6 +235,22 @@ ul[class*="prc-ActionList-GroupList"] {
   display: block !important;
 }
 
+.pritty-side-by-side-preview [class*="MarkdownEditor-module__previewViewerWrapper"] {
+  background-color: #E6E6E6;
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid var(--borderColor-muted, #d0d7de);
+}
+
+.pritty-side-by-side-preview .pritty-cached-preview {
+  font-size: 14px;
+  background-color: #E6E6E6;
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid var(--borderColor-muted, #d0d7de);
+  margin-top: 2px;
+}
+
 .pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] {
   display: block !important;
 }

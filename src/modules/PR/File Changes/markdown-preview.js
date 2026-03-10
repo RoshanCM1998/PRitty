@@ -15,7 +15,7 @@
 
 PRitty.MarkdownPreview = {
   ENHANCED_ATTR: 'data-pritty-preview-enhanced',
-  DEBOUNCE_MS: 3000,
+  DEBOUNCE_MS: 2000,
 
   /** Scan for unprocessed comment forms and enhance them. */
   enhance() {
@@ -26,8 +26,8 @@ PRitty.MarkdownPreview = {
    * Handle React-style MarkdownEditor containers (Files Changed + inline comments).
    * These use [class*="MarkdownEditor-module__container"] with CSS-module class toggling.
    *
-   * To avoid exhausting GitHub's preview API, we keep the Write tab active while
-   * the user is typing and only switch to Preview after a debounce period.
+   * To avoid exhausting GitHub's preview API, after a debounce period of
+   * inactivity we cycle Write→Preview to trigger a single re-render.
    */
   _enhanceReactStyle() {
     const containers = document.querySelectorAll(
@@ -45,15 +45,12 @@ PRitty.MarkdownPreview = {
         .find(btn => btn.textContent.trim() === 'Write');
       if (!previewTab) return;
 
-      // Click Preview once to populate the preview panel, then switch back to Write
+      // Click Preview to populate the preview panel and stay on it
       previewTab.click();
 
       requestAnimationFrame(() => {
         this._removeDisplayNone(container);
         container.classList.add('pritty-side-by-side-preview');
-
-        // Switch back to Write to stop continuous preview API requests
-        if (writeTab) writeTab.click();
 
         const textarea = container.querySelector('textarea');
         if (textarea) {
@@ -75,14 +72,44 @@ PRitty.MarkdownPreview = {
   _addDebouncedPreview(container, textarea, writeTab, previewTab) {
     if (!writeTab || !previewTab) return;
 
+    // Create persistent preview cache element (outside React's control)
+    const cachedPreview = document.createElement('div');
+    cachedPreview.setAttribute('data-pritty-injected', '');
+    cachedPreview.className = 'pritty-cached-preview markdown-body';
+    cachedPreview.style.display = 'none';
+    // Insert right after the textarea's parent span so it sits below the typing area
+    const textareaSpan = container.querySelector(PRitty.Selectors.MD_TEXTAREA_SPAN);
+    if (textareaSpan) {
+      textareaSpan.after(cachedPreview);
+    } else {
+      container.appendChild(cachedPreview);
+    }
+
     let timer = null;
+    let previewActive = true; // starts true — init leaves Preview tab active
+
     textarea.addEventListener('input', () => {
-      // Ensure Write tab is active to stop any ongoing preview requests
-      writeTab.click();
+      if (previewActive) {
+        // Cache current live preview content before switching away
+        const livePreview = container.querySelector(
+          '[class*="MarkdownEditor-module__previewViewerWrapper"] .markdown-body'
+        );
+        cachedPreview.innerHTML = livePreview ? livePreview.innerHTML : '';
+        cachedPreview.style.display = 'block';
+
+        writeTab.click();
+        previewActive = false;
+
+        requestAnimationFrame(() => {
+          this._removeDisplayNone(container);
+        });
+      }
 
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
+        cachedPreview.style.display = 'none';
         previewTab.click();
+        previewActive = true;
       }, this.DEBOUNCE_MS);
     });
   },
