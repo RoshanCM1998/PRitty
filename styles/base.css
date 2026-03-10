@@ -230,7 +230,11 @@ ul[class*="prc-ActionList-GroupList"] {
 }
 
 /* === Side-by-Side Markdown Preview === */
-/* React form (Files Changed tab): ensure textarea visible */
+/* Keep both textarea and preview visible regardless of active tab */
+.pritty-side-by-side-preview [class*="displayNone"] {
+  display: block !important;
+}
+
 .pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] {
   display: block !important;
 }
