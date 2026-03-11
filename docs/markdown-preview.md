@@ -1,6 +1,6 @@
-# Markdown Preview (Side-by-Side)
+# Markdown Preview (Quick Preview)
 
-**Feature #11** | **Setting:** `sideBySidePreview` (default: `true`)
+**Feature #11** | **Setting:** `quickPreview` (default: `true`)
 
 Shows the markdown textarea and a live-rendered preview simultaneously in PR comment forms on both the **Conversation** and **Files Changed** tabs. Layout is stacked vertically — textarea on top, preview below.
 
@@ -27,7 +27,7 @@ The textarea is never touched programmatically — no cursor jumping, no charact
 | `src/modules/PR/markdown-preview.js` | Module: container detection, preview div injection, input→render |
 | `styles/base.css` | CSS: `.pritty-local-preview` styling, flex-wrap override for Files Changed |
 | `src/core/namespace.js` | Selectors: `MD_COMMENT_FORM` (Conversation), `MD_EDITOR_REACT` + `MD_TEXTAREA_SPAN` (Files Changed) |
-| `src/core/settings.js` | Setting: `sideBySidePreview` default |
+| `src/core/settings.js` | Setting: `quickPreview` default |
 | `popup/popup.html` + `popup/popup.js` | Toggle in popup UI |
 | `src/content.js` | Integration: calls `enhance()` on init and MutationObserver ticks |
 
@@ -59,5 +59,5 @@ Each container is marked with `data-pritty-preview-enhanced` attribute after pro
 
 ## Integration Points in content.js
 
-- **`init()`** (~line 46): `PRitty.MarkdownPreview.enhance()` if `sideBySidePreview` is enabled
+- **`init()`** (~line 46): `PRitty.MarkdownPreview.enhance()` if `quickPreview` is enabled
 - **MutationObserver callback** (~line 101): Same call, catches newly rendered comment forms from SPA navigation and inline comment expansion

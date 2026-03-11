@@ -1,6 +1,6 @@
 /**
- * PRitty — Markdown Preview (Side-by-Side)
- * Controlled by the `sideBySidePreview` setting (toggle in popup).
+ * PRitty — Markdown Preview (Quick Preview)
+ * Controlled by the `quickPreview` setting (toggle in popup).
  *
  * Shows the markdown textarea and a live-rendered preview simultaneously
  * in PR comment forms on both the Conversation and Files Changed tabs.
@@ -107,6 +107,6 @@ PRitty.MarkdownPreview = {
       timer = setTimeout(render, this.DEBOUNCE_MS);
     });
 
-    container.classList.add('pritty-side-by-side-preview');
+    container.classList.add('pritty-quick-preview');
   },
 };

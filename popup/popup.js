@@ -9,7 +9,7 @@ const DEFAULTS = {
   showActionBar: true,
   showConvActivity: false,
   convSorting: true,
-  sideBySidePreview: true,
+  quickPreview: true,
 };
 
 const KEYS = Object.keys(DEFAULTS);

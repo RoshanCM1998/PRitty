@@ -42,8 +42,8 @@
       PRitty.CommentShortcut.removeStartReviewButtons();
     }
 
-    // Side-by-side markdown preview
-    if (PRitty.Settings.get('sideBySidePreview')) {
+    // Quick markdown preview
+    if (PRitty.Settings.get('quickPreview')) {
       PRitty.MarkdownPreview.enhance();
     }
 
@@ -101,8 +101,8 @@
           PRitty.CommentShortcut.removeStartReviewButtons();
         }
 
-        // Side-by-side markdown preview for newly rendered comment forms
-        if (PRitty.Settings.get('sideBySidePreview')) {
+        // Quick markdown preview for newly rendered comment forms
+        if (PRitty.Settings.get('quickPreview')) {
           PRitty.MarkdownPreview.enhance();
         }
       });

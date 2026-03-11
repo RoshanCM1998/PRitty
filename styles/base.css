@@ -229,15 +229,15 @@ ul[class*="prc-ActionList-GroupList"] {
   flex-direction: column-reverse;
 }
 
-/* === Side-by-Side Markdown Preview (local rendering via marked.js) === */
+/* === Quick Markdown Preview (local rendering via marked.js) === */
 /* Files Changed tab: the textArea span is inline-flex row — add flex-wrap so
    our preview div (with flex-basis:100%) wraps below the textarea instead of
-   sitting beside it. Only applies inside .pritty-side-by-side-preview. */
-.pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] {
+   sitting beside it. Only applies inside .pritty-quick-preview. */
+.pritty-quick-preview [class*="MarkdownInput-module__textArea"] {
   flex-wrap: wrap;
 }
 
-.pritty-side-by-side-preview .pritty-local-preview {
+.pritty-quick-preview .pritty-local-preview {
   display: block;
   flex-basis: 100%;
   width: 100%;
