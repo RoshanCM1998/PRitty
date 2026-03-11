@@ -32,11 +32,14 @@ PRitty.CommentShortcut = {
    * as soon as GitHub renders them.
    */
   removeStartReviewButtons() {
-    document.querySelectorAll('button').forEach(btn => {
-      if (btn.textContent.trim() === 'Start a review' &&
-          btn.getAttribute('aria-hidden') !== 'true') {
-        btn.remove();
-      }
+    const containers = document.querySelectorAll('[class*="MarkdownEditor-module__container"]');
+    containers.forEach(c => {
+      c.querySelectorAll('button').forEach(btn => {
+        if (btn.textContent.trim() === 'Start a review' &&
+            btn.getAttribute('aria-hidden') !== 'true') {
+          btn.remove();
+        }
+      });
     });
   },
 
