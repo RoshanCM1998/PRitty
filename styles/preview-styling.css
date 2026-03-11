@@ -1,0 +1,181 @@
+/* ============================================
+   PRitty — Markdown Preview Styling (Nord Theme)
+   Scoped to .pritty-local-preview so it only
+   affects the local markdown preview div.
+   ============================================ */
+
+/* --- Container --- */
+.pritty-local-preview {
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  background-color: #2e3440;
+  color: #eceff4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.pritty-local-preview > *:first-child { margin-top: 0 !important; }
+.pritty-local-preview > *:last-child { margin-bottom: 0 !important; }
+
+/* --- Links --- */
+.pritty-local-preview a {
+  color: #88c0d0;
+  text-decoration: none;
+}
+
+.pritty-local-preview a:hover {
+  text-decoration: underline;
+  color: #8fbcbb;
+}
+
+/* --- Headers --- */
+.pritty-local-preview h1,
+.pritty-local-preview h2,
+.pritty-local-preview h3,
+.pritty-local-preview h4,
+.pritty-local-preview h5,
+.pritty-local-preview h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+}
+
+.pritty-local-preview h1 { font-size: 28px; color: #bf616a; }
+.pritty-local-preview h2 { font-size: 24px; color: #ebcb8b; border-bottom: none; }
+.pritty-local-preview h3 { font-size: 18px; color: #a3be8c; }
+.pritty-local-preview h4 { font-size: 16px; color: #b48ead; }
+.pritty-local-preview h5 { font-size: 14px; color: #8fbcbb; }
+.pritty-local-preview h6 { font-size: 14px; color: #81a1c1; }
+
+/* --- Text Styling --- */
+.pritty-local-preview p,
+.pritty-local-preview blockquote,
+.pritty-local-preview ul,
+.pritty-local-preview ol,
+.pritty-local-preview dl,
+.pritty-local-preview li,
+.pritty-local-preview table,
+.pritty-local-preview pre {
+  margin: 15px 0;
+}
+
+.pritty-local-preview strong,
+.pritty-local-preview b {
+  font-weight: bold;
+  color: #ebcb8b;
+}
+
+.pritty-local-preview em,
+.pritty-local-preview i {
+  font-style: italic;
+  color: #a3be8c;
+}
+
+/* --- Lists --- */
+.pritty-local-preview ul,
+.pritty-local-preview ol {
+  padding-left: 30px;
+}
+
+.pritty-local-preview dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  margin: 15px 0 5px;
+  color: #88c0d0;
+}
+
+.pritty-local-preview dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+/* --- Blockquotes --- */
+.pritty-local-preview blockquote {
+  border-left: 4px solid #81a1c1;
+  padding: 8px 15px;
+  color: #d8dee9;
+  background-color: #3b4252;
+  border-radius: 0 4px 4px 0;
+}
+
+/* --- Tables --- */
+.pritty-local-preview table {
+  padding: 0;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.pritty-local-preview table tr {
+  border-top: 1px solid #4c566a;
+  background-color: #2e3440;
+  margin: 0;
+  padding: 0;
+}
+
+.pritty-local-preview table tr:nth-child(2n) {
+  background-color: #3b4252;
+}
+
+.pritty-local-preview table tr th {
+  font-weight: bold;
+  border: 1px solid #4c566a;
+  background-color: #434c5e;
+  color: #eceff4;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+
+.pritty-local-preview table tr td {
+  border: 1px solid #4c566a;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+
+.pritty-local-preview img {
+  max-width: 100%;
+}
+
+/* --- Inline Code --- */
+.pritty-local-preview code,
+.pritty-local-preview tt {
+  margin: 0 2px;
+  padding: 2px 5px;
+  white-space: nowrap;
+  border: 1px solid #434c5e;
+  background-color: #3b4252;
+  border-radius: 4px;
+  color: #8fbcbb;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+/* --- Code Blocks --- */
+.pritty-local-preview pre {
+  background-color: #3b4252;
+  border: 1px solid #434c5e;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 10px;
+  border-radius: 4px;
+  color: #eceff4;
+}
+
+.pritty-local-preview pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+/* --- Horizontal Rule --- */
+.pritty-local-preview hr {
+  border: none;
+  border-top: 1px solid #4c566a;
+  margin: 20px 0;
+}

@@ -48,7 +48,12 @@ PRitty.Selectors = PRitty.Selectors || {
   // Repository-level nav bar (Code / Issues / Pull requests / Actions / …)
   REPO_NAV: 'nav[aria-label="Repository"]',
 
-  // Markdown editor (comment forms)
+  // Markdown editor — comment forms (used by markdown-preview.js)
+  // Files Changed tab: Primer React MarkdownEditor component (CSS-module hashed classes)
   MD_EDITOR_REACT:  '[class*="MarkdownEditor-module__container"]',
+  // Files Changed tab: textarea wrapper span inside MarkdownEditor (gets displayNone on Preview)
   MD_TEXTAREA_SPAN: '[class*="MarkdownInput-module__textArea"]',
+  // Conversation tab: standard GitHub comment forms — <tab-container> web component
+  // with js- behavior class (both stable). Covers main comment box + inline reply forms.
+  MD_COMMENT_FORM:  'tab-container.js-previewable-comment-form',
 };
