@@ -50,7 +50,7 @@ if (Test-Path $stagingDir) { Remove-Item $stagingDir -Recurse -Force }
 New-Item $stagingDir -ItemType Directory | Out-Null
 
 $filesToCopy = @("manifest.json", "LICENSE")
-$foldersToCopy = @("src", "styles", "popup")
+$foldersToCopy = @("src", "styles", "popup", "lib")
 
 foreach ($file in $filesToCopy) {
     Copy-Item (Join-Path $root $file) (Join-Path $stagingDir $file)
