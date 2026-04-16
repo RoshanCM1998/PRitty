@@ -15,6 +15,7 @@ PRitty.Settings = {
     convSorting: true,       // Sort conversation timeline newest-first
     sideBySidePreview: true, // Show textarea + preview simultaneously
     markdownBlobPreview: true, // Enhanced styling for .md file previews on repo pages
+    quickPreview: true, // Show textarea + preview simultaneously
   },
 
   async load() {

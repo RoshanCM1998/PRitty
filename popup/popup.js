@@ -11,6 +11,7 @@ const DEFAULTS = {
   convSorting: true,
   sideBySidePreview: true,
   markdownBlobPreview: true,
+  quickPreview: true,
 };
 
 const KEYS = Object.keys(DEFAULTS);

@@ -229,15 +229,22 @@ ul[class*="prc-ActionList-GroupList"] {
   flex-direction: column-reverse;
 }
 
-/* === Side-by-Side Markdown Preview === */
-/* React form (Files Changed tab): ensure textarea visible */
-.pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] {
-  display: block !important;
+/* === Quick Markdown Preview (local rendering via marked.js) === */
+/* Files Changed tab: the textArea span is inline-flex row — add flex-wrap so
+   our preview div (with flex-basis:100%) wraps below the textarea instead of
+   sitting beside it. Only applies inside .pritty-quick-preview. */
+.pritty-quick-preview [class*="MarkdownInput-module__textArea"] {
+  flex-wrap: wrap;
 }
 
-.pritty-side-by-side-preview [class*="MarkdownInput-module__textArea"] textarea {
-  min-height: 120px;
-  border-bottom: 1px solid var(--borderColor-muted, #d0d7de);
+.pritty-quick-preview .pritty-local-preview {
+  display: block;
+  flex-basis: 100%;
+  width: 100%;
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 4px;
+  min-height: 60px;
 }
 
 /* === Merge Conflict Highlight === */

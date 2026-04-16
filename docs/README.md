@@ -218,7 +218,7 @@ Shows the markdown **textarea and rendered preview simultaneously** in PR commen
 
 - **React pattern** — auto-clicks Preview, removes `displayNone` CSS-module class from textarea span
 - **MutationObserver** per container re-removes hiding if GitHub re-adds it on tab interactions
-- Controlled by the `sideBySidePreview` toggle in the PRitty popup (default: on)
+- Controlled by the `quickPreview` toggle in the PRitty popup (default: on)
 
 **Code:** `src/modules/PR/File Changes/markdown-preview.js`, `styles/base.css`
 
@@ -310,7 +310,7 @@ manifest.json                              ← Extension config, load order, URL
 │   │       │   ├── diff-nav-buttons.js   ← Diff hunk navigation buttons (Feature 7)
 │   │       │   ├── file-tree-enhancements.js ← Viewed checkboxes + enhanced file click (Feature 6)
 │   │       │   ├── split-diff-resizer.js ← Draggable split view separator (Feature 8)
-│   │       │   └── markdown-preview.js  ← Side-by-side markdown preview (Feature 11)
+│   │       │   └── markdown-preview.js  ← Quick markdown preview (Feature 11)
 │   │       ├── action-buttons-bar/        ← Floating action bar (Feature 1)
 │   │       │   ├── github-state.js        ← Reads live PR state (PR Actions + Submit Review)
 │   │       │   ├── pr-actions-button.js   ← PR Actions dropdown
