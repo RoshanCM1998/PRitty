@@ -14,6 +14,7 @@ PRitty.Settings = {
     showConvActivity: false, // Show hidden label/project/milestone events
     convSorting: true,       // Sort conversation timeline newest-first
     sideBySidePreview: true, // Show textarea + preview simultaneously
+    markdownBlobPreview: true, // Enhanced styling for .md file previews on repo pages
   },
 
   async load() {

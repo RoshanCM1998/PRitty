@@ -25,6 +25,7 @@ PRitty brings Azure DevOps-style pull request experience to GitHub — quick act
 | 10 | [**Comment Shortcut**](#10-comment-shortcut) | `src/modules/PR/comment-shortcut.js` | [comment-shortcut.md](./comment-shortcut.md) |
 | 11 | [**Markdown Preview**](#11-markdown-preview) | `src/modules/PR/File Changes/markdown-preview.js`, `styles/base.css` | [markdown-preview.md](./markdown-preview.md) |
 | 12 | [**Merge Conflict Highlight**](#12-merge-conflict-highlight) | `styles/base.css` | Inline below |
+| 13 | [**Markdown Blob Preview**](#13-markdown-blob-preview) | `src/modules/Repo/markdown-blob-preview.js`, `styles/markdown-blob-preview.css` | Inline below |
 | — | [**Core Infrastructure**](#core-infrastructure) | `src/core/`, `src/modules/PR/action-buttons-bar/github-state.js`, `src/content.js` | [core-infrastructure.md](./core-infrastructure.md) |
 
 ---
@@ -236,6 +237,29 @@ Highlights GitHub's merge conflict section with a **subtle warning background** 
 
 ---
 
+### 13. Markdown Blob Preview
+
+Enhances the visual appearance of **markdown file previews** on GitHub repository pages (e.g., viewing a `.md` file on `blob/master/`).
+
+- **Parent background** — the markdown section wrapper gets a subtle muted background with rounded bottom corners
+- **Heading accents** — `h1` gets a 2px accent-blue bottom border; `h2` gets a 1px accent-blue border
+- **Tables** — rounded table container, tinted header row with accent bottom border, alternating row backgrounds, hover highlight
+- **Blockquotes** — accent-blue left bar with tinted background and rounded right corners
+- **Horizontal rules** — gradient fade instead of a hard line
+- **Code blocks** — border + rounded corners for `pre`, accent-tinted background for inline `code`
+
+Uses `[class*="BlobContent-module__"]` attribute-contains selectors to survive CSS-module hash changes. All CSS rules are gated behind `body.pritty-md-blob-preview` class, toggled by JS based on the `markdownBlobPreview` setting.
+
+**Code:** `src/modules/Repo/markdown-blob-preview.js`, `styles/markdown-blob-preview.css`
+
+**Settings:** `markdownBlobPreview` toggle in the PRitty popup (default: on)
+
+**Activated on:** All repo pages (`github.com/*/*`) via the first `content_scripts` entry in `manifest.json`.
+
+**Self-bootstraps** — has its own `content_scripts` entry in `manifest.json`; not orchestrated by `content.js`.
+
+---
+
 ### 9. Azure Checks Re-Run
 
 A **re-run button** (sync icon) injected into each Azure Pipelines check row in the expanded checks list. Hovering a row reveals the button; clicking it auto-posts `/azp run <pipeline_name>` as a PR comment.
@@ -277,7 +301,8 @@ manifest.json                              ← Extension config, load order, URL
 │   │   └── utils.js                       ← Shared DOM helpers
 │   ├── modules/
 │   │   ├── Repo/                          ← Repository-level modules
-│   │   │   └── branches-nav-button.js    ← Branches tab in repo nav (Feature 0)
+│   │   │   ├── branches-nav-button.js    ← Branches tab in repo nav (Feature 0)
+│   │   │   └── markdown-blob-preview.js  ← Enhanced .md preview toggle (Feature 13)
 │   │   └── PR/                            ← All PR-page modules
 │   │       ├── Conversation/              ← Conversation-tab features
 │   │       │   └── timeline-reorder.js   ← JS timeline reversal (Feature 3)
@@ -301,14 +326,15 @@ manifest.json                              ← Extension config, load order, URL
 │   └── popup.css                          ← Popup styling
 ├── styles/
 │   ├── base.css                           ← Layout + Conversation/Commits/Files tab CSS (Features 2-5)
-│   └── buttons.css                        ← Button & dropdown styling (Feature 1)
+│   ├── buttons.css                        ← Button & dropdown styling (Feature 1)
+│   └── markdown-blob-preview.css          ← Repo markdown file preview styling (Feature 13)
 └── icons/                                 ← Extension icons (16/48/128px)
 ```
 
 ### Script Load Order (defined in `manifest.json`)
 
 **Repo pages** (`github.com/*/*`) — first content_scripts entry:
-1. `namespace.js` → `Repo/branches-nav-button.js`
+1. `namespace.js` → `settings.js` → `Repo/branches-nav-button.js` → `Repo/markdown-blob-preview.js`
 
 **PR pages** (`github.com/*/pull/*`) — second content_scripts entry (both entries run; `namespace.js` is idempotent):
 
@@ -352,6 +378,7 @@ MutationObserver watches document.body
 | File | Covers |
 |------|--------|
 | `styles/base.css` | Floating bar layout, scroll button, conversation tab CSS, commits tab CSS, files changed tab CSS |
+| `styles/markdown-blob-preview.css` | Repo-level markdown file preview enhancements (Feature 13) |
 | `styles/buttons.css` | PR Actions button, Submit Review button, dropdown menu, disabled states |
 
 **Z-index layers:** `999` (action bar) > `100` (dropdown) > `99` (scroll button)

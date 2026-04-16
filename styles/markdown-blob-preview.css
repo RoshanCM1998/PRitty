@@ -1,0 +1,287 @@
+/* ============================================
+   PRitty — Markdown Blob Preview
+   Enhances GitHub's .md file preview on repo pages.
+   Color-coded accents scoped to dark mode;
+   structural improvements apply to both themes.
+   All rules gated behind body.pritty-md-blob-preview
+   (toggled by JS based on user setting).
+   ============================================ */
+
+/* --- Parent section background --- */
+body.pritty-md-blob-preview [class*="BlobContent-module__blobContentSectionMarkdown"] {
+  background: var(--bgColor-muted, #f6f8fa);
+  border-radius: 0 0 6px 6px;
+}
+
+/* ============================================
+   Heading colors (dark mode)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h1 {
+    color: #bf616a; /* Red */
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h2 {
+    color: #ebcb8b; /* Yellow */
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h3 {
+    color: #a3be8c; /* Green */
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h4 {
+    color: #b48ead; /* Purple */
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h5 {
+    color: #8fbcbb; /* Teal */
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h6 {
+    color: #81a1c1; /* Blue */
+  }
+}
+
+/* --- Heading structure (both themes) --- */
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h1 {
+  border-bottom: 2px solid var(--borderColor-accent-emphasis, #1f6feb);
+  padding-bottom: 0.3em;
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body h2 {
+  border-bottom: none;
+  padding-bottom: 0.3em;
+}
+
+/* ============================================
+   Bold & Italic (dark mode)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body strong,
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body b {
+    color: #ebcb8b; /* Yellow */
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body em,
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body i {
+    color: #a3be8c; /* Green */
+  }
+}
+
+/* ============================================
+   Links (dark mode)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body a {
+    color: #88c0d0; /* Frost */
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body a:hover {
+    color: #8fbcbb; /* Frost hover */
+  }
+}
+
+/* ============================================
+   Tables — header tint + alternating rows
+   ============================================ */
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--borderColor-muted, #d0d7de);
+  border-radius: 6px;
+  overflow: hidden;
+  width: 100%;
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table thead tr {
+  background: var(--bgColor-accent-muted, rgba(31, 111, 235, 0.08));
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table thead th {
+  font-weight: 600;
+  border-bottom: 2px solid var(--borderColor-accent-emphasis, #1f6feb);
+  padding: 6px 13px;
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table tbody tr:nth-child(even) {
+  background: var(--bgColor-muted, #f6f8fa);
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table tbody tr:hover {
+  background: var(--bgColor-accent-muted, rgba(31, 111, 235, 0.06));
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table td {
+  padding: 6px 13px;
+}
+
+/* Dark mode table overrides */
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table thead tr {
+    background: #434c5e;
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table thead th {
+    color: #eceff4;
+    border-bottom-color: #4c566a;
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table tr {
+    border-top-color: #4c566a;
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table tbody tr:nth-child(even) {
+    background: #3b4252;
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body table tbody tr:hover {
+    background: rgba(136, 192, 208, 0.08);
+  }
+}
+
+/* ============================================
+   Blockquotes — accent bar + tinted background
+   ============================================ */
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body blockquote {
+  border-left: 4px solid var(--borderColor-accent-emphasis, #1f6feb);
+  background: var(--bgColor-accent-muted, rgba(31, 111, 235, 0.04));
+  padding: 12px 16px;
+  border-radius: 0 6px 6px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body blockquote {
+    border-left-color: #81a1c1; /* Blue */
+    background: #3b4252;
+    color: #d8dee9;
+  }
+}
+
+/* ============================================
+   Horizontal rules — gradient fade
+   ============================================ */
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--borderColor-muted, #d0d7de),
+    transparent
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body hr {
+    background: linear-gradient(
+      to right,
+      transparent,
+      #4c566a,
+      transparent
+    );
+  }
+}
+
+/* ============================================
+   Code blocks — border + rounded corners
+   ============================================ */
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body pre {
+  border: 1px solid var(--borderColor-muted, #d0d7de);
+  border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body pre {
+    background: #3b4252;
+    border-color: #434c5e;
+  }
+}
+
+/* ============================================
+   Inline code — tinted background + color
+   ============================================ */
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body code:not(pre code) {
+  background: var(--bgColor-accent-muted, rgba(31, 111, 235, 0.06));
+  border: 1px solid var(--borderColor-muted, #d0d7de);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 85%;
+}
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body code:not(pre code) {
+    background: #3b4252;
+    border-color: #434c5e;
+    color: #8fbcbb; /* Teal */
+  }
+}
+
+/* ============================================
+   Checkboxes (task lists)
+   ============================================ */
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bgColor-default, #ffffff);
+  border: 1px solid var(--borderColor-default, #d0d7de);
+  border-radius: 3px;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body input[type="checkbox"]:checked {
+  background-color: var(--fgColor-accent, #1f6feb);
+  border-color: var(--fgColor-accent, #1f6feb);
+}
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 3px;
+  height: 8px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+@media (prefers-color-scheme: dark) {
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body input[type="checkbox"] {
+    background-color: #2e3440;
+    border-color: #81a1c1;
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body input[type="checkbox"]:checked {
+    background-color: #81a1c1;
+    border-color: #81a1c1;
+  }
+
+  body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body input[type="checkbox"]:checked::after {
+    border-color: #2e3440;
+  }
+}
+
+/* ============================================
+   Lists — padding
+   ============================================ */
+
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body ul,
+body.pritty-md-blob-preview [class*="BlobContent-module__markdownBlob"] .markdown-body ol {
+  padding-left: 30px;
+}

@@ -10,6 +10,7 @@ const DEFAULTS = {
   showConvActivity: false,
   convSorting: true,
   sideBySidePreview: true,
+  markdownBlobPreview: true,
 };
 
 const KEYS = Object.keys(DEFAULTS);
